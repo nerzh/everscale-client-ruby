@@ -14,3 +14,4 @@
 /.idea
 /.byebug_history
 *.DS_Store
+/gems
