@@ -14,3 +14,13 @@ module TonClient
     end
   end
 end
+
+
+class << Object
+  def private_accessor(*names)
+    names.each do |name|
+      attr_accessor name
+      private "#{name}="
+    end
+  end
+end

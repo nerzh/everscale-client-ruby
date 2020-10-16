@@ -6,7 +6,8 @@ require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Binding/struct.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Binding/binding.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Context.rb'
-require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Common.rb'
+require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Client.rb'
+# require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Common.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Crypto.rb'
 
 p 'REQUIRE OK'
@@ -36,9 +37,9 @@ module TonClient
     @@configured = true
   end
 
-  def self.create
+  def self.create(config: {})
     check_configuration
-    Client.new(context: Context.new)
+    Client.new(context: Context.new(config: config))
   end
 
   # def self.create_context
@@ -57,7 +58,7 @@ module TonClient
   def self.main(client)
     return
     # SETUP
-    Common.new(context: context).setup
+    # Common.new(context: context).setup
     p Common.new(context: context).version
 
     crypto = Crypto.new(context: context)
@@ -145,8 +146,9 @@ module TonClient
     p read[:result_json][:content].read_string(read[:result_json][:len]) if read[:result_json][:content].address > 1
     p read[:error_json][:content].read_string(read[:error_json][:len]) if read[:error_json][:content].address > 1
   ensure
-    p context.id
-    TonBinding.tc_destroy_context(context.id)
+    client.destroy_context()
+    # p context.id
+    # TonBinding.tc_destroy_context(context.id)
     # TON::Client.free(context) if context
     # TON::Client.free(pointer) if pointer
     # TON::Client.free(pointer2) if pointer2

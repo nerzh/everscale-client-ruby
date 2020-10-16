@@ -24,7 +24,7 @@ module TonClient
     attr_reader :context, :core
 
     def initialize(context: Context.new, core: TonClient::TonBinding)
-      @context = context.id
+      @context = context
       @core = core
     end
 

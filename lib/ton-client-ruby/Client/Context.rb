@@ -1,13 +1,13 @@
 module TonClient
   class Context
-    include TonClient
+    
     attr_reader :id, :config
 
     def initialize(config: {})
       TonClient.check_configuration
       @config = TonBinding.make_string(config.to_json)
       context = TonBinding.tc_create_context(@config)
-      @id = TonBinding.read_string_to_json(context)['result']
+      @id = TonBinding.read_string_to_hash(context)['result']
     end
 
     def destroy
