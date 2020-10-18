@@ -1,6 +1,7 @@
-module TonClient
+
+module CommonClassHelpers
   
-  def self.class_attr_accessor(*names)
+  def class_attr_accessor(*names)
     names.each do |name|
       class_variable_set("@@#{name.to_s}", nil)
 
@@ -13,8 +14,16 @@ module TonClient
       end
     end
   end
+
 end
 
+
+module CommonInstanceHelpers
+  
+  def full_method_name(module_name, method_name)
+    "#{module_name}.#{method_name}"
+  end
+end
 
 class << Object
   def private_accessor(*names)

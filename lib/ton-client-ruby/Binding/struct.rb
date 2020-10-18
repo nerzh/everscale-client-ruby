@@ -17,7 +17,9 @@ module TonClient
     # } tc_string_handle_t;
     class TcStringHandleT < FFI::Struct
       layout :content, :pointer,
-        :len, :uint32
+        :len, :uint32,
+        :len2, :uint32,
+        :huy, :string
     end
 
     # # pub struct InteropString {

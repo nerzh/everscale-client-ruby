@@ -2,13 +2,13 @@ require 'ffi'
 require "base64"
 require 'json'
 require 'byebug'
-require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Helpers/Common.rb'
+require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Helpers/CommonHelpers.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Binding/struct.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Binding/binding.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Context.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Client.rb'
-# require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Common.rb'
 require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Crypto.rb'
+require_relative '/Users/nerzh/mydata/ruby_projects/gems/ton-client-ruby/lib/ton-client-ruby/Client/Abi.rb'
 
 p 'REQUIRE OK'
 
@@ -16,15 +16,10 @@ p 'REQUIRE OK'
 
 module TonClient
 
-  # class_attr_accessor :context
   @@configured = false
 
-  def self.configured?
-    !!@@configured
-  end
-
   def self.check_configuration
-    raise "Not configured! Please configure TonClient: call ffi_lib(dylib_path)" unless configured?
+    raise "Not configured! Please configure TonClient: call ffi_lib(dylib_path)" unless !!@@configured
   end
 
   def self.configure
@@ -42,18 +37,23 @@ module TonClient
     Client.new(context: Context.new(config: config))
   end
 
-  # def self.create_context
-  #   check_configuration
-  #   self.context = Context.new
-  # end
+  
 
-  # def self.destroy_context(context: nil)
-  #   check_configuration
-  #   raise "Context not found" unless (context || self.context)
-  #   context.destroy if context
-  #   self.context.destroy
-  #   self.context = nil
-  # end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   def self.main(client)
     return
