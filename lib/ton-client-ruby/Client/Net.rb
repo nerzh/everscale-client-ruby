@@ -1,41 +1,29 @@
 module TonClient
   
-  class Abi
+  class Net
     include CommonInstanceHelpers
 
     attr_reader :core, :context
-    MODULE = 'abi'.freeze
+    MODULE = 'net'.freeze
 
     def initialize(context: Context.new, core: TonClient::TonBinding)
       @context = context
       @core = core
     end
 
-    def encode_message(payload, &block)
+    def query_collection(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def encode_message_body(payload, &block)
+    def wait_for_collection(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def attach_signature_to_message_body(payload, &block)
+    def unsubscribe(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def attach_signature(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
-    end
-
-    def decode_message(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
-    end
-
-    def decode_message_body(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
-    end
-
-    def encode_account(payload, &block)
+    def subscribe_collection(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
   end

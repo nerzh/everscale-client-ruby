@@ -13,165 +13,135 @@ module TonClient
     end
 
     def factorize(payload, &block)
-      method_name = 'factorize'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def modular_power(payload, &block)
-      method_name = 'modular_power'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def ton_crc16(payload, &block)
-      method_name = 'ton_crc16'
       payload[:data] = encode_to_base64(payload[:data])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def random_generate_bytes(payload, &block)
-      method_name = 'generate_random_bytes'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+    def generate_random_bytes(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def convert_public_key_to_ton_safe_format(payload, &block)
-      method_name = 'convert_public_key_to_ton_safe_format'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def generate_random_sign_keys(&block)
-      method_name = 'generate_random_sign_keys'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), &block)
     end
 
     def sign(payload, &block)
-      method_name = 'sign'
       payload[:unsigned] = encode_to_base64(payload[:unsigned])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def verify_signature(payload, &block)
-      method_name = 'verify_signature'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def sha256(payload, &block)
-      method_name = 'sha256'
       payload[:data] = encode_to_base64(payload[:data])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def sha512(payload, &block)
-      method_name = 'sha512'
       payload[:data] = encode_to_base64(payload[:data])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def scrypt(payload, &block)
-      method_name = 'scrypt'
       payload[:password] = encode_to_base64(payload[:password])
       payload[:salt] = encode_to_base64(payload[:salt])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_sign_keypair_from_secret_key(payload, &block)
-      method_name = 'nacl_sign_keypair_from_secret_key'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_sign(payload, &block)
-      method_name = 'nacl_sign'
       payload[:unsigned] = encode_to_base64(payload[:unsigned])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_sign_open(payload, &block)
-      method_name = 'nacl_sign_open'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_sign_detached(payload, &block)
-      method_name = 'nacl_sign_detached'
       payload[:unsigned] = encode_to_base64(payload[:unsigned])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_box_keypair(&block)
-      method_name = 'nacl_box_keypair'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), &block)
     end
 
     def nacl_box_keypair_from_secret_key(payload, &block)
-      method_name = 'nacl_box_keypair_from_secret_key'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_box(payload, &block)
-      method_name = 'nacl_box'
       payload[:decrypted] = encode_to_base64(payload[:decrypted])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_box_open(payload, &block)
-      method_name = 'nacl_box_open'
       payload[:encrypted] = encode_to_base64(payload[:encrypted])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_secret_box(payload, &block)
-      method_name = 'nacl_secret_box'
       payload[:decrypted] = encode_to_base64(payload[:decrypted])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_secret_box_open(payload, &block)
-      method_name = 'nacl_secret_box_open'
       payload[:encrypted] = encode_to_base64(payload[:encrypted])
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def mnemonic_words(&block)
-      method_name = 'mnemonic_words'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), &block)
     end
 
     def mnemonic_from_random(payload, &block)
-      method_name = 'mnemonic_from_random'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def mnemonic_from_entropy(payload, &block)
-      method_name = 'mnemonic_from_entropy'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def mnemonic_verify(payload, &block)
-      method_name = 'mnemonic_verify'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def mnemonic_derive_sign_keys(payload, &block)
-      method_name = 'mnemonic_derive_sign_keys'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def hdkey_xprv_from_mnemonic(payload, &block)
-      method_name = 'hdkey_xprv_from_mnemonic'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def hdkey_derive_from_xprv_path(payload, &block)
-      method_name = 'hdkey_derive_from_xprv_path'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def hdkey_secret_from_xprv(payload, &block)
-      method_name = 'hdkey_secret_from_xprv'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def hdkey_public_from_xprv(payload, &block)
-      method_name = 'hdkey_public_from_xprv'
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     private

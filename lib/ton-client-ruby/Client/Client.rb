@@ -4,7 +4,7 @@ module TonClient
     include CommonInstanceHelpers
 
     attr_reader :core, :context
-    private_accessor :_crypto, :_abi
+    private_accessor :_crypto, :_abi, :_boc, :_net, :_processing, :_tvm, :_utils
     MODULE = 'client'.freeze
 
     def initialize(context: Context.new, core: TonClient::TonBinding)
@@ -32,6 +32,26 @@ module TonClient
 
     def abi
       _abi ||= Abi.new(context: context)
+    end
+
+    def boc
+      _boc ||= Boc.new(context: context)
+    end
+
+    def net
+      _net ||= Net.new(context: context)
+    end
+
+    def processing
+      _processing ||= Processing.new(context: context)
+    end
+
+    def tvm
+      _tvm ||= Tvm.new(context: context)
+    end
+
+    def utils
+      _utils ||= Utils.new(context: context)
     end
   end
 end

@@ -16,7 +16,6 @@ module TonClient
         self.finished = finished
         self.request_id = request_id
         self.current_response = response_hash
-
         case response_type
         when 0
           # result
@@ -26,7 +25,7 @@ module TonClient
           self.error = response_hash
         else
           # another
-          if responseType >= 100
+          if response_type >= 100
             self.custom_responses = response_hash
           end
         end
@@ -34,7 +33,7 @@ module TonClient
     end
 
     def self.generate_request_id
-      @@request_id = 0 if @@request_id == 4611686018427387903
+      @@request_id = 0 if @@request_id == 4294967295
       @@request_id += 1
     end
 
@@ -151,7 +150,7 @@ module TonClient
         # string = string[:content].read_string(string[:len]).force_encoding('UTF-8') + ''
         # tc_destroy_string(tc_string_handle) if is_ref
         # return string
-        return string[:content].read_string(string[:len]).force_encoding('UTF-8') + ''
+        return string[:content].read_string(string[:len])
       end
       nil
     ensure
@@ -160,7 +159,7 @@ module TonClient
 
     def self.read_string_to_hash(tc_string_handle_t_ref)
       json_string = read_string(tc_string_handle_t_ref)
-      JSON.parse(json_string) if json_string
+      JSON.parse(json_string, {max_nesting: false}) if json_string
     end
 
     def self.send_request_sync(context: 1, method_name: '', payload: {})
@@ -184,7 +183,6 @@ module TonClient
       if block
         method_name_string = make_string(method_name)
         payload_string = make_string(payload.to_json)
-
         tc_request(context, method_name_string, payload_string, request_id, &block)
       end
     end
