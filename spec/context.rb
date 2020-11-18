@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe TonClient::Context do
   before(:all) do
-    TonClient.configure { |config| config.ffi_lib(ENV['SPEC_FFI']) }
+    TonClient.configure { |config| config.ffi_lib(env['spec_ffi']) }
   end
 
   it 'create context' do

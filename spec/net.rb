@@ -42,18 +42,6 @@ describe TonClient::Net do
     queue.pop
     expect(result['handle'].class).to be(Integer)
   end
-
-  it 'unsubscribe' do
-    queue = Queue.new
-    payload = {collection: "transactions", filter: nil, result: "id account_addr"}
-    result = nil
-    @client.net.subscribe_collection(payload) do |response|
-      result = response.result
-      queue.push 1
-    end
-    queue.pop
-    expect(result['handle'].class).to be(Integer)
-  end
 end
 
 

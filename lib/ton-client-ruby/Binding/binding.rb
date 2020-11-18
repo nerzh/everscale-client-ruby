@@ -150,7 +150,7 @@ module TonClient
         # string = string[:content].read_string(string[:len]).force_encoding('UTF-8') + ''
         # tc_destroy_string(tc_string_handle) if is_ref
         # return string
-        return string[:content].read_string(string[:len])
+        return string[:content].read_string(string[:len]).force_encoding('UTF-8') + ''
       end
       nil
     ensure

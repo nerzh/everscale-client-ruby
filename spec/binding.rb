@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe TonClient::TonBinding do
   before(:all) do
-    TonClient.configure { |config| config.ffi_lib(ENV['SPEC_FFI']) }
+    TonClient.configure { |config| config.ffi_lib(env['spec_ffi']) }
     config = TonClient::TonBinding.make_string('{}')
     @context = TonClient::TonBinding.tc_create_context(config)
     @id = TonClient::TonBinding.read_string_to_hash(@context)['result']
