@@ -36,10 +36,10 @@ giver_abi_name=GiverNodeSE
 giver_function=sendGrams
 giver_amount=10000000000
 ```
-2. Run tests 
+2. Run tests  
 **rspec spec/binding.rb**   
-**rspec spec/client.rb**
-**rspec spec/context.rb**
+**rspec spec/client.rb**  
+**rspec spec/context.rb**  
 **rspec spec/abi.rb**   
 **rspec spec/boc.rb**   
 **rspec spec/crypto.rb**   
