@@ -1,5 +1,6 @@
 # Ruby Client for Free TON SDK
 
+[![GEM](https://img.shields.io/badge/ruby-gem-green)]()
 
 ## Build FreeTON SDK
 0. Install Rust to your OS
@@ -11,7 +12,11 @@
 ## Usage
 
 ```ruby
+# For MAcOS
 TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.dylib) }
+# For Linux
+# TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.so) }
+
 client = TonClient.create(config: {network: {server_address: "net.ton.dev"}})
 
 # All methods are asynchronous
@@ -21,11 +26,15 @@ payload = {composite: '17ED48941A08F981'}
 client.crypto.factorize(payload) do |response|
   p response.result['factors']
 end
+
+# e.g. ...
 ```
+
+___I will write a list of existing methods a little later. But now you can see what modules there are, what methods they have and how to use them in tests for this library, since each method is covered by tests.___
 
 ## Tests
 
-1. create .env.test file inside root directory of this library with variables   
+1. create __.env.test__ file inside root directory of this library with variables   
 
 example for NodeSE   
 ```
