@@ -30,7 +30,7 @@ end
 # e.g. ...
 ```
 
-___I will write a list of existing methods a little later. But now you can see what modules there are, what methods they have and how to use them in tests for this library, since each method is covered by tests.___
+___I will write a list of existing methods later. But now you can see what modules there are, what methods they have and how to use them in tests for this library, since each method is covered by tests.___
 
 ## Tests
 
