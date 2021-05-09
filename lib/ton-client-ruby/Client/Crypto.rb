@@ -21,7 +21,6 @@ module TonClient
     end
 
     def ton_crc16(payload, &block)
-      payload[:data] = encode_to_base64(payload[:data])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -38,7 +37,6 @@ module TonClient
     end
 
     def sign(payload, &block)
-      payload[:unsigned] = encode_to_base64(payload[:unsigned])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -47,7 +45,6 @@ module TonClient
     end
 
     def sha256(payload, &block)
-      payload[:data] = encode_to_base64(payload[:data])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -57,8 +54,6 @@ module TonClient
     end
 
     def scrypt(payload, &block)
-      payload[:password] = encode_to_base64(payload[:password])
-      payload[:salt] = encode_to_base64(payload[:salt])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -67,7 +62,6 @@ module TonClient
     end
 
     def nacl_sign(payload, &block)
-      payload[:unsigned] = encode_to_base64(payload[:unsigned])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -76,7 +70,6 @@ module TonClient
     end
 
     def nacl_sign_detached(payload, &block)
-      payload[:unsigned] = encode_to_base64(payload[:unsigned])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -93,22 +86,18 @@ module TonClient
     end
 
     def nacl_box(payload, &block)
-      payload[:decrypted] = encode_to_base64(payload[:decrypted])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_box_open(payload, &block)
-      payload[:encrypted] = encode_to_base64(payload[:encrypted])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_secret_box(payload, &block)
-      payload[:decrypted] = encode_to_base64(payload[:decrypted])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def nacl_secret_box_open(payload, &block)
-      payload[:encrypted] = encode_to_base64(payload[:encrypted])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
