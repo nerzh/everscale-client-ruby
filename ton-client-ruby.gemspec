@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   
   spec.add_runtime_dependency 'ffi', '~> 1.13.1'
   spec.add_runtime_dependency 'dotenv', '~> 2.7.6'
+  spec.add_runtime_dependency 'ruby-enum', '~> 0.9.0'
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "byebug"

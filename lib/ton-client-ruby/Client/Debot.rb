@@ -1,6 +1,6 @@
 module TonClient
   
-  class Utils
+  class Debot
     include CommonInstanceHelpers
 
     attr_reader :core, :context
@@ -11,19 +11,27 @@ module TonClient
       @core = core
     end
 
-    def convert_address(payload, &block)
+    def init(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def calc_storage_fee(payload, &block)
+    def start(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def compress_zstd(payload, &block)
+    def fetch(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def decompress_zstd(payload, &block)
+    def execute(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    def send(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    def remove(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
   end

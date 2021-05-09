@@ -4,7 +4,7 @@ module TonClient
     include CommonInstanceHelpers
 
     attr_reader :core, :context
-    MODULE = 'processing'.freeze
+    MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
     def initialize(context: Context.new, core: TonClient::TonBinding)
       @context = context

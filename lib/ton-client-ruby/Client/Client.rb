@@ -5,7 +5,7 @@ module TonClient
 
     attr_reader :core, :context
     private_accessor :_crypto, :_abi, :_boc, :_net, :_processing, :_tvm, :_utils
-    MODULE = 'client'.freeze
+    MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
     def initialize(context: Context.new, core: TonClient::TonBinding)
       @context = context
@@ -13,13 +13,19 @@ module TonClient
     end
 
     def version(&block)
-      method_name = "version"
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: {}, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def get_api_reference(&block)
-      method_name = "get_api_reference"
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, method_name), payload: {}, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+    end
+
+    def build_info(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+    end
+
+    def resolve_app_request(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def destroy_context
