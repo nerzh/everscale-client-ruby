@@ -38,11 +38,9 @@ ___I will write a list of existing methods later. But now you can see what modul
 
 example for NodeSE   
 ```
-spec_ffi=path_to_TON-SDK/target/debug/libton_client.dylib
+spec_ffi=./TON-SDK/target/release/libton_client.dylib
 server_address=http://localhost:80
-giver_address=0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94
 giver_abi_name=GiverNodeSE
-giver_function=sendGrams
 giver_amount=10000000000
 ```
 2. Run tests: inside folder of this library execute this commands      

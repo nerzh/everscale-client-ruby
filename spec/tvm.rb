@@ -88,6 +88,7 @@ describe TonClient::Tvm do
       result_of_wait_for_collection = resp.first.result
     end
     account_BOC = result_of_wait_for_collection['result']['boc']
+    expect(account_BOC.to_s.size > 0).to eq(true)
 
     subscribe_params = {
       "subscriptionId" => "0x1111111111111111111111111111111111111111111111111111111111111111",
@@ -109,6 +110,7 @@ describe TonClient::Tvm do
     )
 
     account = yield(@client, subscription_encode_message, abi, account_BOC)
+    expect(account.to_s.size > 0).to eq(true)
 
     check_subscribe_params = {subscriptionId: "0x1111111111111111111111111111111111111111111111111111111111111111"}
     check_subscription_encode_message = abiEncodeMessage(
@@ -135,7 +137,13 @@ describe TonClient::Tvm do
 
   it 'run_tvm' do
     run_message do |client, encoded_message, abi, account|
-      params_of_run_tvm = {message: encoded_message['message'], account: account, execution_options: nil, abi: abi}
+      params_of_run_tvm = {
+        message: encoded_message['message'], 
+        account: account, 
+        execution_options: nil, 
+        abi: abi,
+        return_updated_account: true
+      }
       result = nil
       callLibraryMethodSync(@client.tvm.method(:run_tvm), params_of_run_tvm) do |response|
         result = response.first.result['account']
@@ -146,7 +154,6 @@ describe TonClient::Tvm do
 
   it 'testRun_executor' do
     run_message do |client, encoded_message, abi, account|
-      params_of_run_tvm = {message: encoded_message['message'], account: account, execution_options: nil, abi: abi}
       parsed = nil
       callLibraryMethodSync(@client.boc.method(:parse_account), {boc: account}) do |response|
         parsed = response.first.result
@@ -157,7 +164,8 @@ describe TonClient::Tvm do
         account: {type: 'Account', boc: account, unlimited_balance: true},
         execution_options: nil,
         abi: abi,
-        skip_transaction_check: nil
+        skip_transaction_check: nil,
+        return_updated_account: true
       }
       result_of_run_executor = nil
       callLibraryMethodSync(@client.tvm.method(:run_executor), params_of_run_executor) do |response|
@@ -165,7 +173,7 @@ describe TonClient::Tvm do
       end
 
       callLibraryMethodSync(@client.boc.method(:parse_account), {boc: result_of_run_executor['account']}) do |response|
-        expect(response.first.result['parsed']['balance']).to eq(original_balance)
+        expect(response.first.result['parsed']['balance']).not_to eq(original_balance)
       end
 
       params_of_run_executor = {
@@ -173,7 +181,8 @@ describe TonClient::Tvm do
         account: {type: 'Account', boc: account, unlimited_balance: nil},
         execution_options: nil,
         abi: abi,
-        skip_transaction_check: nil
+        skip_transaction_check: nil,
+        return_updated_account: true
       }
       check_result_of_run_executor = nil
       callLibraryMethodSync(@client.tvm.method(:run_executor), params_of_run_executor) do |response|
@@ -193,7 +202,8 @@ describe TonClient::Tvm do
       account: {type: 'None'},
       execution_options: nil,
       abi: nil,
-      skip_transaction_check: true
+      skip_transaction_check: true,
+      return_updated_account: true
     }
     result_of_run_executor = nil
     callLibraryMethodSync(@client.tvm.method(:run_executor), params_of_run_executor) do |response|
@@ -225,7 +235,8 @@ describe TonClient::Tvm do
       account: {type: 'Uninit'},
       execution_options: nil,
       abi: nil,
-      skip_transaction_check: nil
+      skip_transaction_check: nil,
+      return_updated_account: true
     }
     result_of_run_executor = nil
     callLibraryMethodSync(@client.tvm.method(:run_executor), params_of_run_executor) do |response|
