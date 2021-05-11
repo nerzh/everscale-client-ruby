@@ -29,13 +29,23 @@ class ApiConverter
     new_module = Module.new(name: mod['name'], alias: [], functions: [], enums: [], types: [], summary: mod['summary'], description: mod['description'])
     (mod['types'] || []).each do |type|
       if type['type'] == 'EnumOfTypes'
-        convert_fucking_enum_of_types(type)
+        new_enum, new_struct = convert_fucking_enum_of_types(type)
+        new_module.enums << new_enum
+        new_module.types << new_struct
+        new_module.types_hash[new_enum.name] = new_enum
+        new_module.types_hash[new_struct.name] = new_struct
       elsif type['type'] == 'EnumOfConsts'
-        convertEnumOfConsts(type)
+        new_type = convertEnumOfConsts(type)
+        new_module.enums << new_type
+        new_module.types_hash[new_type.name] = new_type
       elsif type['type'] == 'Struct'
-        convertStruct(type)
+        new_type = convertStruct(type)
+        new_module.types << new_type
+        new_module.types_hash[new_type.name] = new_type
       elsif type['type'] == 'Number'
-        convertTypeAlias(type)
+        new_type = convertTypeAlias(type)
+        new_module.alias << new_type
+        new_module.types_hash[new_type.name] = new_type
       else
         raise "Unkown NEW TYPE for module #{type['name']} \"types\": #{type['types']}"
       end
@@ -255,11 +265,13 @@ class Module
   attr_accessor :alias
   attr_accessor :enums
   attr_accessor :types
+  attr_accessor :types_hash
   attr_accessor :functions
   attr_accessor :summary
   attr_accessor :description
 
   def initialize(params)
+    @types_hash = {}
     params.each do |k, v|
       if self.respond_to?(k.to_sym)
         instance_variable_set("@#{k}".to_sym, v)
