@@ -23,6 +23,14 @@ module CommonInstanceHelpers
   def full_method_name(module_name, method_name)
     "#{module_name}.#{method_name}"
   end
+
+  def base64?(value)
+    value.is_a?(String) && (Base64.encode64(Base64.decode64(value)).strip == value)
+  end
+
+  def encode_to_base64(message)
+    Base64.encode64(message.force_encoding('UTF-8')).strip
+  end
 end
 
 class << Object

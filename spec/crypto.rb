@@ -51,7 +51,7 @@ describe TonClient::Crypto do
   end
 
   it 'sign' do
-    payload = {unsigned: "Hello", keys: {"public"=>"a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661", "secret"=>"254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bb"}}
+    payload = {unsigned: encode_to_base64("Hello"), keys: {"public"=>"a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661", "secret"=>"254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bb"}}
     callLibraryMethodSync(@client.crypto.method(:sign), payload) do |response|
       expect(response.first.result['signed']).to eq('JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv')
       expect(response.first.result['signature']).to eq('26f81d6a4307a4e770ecf2895ff20c403ca0609c6dfe4cc481ed1e6c91d7c7b1fc79439831c2fbb0dd1805fc0ffd067467c5e97dfa720c97702e94c4aed9c20c')
@@ -66,14 +66,14 @@ describe TonClient::Crypto do
   end
 
   it 'sha256' do
-    payload = {data: 'hello'}
+    payload = {data: encode_to_base64('hello')}
     callLibraryMethodSync(@client.crypto.method(:sha256), payload) do |response|
       expect(response.first.result['hash']).to eq('2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824')
     end
   end
 
   it 'sha512' do
-    payload = {data: 'hello'}
+    payload = {data: encode_to_base64('hello')}
     callLibraryMethodSync(@client.crypto.method(:sha512), payload) do |response|
       expect(response.first.result['hash']).to eq('9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca72323c3d99ba5c11d7c7acc6e14b8c5da0c4663475c2e5c3adef46f73bcdec043')
     end
@@ -81,8 +81,8 @@ describe TonClient::Crypto do
 
   it 'scrypt' do
     payload = {
-        password: 'Test Password',
-        salt: 'Test Salt',
+        password: encode_to_base64('Test Password'),
+        salt: encode_to_base64('Test Salt'),
         log_n: 5,
         r: 4,
         p: 8,
@@ -103,7 +103,7 @@ describe TonClient::Crypto do
 
   it 'nacl_sign' do
     payload = {
-        unsigned: 'Hello',
+        unsigned: encode_to_base64('Hello'),
         secret: '254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661'
     }
     callLibraryMethodSync(@client.crypto.method(:nacl_sign), payload) do |response|
@@ -123,7 +123,7 @@ describe TonClient::Crypto do
 
   it 'nacl_sign_detached' do
     payload = {
-        unsigned: 'Hello',
+        unsigned: encode_to_base64('Hello'),
         secret: '254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661'
     }
     callLibraryMethodSync(@client.crypto.method(:nacl_sign_detached), payload) do |response|
@@ -152,7 +152,7 @@ describe TonClient::Crypto do
 
   it 'nacl_box' do
     payload = {
-        decrypted: 'Test Message',
+        decrypted: encode_to_base64('Test Message'),
         nonce: 'cd7f99924bf422544046e83595dd5803f17536f5c9a11746',
         their_public: 'c4e2d9fe6a6baf8d1812b799856ef2a306291be7a7024837ad33a8530db79c6b',
         secret: 'd9b9dc5033fb416134e5d2107fdbacab5aadb297cb82dbdcd137d663bac59f7f'
@@ -176,7 +176,7 @@ describe TonClient::Crypto do
 
   it 'nacl_secret_box' do
     payload = {
-        decrypted: 'Test Message',
+        decrypted: encode_to_base64('Test Message'),
         nonce: '2a33564717595ebe53d91a785b9e068aba625c8453a76e45',
         key: '8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8'
     }
@@ -279,7 +279,7 @@ describe TonClient::Crypto do
         xprv: 'xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB'
     }
     callLibraryMethodSync(@client.crypto.method(:hdkey_public_from_xprv), payload) do |response|
-      expect(response.first.result['public']).to eq('02a2b8a753c8e6c3d057b6956d125935288e657eee5ae0950095b2660d0159727f')
+      expect(response.first.result['public']).to eq('01709823c5ada7fdede9b6a0f7f388eda0c29a54ead5ae90ede3b5baaeb242e3')
     end
   end
 end

@@ -49,7 +49,6 @@ module TonClient
     end
 
     def sha512(payload, &block)
-      payload[:data] = encode_to_base64(payload[:data])
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -164,18 +163,6 @@ module TonClient
     def remove_signing_box(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
-
-    private
-
-    def base64?(value)
-      value.is_a?(String) && (Base64.encode64(Base64.decode64(value)).strip == value)
-    end
-
-    def encode_to_base64(message)
-      return message if base64?(message)
-      Base64.encode64(message.force_encoding('UTF-8')).strip
-    end
-
   end
 end
 

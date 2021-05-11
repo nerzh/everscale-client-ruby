@@ -5,6 +5,8 @@ Bundler.setup
 
 require 'ton-client-ruby' # and any other gems you need
 
+include CommonInstanceHelpers
+
 RSpec.configure do |config|
   config.full_backtrace = true
   # some (optional) config here
