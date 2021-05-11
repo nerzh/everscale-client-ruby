@@ -1,5 +1,5 @@
 module TonClient
-  
+
   class Utils
     include CommonInstanceHelpers
 
@@ -26,11 +26,7 @@ module TonClient
     def decompress_zstd(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
+
   end
 end
-
-
-
-
-
 

@@ -1,11 +1,10 @@
 module TonClient
-  
+
   class Crypto
-
     include CommonInstanceHelpers
-    MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
-    attr_reader :context, :core
+    attr_reader :core, :context
+    MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
     def initialize(context: Context.new, core: TonClient::TonBinding)
       @context = context
@@ -33,7 +32,7 @@ module TonClient
     end
 
     def generate_random_sign_keys(&block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def sign(payload, &block)
@@ -77,7 +76,7 @@ module TonClient
     end
 
     def nacl_box_keypair(&block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def nacl_box_keypair_from_secret_key(payload, &block)
@@ -100,8 +99,8 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def mnemonic_words(&block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), &block)
+    def mnemonic_words(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def mnemonic_from_random(payload, &block)
@@ -144,8 +143,8 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def register_signing_box(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    def register_signing_box(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def get_signing_box(payload, &block)
@@ -163,14 +162,7 @@ module TonClient
     def remove_signing_box(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
+
   end
 end
-
-
-
-
-
-
-
-
 

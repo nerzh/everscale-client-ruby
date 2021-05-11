@@ -7,7 +7,7 @@ module InstanceHelpers
     'TSDK' 
   end
 
-  def enum_postfix
+  def lib_enum_postfix
     'EnumTypes'
   end
 end

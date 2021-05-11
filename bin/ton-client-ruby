@@ -15,6 +15,9 @@ if ARGV[0] == 'update' && ARGV[1] != nil
     exit 0
   end
   converter = ApiConverter.new(json)
+  types = converter.convert
+  generator = CodeGenerator.new(types, GEM_DIR)
+  generator.generate_self_code
 elsif ARGV[0] == 'update' && ARGV[1] == nil
   p 'soon from github'
 elsif ARGV[0] == 'setup'

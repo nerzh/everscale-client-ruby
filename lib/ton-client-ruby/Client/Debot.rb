@@ -1,5 +1,5 @@
 module TonClient
-  
+
   class Debot
     include CommonInstanceHelpers
 
@@ -34,11 +34,7 @@ module TonClient
     def remove(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
+
   end
 end
-
-
-
-
-
 

@@ -1,5 +1,5 @@
 module TonClient
-  
+
   class Abi
     include CommonInstanceHelpers
 
@@ -42,11 +42,7 @@ module TonClient
     def encode_account(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
+
   end
 end
-
-
-
-
-
 

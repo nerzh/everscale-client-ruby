@@ -1,5 +1,5 @@
 module TonClient
-  
+
   class Net
     include CommonInstanceHelpers
 
@@ -39,20 +39,20 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def suspend(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    def suspend(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
-    def resume(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    def resume(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def find_last_shard_block(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    def fetch_endpoints(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    def fetch_endpoints(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def set_endpoints(payload, &block)
@@ -62,11 +62,7 @@ module TonClient
     def query_counterparties(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
+
   end
 end
-
-
-
-
-
 
