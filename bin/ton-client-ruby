@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../code_generator/api_converter.rb'
+require File.dirname(__FILE__) + '/../code_generator/code_generator.rb'
+
+GEM_DIR = File.dirname(__FILE__) + '/..'
+
+if ARGV[0] == 'update' && ARGV[1] != nil
+  api_json_path = ARGV[1]
+  json = ''
+  if File.exists?(api_json_path)
+    json = File.read(api_json_path)
+  else
+    p "Current directory: #{Dir.pwd}. File #{api_json_path} is not exist"
+    exit 0
+  end
+  converter = ApiConverter.new(json)
+elsif ARGV[0] == 'update' && ARGV[1] == nil
+  p 'soon from github'
+elsif ARGV[0] == 'setup'
+  p 'soon'
+end
