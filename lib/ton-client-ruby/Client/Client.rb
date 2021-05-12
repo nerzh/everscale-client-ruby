@@ -10,11 +10,11 @@ module TonClient
     def initialize(context: Context.new, core: TonClient::TonBinding)
       @context = context
       @core = core
-end
+    end
 
     def destroy_context
       core.tc_destroy_context(context.id)
-end
+    end
 
     def crypto
       _crypto ||= Crypto.new(context: context)

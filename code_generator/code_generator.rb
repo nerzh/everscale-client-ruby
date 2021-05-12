@@ -44,9 +44,9 @@ class CodeGenerator
     content << "#{TAB}#{TAB}MODULE = self.to_s.downcase.gsub(/^(.+::|)(\\w+)$/, '\\2').freeze\n\n"
     content << "#{TAB}#{TAB}def initialize(context: Context.new, core: TonClient::TonBinding)\n"
     content << "#{TAB}#{TAB}#{TAB}@context = context\n"
-    content << "#{TAB}#{TAB}#{TAB}@core = core\nend\n\n"
+    content << "#{TAB}#{TAB}#{TAB}@core = core\n#{TAB}#{TAB}end\n\n"
     content << "#{TAB}#{TAB}def destroy_context\n"
-    content << "#{TAB}#{TAB}#{TAB}core.tc_destroy_context(context.id)\nend\n\n"
+    content << "#{TAB}#{TAB}#{TAB}core.tc_destroy_context(context.id)\n#{TAB}#{TAB}end\n\n"
     modules.each_with_index do |m, i|
       next if m.name.downcase == 'client'
       content << "#{TAB}#{TAB}def #{m.name}\n"
