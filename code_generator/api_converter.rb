@@ -17,7 +17,9 @@ class ApiConverter
     ruby_types = ApiRubyTypes.new(version: api_hash['version'], modules: [])
 
     (api_hash['modules'] || []).each do |mod|
-      ruby_types.modules << convert_module(mod)
+      new_mod = convert_module(mod)
+      ruby_types.modules << new_mod
+      ruby_types.all_types.merge!(new_mod.types_hash)
     end
 
     ruby_types
@@ -26,7 +28,7 @@ class ApiConverter
   private
 
   def convert_module(mod)
-    new_module = Module.new(name: mod['name'], alias: [], functions: [], enums: [], types: [], summary: mod['summary'], description: mod['description'])
+    new_module = Module.new(name: mod['name'], alias: [], functions: [], enums: [], types: [], summary: mod['summary']&.gsub(/\n/, ''), description: mod['description']&.gsub(/\n/, ''))
     (mod['types'] || []).each do |type|
       if type['type'] == 'EnumOfTypes'
         new_enum, new_struct = convert_fucking_enum_of_types(type)
@@ -73,7 +75,7 @@ class ApiConverter
         end
 
         # /// function
-        newFunction = StructFunction.new(name: checkFunctionName(function['name']), arguments: [], result: result, summary: function['summary'], description: function['description'])
+        newFunction = StructFunction.new(name: checkFunctionName(function['name']), arguments: [], result: result, summary: function['summary']&.gsub(/\n/, ''), description: function['description']&.gsub(/\n/, ''))
         # /// FUNCTION PARAMETERS
         paramsCount = 0
         (function['params'] || []).each do |parameter|
@@ -115,7 +117,7 @@ class ApiConverter
         elsif (field['name'] || "")[/^dictionary$/]
           type = "TSDKMnemonicDictionary"
         end
-        property = StructField.new(name: checkPropertyName(field['name']), type: type, summary: field['summary'], description: field['description'])
+        property = StructField.new(name: checkPropertyName(field['name']), type: type, summary: field['summary']&.gsub(/\n/, ''), description: field['description']&.gsub(/\n/, ''))
         result.fields << property
       end
     end
@@ -155,11 +157,11 @@ class ApiConverter
   end
 
   def convertEnumOfConsts(from)
-      result = TypeEnum.new(name: "#{lib_prefix}#{from['name']}", parents: [], cases: [], summary: from['summary'], description: from['description'])
+      result = TypeEnum.new(name: "#{lib_prefix}#{from['name']}", parents: [], cases: [], summary: from['summary']&.gsub(/\n/, ''), description: from['description']&.gsub(/\n/, ''))
       (from['enum_consts'] || []).each do |enumConst|
           caseName = enumConst['name']
           caseValue = enumConst['type']
-          result.cases << EnumCase.new(name: caseName, value: caseValue, summary: enumConst['summary'], description: enumConst['description'])
+          result.cases << EnumCase.new(name: caseName, value: caseValue, summary: enumConst['summary']&.gsub(/\n/, ''), description: enumConst['description']&.gsub(/\n/, ''))
       end
 
       return result
@@ -168,7 +170,7 @@ class ApiConverter
   def convert_fucking_enum_of_types(enum)
     result = [
       TypeEnum.new(name: generate_enum_name(enum['name']), parents: [], cases: []),
-      TypeStruct.new(name: generate_struct_name(enum['name']), parents: [], fields: [], functions: [], summary: enum['summary'], description: enum['description'])
+      TypeStruct.new(name: generate_struct_name(enum['name']), parents: [], fields: [], functions: [], summary: enum['summary']&.gsub(/\n/, ''), description: enum['description']&.gsub(/\n/, ''))
     ]
     properties_name_set = Set.new
     properties = []
@@ -188,7 +190,7 @@ class ApiConverter
       if property['name'][/^dictionary$/]
         type = "TSDKMnemonicDictionary"
       end
-      result[1].fields << TypeStruct.new(name: property['name'], type: type, summary: property['summary'], description: property['description'])
+      result[1].fields << TypeStruct.new(name: property['name'], type: type, summary: property['summary']&.gsub(/\n/, ''), description: property['description']&.gsub(/\n/, ''))
     end
     result
   end
@@ -248,8 +250,10 @@ end
 class ApiRubyTypes
   attr_accessor :version
   attr_accessor :modules
+  attr_accessor :all_types
 
   def initialize(params)
+    @all_types = {}
     params.each do |k, v|
       if self.respond_to?(k.to_sym)
         instance_variable_set("@#{k}".to_sym, v)

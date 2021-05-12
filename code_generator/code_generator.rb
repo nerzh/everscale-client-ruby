@@ -28,23 +28,6 @@ class CodeGenerator
           File.delete(moduleFilePath)
       end
       File.open(moduleFilePath, 'w+') { |f| f.write(newModuleContent) }
-
-      # var newTypes: String = ""
-
-      # for newAlias in module.alias {
-      #     newTypes.append(generateAlias(newAlias))
-      # }
-
-      # for newEnum in module.enums {
-      #     newTypes.append(generateEnum(newEnum))
-      # }
-
-      # for newStruct in module.types {
-      #     newTypes.append(generateStruct(newStruct))
-      # }
-
-      # let moduleTypesFilePath: String = "\(moduleClassFolder)/\(module.name.capitalized)Types.swift"
-      # FileUtils.writeFile(to: moduleTypesFilePath, newTypes)
     end
     
     p 'generate_self_code ok'
@@ -72,7 +55,7 @@ class CodeGenerator
     end
 
     mod.functions.each do |func|
-      content << gen_function(func)
+      content << gen_function(func, types)
     end
 
     content << "#{TAB}end\n"
@@ -91,7 +74,7 @@ class CodeGenerator
     content << "#{TAB}#{TAB}end\n\n"
 
     mod.functions.each do |func|
-      content << gen_function(func)
+      content << gen_function(func, types)
     end
 
     content << "#{TAB}end\n"
@@ -100,8 +83,37 @@ class CodeGenerator
     content
   end
 
-  private def gen_function(function)
-    content = "#{TAB}#{TAB}def #{function.name}"
+  private def gen_function(function, types)
+    content = ''
+
+    if argument = function.arguments.first
+      content << "#{TAB}#{TAB}# INPUT: #{argument.type}\n"
+      if types.all_types[argument.type].respond_to?(:fields)
+        types.all_types[argument.type].fields.each do |arg|
+          content << "#{TAB}#{TAB}# #{arg.name}: #{arg.type} - "
+          content << "#{TAB}#{TAB}# #{arg.summary}" if arg.summary
+          content << "#{TAB}#{TAB}# #{arg.description}" if arg.description
+          content << "\n"
+        end
+      elsif types.all_types[argument.type].respond_to?(:cases)
+      end
+    end
+    
+    if types.all_types[function.result]
+      content << "#{TAB}#{TAB}# RESPONSE: #{function.result}\n"
+      if types.all_types[function.result].respond_to?(:fields)
+        types.all_types[function.result].fields.each do |arg|
+          content << "#{TAB}#{TAB}# #{arg.name}: #{arg.type} - "
+          content << "#{TAB}#{TAB}# #{arg.summary}" if arg.summary
+          content << "#{TAB}#{TAB}# #{arg.description}" if arg.description
+          content << "\n"
+        end
+        # content << "\n"
+      elsif types.all_types[function.result].respond_to?(:cases)
+      end
+    end
+
+    content << "#{TAB}#{TAB}def #{function.name}"
     if function.arguments.empty?
       content << "(&block)\n"
       content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)\n"
