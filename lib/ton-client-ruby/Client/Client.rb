@@ -48,28 +48,28 @@ module TonClient
       _debot ||= Debot.new(context: context)
     end
 
-    # RESPONSE: TSDKResultOfGetApiReference
+    # RESPONSE: ResultOfGetApiReference
     # api: Value - 
     def get_api_reference(&block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
-    # RESPONSE: TSDKResultOfVersion
+    # RESPONSE: ResultOfVersion
     # version: String -     # Core Library version
     def version(&block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
-    # RESPONSE: TSDKResultOfBuildInfo
+    # RESPONSE: ResultOfBuildInfo
     # build_number: Number -     # Build number assigned to this build by the CI.
     # dependencies: Array -     # Fingerprint of the most important dependencies.
     def build_info(&block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
-    # INPUT: TSDKParamsOfResolveAppRequest
+    # INPUT: ParamsOfResolveAppRequest
     # app_request_id: Number -     # Request ID received from SDK
-    # result: TSDKAppRequestResult -     # Result of request processing
+    # result: AppRequestResult -     # Result of request processing
     def resolve_app_request(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end

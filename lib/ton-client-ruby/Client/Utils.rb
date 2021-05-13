@@ -11,36 +11,36 @@ module TonClient
       @core = core
     end
 
-    # INPUT: TSDKParamsOfConvertAddress
+    # INPUT: ParamsOfConvertAddress
     # address: String -     # Account address in any TON format.
-    # output_format: TSDKAddressStringFormat -     # Specify the format to convert to.
-    # RESPONSE: TSDKResultOfConvertAddress
+    # output_format: AddressStringFormat -     # Specify the format to convert to.
+    # RESPONSE: ResultOfConvertAddress
     # address: String -     # Address in the specified format
     def convert_address(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    # INPUT: TSDKParamsOfCalcStorageFee
+    # INPUT: ParamsOfCalcStorageFee
     # account: String - 
     # period: Number - 
-    # RESPONSE: TSDKResultOfCalcStorageFee
+    # RESPONSE: ResultOfCalcStorageFee
     # fee: String - 
     def calc_storage_fee(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    # INPUT: TSDKParamsOfCompressZstd
+    # INPUT: ParamsOfCompressZstd
     # uncompressed: String -     # Uncompressed data.    # Must be encoded as base64.
-    # level: Number -     # Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
-    # RESPONSE: TSDKResultOfCompressZstd
+    # level: Number<Optional> -     # Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
+    # RESPONSE: ResultOfCompressZstd
     # compressed: String -     # Compressed data.    # Must be encoded as base64.
     def compress_zstd(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    # INPUT: TSDKParamsOfDecompressZstd
+    # INPUT: ParamsOfDecompressZstd
     # compressed: String -     # Compressed data.    # Must be encoded as base64.
-    # RESPONSE: TSDKResultOfDecompressZstd
+    # RESPONSE: ResultOfDecompressZstd
     # decompressed: String -     # Decompressed data.    # Must be encoded as base64.
     def decompress_zstd(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)

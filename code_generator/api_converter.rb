@@ -202,11 +202,12 @@ class ApiConverter
       if type['ref_name'] == "Value" || type['ref_name'] == "API"
         tempType = "Value"
       else
-        return generateRefType(type['ref_name'] || "nil")
+        return type['optional'] ? "#{generateRefType(type['ref_name'] || "nil")}<Optional>" : generateRefType(type['ref_name'] || "nil")
       end
     else
       tempType = type['type']
     end
+    tempType = "#{tempType}<Optional>" if type['optional']
 
     tempType
   end
@@ -227,6 +228,8 @@ class ApiConverter
 
   private def generateType(type)
     if type['type'] == "Optional" && type['optional_inner']
+      type['optional'] = true
+      type['optional_inner']['optional'] = true
       if type['optional_inner']['type'] == "Optional"
         return generateType(type['optional_inner'])
       else
