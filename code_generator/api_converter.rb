@@ -190,7 +190,7 @@ class ApiConverter
       if property['name'][/^dictionary$/]
         type = "TSDKMnemonicDictionary"
       end
-      result[1].fields << TypeStruct.new(name: property['name'], type: type, summary: property['summary'], description: property['description'])
+      result[1].fields << StructField.new(name: property['name'], type: type, summary: property['summary'], description: property['description'])
     end
     result
   end

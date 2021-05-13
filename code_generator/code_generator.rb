@@ -95,21 +95,23 @@ end
       (mod.enums || []).each do |type|
         content << checkComment(type.summary, 0) if type.summary
         content << checkComment(type.description, 0) if type.description
-        content << "\n#### #{type.name}\n\n"
+        content << "\n- #### #{type.name}\n"
         (type.cases || []).each do |enum_case|
-          content << "case #{enum_case.name}: #{enum_case.value}\n"
+          content << checkComment(enum_case.summary, 1) if enum_case.summary
+          content << checkComment(enum_case.description, 1) if enum_case.description
+          content << "#{TAB}- case #{enum_case.name} = #{enum_case.value}\n"
         end
-        
-        # content << checkComment(function.summary, 2) if function.summary
-        # content << checkComment(function.description, 2) if function.description
-        # content << "\n#{TAB}#{TAB}def #{function.name}"
-        # if function.arguments.empty?
-        #   content << "(&block)\n"
-        # else
-        #   content << "(payload, &block)\n"
-        # end
-        # content << getFunctionComment(function, types)
-        # content << "```\n"
+      end
+
+      (mod.types || []).each do |type|
+        content << checkComment(type.summary, 0) if type.summary
+        content << checkComment(type.description, 0) if type.description
+        content << "\n- #### #{type.name}\n"
+        (type.fields || []).each do |field|
+          content << "#{checkComment(field.summary, 1)}\n" if field.summary
+          content << "#{checkComment(field.description, 1)}\n" if field.description
+          content << "#{TAB}- #{field.name}: #{field.type}\n"
+        end
       end
     end
     content << "</details>\n\n"
