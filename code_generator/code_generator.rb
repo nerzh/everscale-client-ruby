@@ -15,6 +15,13 @@ class CodeGenerator
   end
 
   def generate_self_code
+    generateModules(types)
+    generateReadme(types)
+  end
+
+  private
+
+  def generateModules(types)
     types.modules.each do |mod|
       modulesFolder = root_dir + "/lib/ton-client-ruby/Client"
       moduleFilePath = "#{modulesFolder}/#{mod.name.capitalize}.rb"
@@ -31,6 +38,88 @@ class CodeGenerator
     end
     
     p 'generate_self_code ok'
+  end
+
+  def generateReadme(types)
+    readmePath = root_dir + "/README.md"
+    content = %{
+# Ruby Client for Free TON SDK
+
+[![GEM](https://img.shields.io/badge/ruby-gem-green)]()
+
+## Build FreeTON SDK
+0. Install Rust to your OS
+1. git clone https://github.com/tonlabs/TON-SDK
+2. cd ./TON-SDK
+3. cargo update
+4. cargo build --release
+
+## Usage
+
+```ruby
+# For MAcOS
+TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.dylib) }
+# For Linux
+# TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.so) }
+
+client = TonClient.create(config: {network: {server_address: "net.ton.dev"}})
+
+# All methods are asynchronous
+
+# example: call method for Crypto module
+payload = {composite: '17ED48941A08F981'}
+client.crypto.factorize(payload) do |response|
+  p response.result['factors']
+end
+
+# e.g. ...
+```\n\n
+}
+    content << "## All Modules and methods\n\n"
+    types.modules.each do |mod|
+      content << "<details>\n#{TAB}<summary>#{mod.name&.upcase}</summary>\n\n"
+      (mod.functions || []).each do |function|
+        content << "```ruby\n#{TAB}#{TAB}def #{function.name}"
+        if function.arguments.empty?
+          content << "(&block)\n"
+        else
+          content << "(payload, &block)\n"
+        end
+        content << getFunctionComment(function, types)
+        content << "```\n"
+      end
+      content << "</details>\n\n"
+    end
+
+    content << %{
+\n## Tests
+
+1. create __.env.test__ file inside root directory of this library with variables   
+
+example for NodeSE   
+```
+spec_ffi=./TON-SDK/target/release/libton_client.dylib
+server_address=http://localhost:80
+giver_abi_name=GiverNodeSE
+giver_amount=10000000000
+```
+2. Run tests: inside folder of this library execute this commands      
+**rspec spec/binding.rb**   
+**rspec spec/client.rb**  
+**rspec spec/context.rb**  
+**rspec spec/abi.rb**   
+**rspec spec/boc.rb**   
+**rspec spec/crypto.rb**   
+**rspec spec/net.rb**   
+**rspec spec/processing.rb**   
+**rspec spec/tvm.rb**   
+**rspec spec/utils.rb**
+}
+    content.gsub!(/^([\s]+)# RESPONSE/, "\n\\1# RESPONSE")
+    if File.exists?(readmePath)
+        File.delete(readmePath)
+    end
+    File.open(readmePath, 'w+') { |f| f.write(content) }
   end
 
   private def generateClientModule(mod, modules)
@@ -84,8 +173,22 @@ class CodeGenerator
   end
 
   private def gen_function(function, types)
-    content = ''
+    content = getFunctionComment(function, types)
+    content << "#{TAB}#{TAB}def #{function.name}"
+    if function.arguments.empty?
+      content << "(&block)\n"
+      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)\n"
+    else
+      content << "(payload, &block)\n"
+      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)\n"
+    end
+    content << "#{TAB}#{TAB}end\n\n"
 
+    content
+  end
+
+  def getFunctionComment(function, types)
+    content = ''
     if argument = function.arguments.first
       content << "#{TAB}#{TAB}# INPUT: #{argument.type}\n"
       if types.all_types[argument.type].respond_to?(:fields)
@@ -108,20 +211,9 @@ class CodeGenerator
           content << "#{TAB}#{TAB}# #{arg.description}" if arg.description
           content << "\n"
         end
-        # content << "\n"
       elsif types.all_types[function.result].respond_to?(:cases)
       end
     end
-
-    content << "#{TAB}#{TAB}def #{function.name}"
-    if function.arguments.empty?
-      content << "(&block)\n"
-      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)\n"
-    else
-      content << "(payload, &block)\n"
-      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)\n"
-    end
-    content << "#{TAB}#{TAB}end\n\n"
 
     content
   end
