@@ -79,7 +79,10 @@ end
     types.modules.each do |mod|
       content << "<details>\n#{TAB}<summary>#{mod.name&.upcase}</summary>\n\n"
       (mod.functions || []).each do |function|
-        content << "```ruby\n#{TAB}#{TAB}def #{function.name}"
+        content << "```ruby\n"
+        content << checkComment(function.summary, 2) if function.summary
+        content << checkComment(function.description, 2) if function.description
+        content << "\n#{TAB}#{TAB}def #{function.name}"
         if function.arguments.empty?
           content << "(&block)\n"
         else
@@ -120,6 +123,24 @@ giver_amount=10000000000
         File.delete(readmePath)
     end
     File.open(readmePath, 'w+') { |f| f.write(content) }
+  end
+
+  private def checkComment(string, tabs = 1)
+      replacedString = "\n"
+      tab = ""
+      tabs.times do |i|
+          tab << TAB
+      end
+      comment = "#"
+      replacedString << "#{tab}#{comment} "
+      symbolsWithSpace = "\\.|\\:|\\!|\\?|\\;"
+      regxp = /([^#{symbolsWithSpace}])\n/
+      result = string
+      result.gsub!(/\n+/, "\n")
+      result.gsub!(/ \n/, "\n#{comment} ")
+      result.gsub!(/(#{symbolsWithSpace})\s*\n/, "\\1#{replacedString}")
+      result.gsub!(regxp, "\\1")
+      "#{tab}# #{result}"
   end
 
   private def generateClientModule(mod, modules)

@@ -75,7 +75,7 @@ class ApiConverter
         end
 
         # /// function
-        newFunction = StructFunction.new(name: checkFunctionName(function['name']), arguments: [], result: result, summary: function['summary']&.gsub(/\n/, ''), description: function['description']&.gsub(/\n/, ''))
+        newFunction = StructFunction.new(name: checkFunctionName(function['name']), arguments: [], result: result, summary: function['summary'], description: function['description'])
         # /// FUNCTION PARAMETERS
         paramsCount = 0
         (function['params'] || []).each do |parameter|
