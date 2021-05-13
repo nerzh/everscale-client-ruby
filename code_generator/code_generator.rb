@@ -97,8 +97,8 @@ end
         content << checkComment(type.description, 0) if type.description
         content << "\n- #### #{type.name}\n"
         (type.cases || []).each do |enum_case|
-          content << checkComment(enum_case.summary, 1) if enum_case.summary
-          content << checkComment(enum_case.description, 1) if enum_case.description
+          content << "#{TAB}- #{checkComment(enum_case.summary, 1)}" if enum_case.summary
+          content << "#{TAB}- #{checkComment(enum_case.description, 1)}" if enum_case.description
           content << "#{TAB}- case #{enum_case.name} = #{enum_case.value}\n"
         end
       end
@@ -108,8 +108,8 @@ end
         content << checkComment(type.description, 0) if type.description
         content << "\n- #### #{type.name}\n"
         (type.fields || []).each do |field|
-          content << "#{checkComment(field.summary, 1)}\n" if field.summary
-          content << "#{checkComment(field.description, 1)}\n" if field.description
+          content << "#{TAB}- #{checkComment(field.summary, 1)}\n" if field.summary
+          content << "#{TAB}- #{checkComment(field.description, 1)}\n" if field.description
           content << "#{TAB}- #{field.name}: #{field.type}\n"
         end
       end
