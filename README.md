@@ -3,7 +3,19 @@
 
 [![GEM](https://img.shields.io/badge/ruby-gem-green)]()
 
-## Build FreeTON SDK
+## Install
+
+Install gem
+```bash
+gem install ton-client-ruby
+```
+
+Install TON-SDK
+```bash
+ton-client-ruby setup
+```
+
+### Manual build FreeTON SDK
 0. Install Rust to your OS
 1. git clone https://github.com/tonlabs/TON-SDK
 2. cd ./TON-SDK
