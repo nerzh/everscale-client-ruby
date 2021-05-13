@@ -5,7 +5,15 @@ require File.dirname(__FILE__) + '/../code_generator/code_generator.rb'
 
 GEM_DIR = File.dirname(__FILE__) + '/..'
 
-if ARGV[0] == 'update' && ARGV[1] != nil
+if ARGV[0] == 'update'
+  if !ARGV[1]
+    puts ''
+    puts ''
+    p "PLEASE DOWNLOAD api.json from https://github.com/tonlabs/TON-SDK/blob/master/tools/api.json and pass as second parameter."
+    p "Example: ton-client-ruby update ./api.json" 
+    puts ''
+    return
+  end
   api_json_path = ARGV[1]
   json = ''
   if File.exists?(api_json_path)
@@ -21,5 +29,9 @@ if ARGV[0] == 'update' && ARGV[1] != nil
 elsif ARGV[0] == 'update' && ARGV[1] == nil
   p 'soon from github'
 elsif ARGV[0] == 'setup'
-  p 'soon'
+  raise "\nPLEASE INSTALL RUST TO YOUR SYSTEM. \nTry this command: \ncurl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh" if `which rustc`.strip.empty?
+  system("cd #{GEM_DIR} && git clone https://github.com/tonlabs/TON-SDK ./TON-SDK")
+  system("cd #{GEM_DIR}/TON-SDK && git pull --ff-only")
+  system("cd #{GEM_DIR}/TON-SDK && cargo update")
+  system("cd #{GEM_DIR}/TON-SDK && cargo build --release")
 end
