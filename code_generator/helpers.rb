@@ -8,6 +8,6 @@ module InstanceHelpers
   end
 
   def lib_enum_postfix
-    'EnumTypes'
+    ''
   end
 end

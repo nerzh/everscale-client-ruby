@@ -87,7 +87,34 @@ end
 # e.g. ...
 ```\n\n
 }
-    content << "## All Modules and methods\n\n"
+    content << "## All Modules, methods and types\n\n"
+
+    # types
+    content << "<details>\n#{TAB}<summary>Types</summary>\n\n"
+    types.modules.each do |mod|
+      (mod.enums || []).each do |type|
+        content << checkComment(type.summary, 0) if type.summary
+        content << checkComment(type.description, 0) if type.description
+        content << "\n#### #{type.name}\n\n"
+        (type.cases || []).each do |enum_case|
+          content << "case #{enum_case.name}: #{enum_case.value}\n"
+        end
+        
+        # content << checkComment(function.summary, 2) if function.summary
+        # content << checkComment(function.description, 2) if function.description
+        # content << "\n#{TAB}#{TAB}def #{function.name}"
+        # if function.arguments.empty?
+        #   content << "(&block)\n"
+        # else
+        #   content << "(payload, &block)\n"
+        # end
+        # content << getFunctionComment(function, types)
+        # content << "```\n"
+      end
+    end
+    content << "</details>\n\n"
+
+    # methods
     types.modules.each do |mod|
       content << "<details>\n#{TAB}<summary>#{mod.name&.upcase}</summary>\n\n"
       (mod.functions || []).each do |function|
@@ -227,8 +254,8 @@ giver_amount=10000000000
       if types.all_types[argument.type].respond_to?(:fields)
         types.all_types[argument.type].fields.each do |arg|
           content << "#{TAB}#{TAB}# #{arg.name}: #{arg.type} - "
-          content << "#{TAB}#{TAB}# #{arg.summary}" if arg.summary
-          content << "#{TAB}#{TAB}# #{arg.description}" if arg.description
+          content << "#{TAB}#{TAB}# #{checkComment(arg.summary, 2)}" if arg.summary
+          content << "#{TAB}#{TAB}# #{checkComment(arg.description, 2)}" if arg.description
           content << "\n"
         end
       elsif types.all_types[argument.type].respond_to?(:cases)
@@ -240,8 +267,8 @@ giver_amount=10000000000
       if types.all_types[function.result].respond_to?(:fields)
         types.all_types[function.result].fields.each do |arg|
           content << "#{TAB}#{TAB}# #{arg.name}: #{arg.type} - "
-          content << "#{TAB}#{TAB}# #{arg.summary}" if arg.summary
-          content << "#{TAB}#{TAB}# #{arg.description}" if arg.description
+          content << "#{TAB}#{TAB}# #{checkComment(arg.summary, 2)}" if arg.summary
+          content << "#{TAB}#{TAB}# #{checkComment(arg.description, 2)}" if arg.description
           content << "\n"
         end
       elsif types.all_types[function.result].respond_to?(:cases)

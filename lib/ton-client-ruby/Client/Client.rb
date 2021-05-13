@@ -55,21 +55,21 @@ module TonClient
     end
 
     # RESPONSE: ResultOfVersion
-    # version: String -     # Core Library version
+    # version: String -     #     # Core Library version
     def version(&block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # RESPONSE: ResultOfBuildInfo
-    # build_number: Number -     # Build number assigned to this build by the CI.
-    # dependencies: Array -     # Fingerprint of the most important dependencies.
+    # build_number: Number -     #     # Build number assigned to this build by the CI.
+    # dependencies: Array -     #     # Fingerprint of the most important dependencies.
     def build_info(&block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # INPUT: ParamsOfResolveAppRequest
-    # app_request_id: Number -     # Request ID received from SDK
-    # result: AppRequestResult -     # Result of request processing
+    # app_request_id: Number -     #     # Request ID received from SDK
+    # result: AppRequestResult -     #     # Result of request processing
     def resolve_app_request(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end

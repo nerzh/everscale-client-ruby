@@ -28,7 +28,7 @@ class ApiConverter
   private
 
   def convert_module(mod)
-    new_module = Module.new(name: mod['name'], alias: [], functions: [], enums: [], types: [], summary: mod['summary']&.gsub(/\n/, ''), description: mod['description']&.gsub(/\n/, ''))
+    new_module = Module.new(name: mod['name'], alias: [], functions: [], enums: [], types: [], summary: mod['summary'], description: mod['description'])
     (mod['types'] || []).each do |type|
       if type['type'] == 'EnumOfTypes'
         new_enum, new_struct = convert_fucking_enum_of_types(type)
@@ -117,7 +117,7 @@ class ApiConverter
         elsif (field['name'] || "")[/^dictionary$/]
           type = "TSDKMnemonicDictionary"
         end
-        property = StructField.new(name: checkPropertyName(field['name']), type: type, summary: field['summary']&.gsub(/\n/, ''), description: field['description']&.gsub(/\n/, ''))
+        property = StructField.new(name: checkPropertyName(field['name']), type: type, summary: field['summary'], description: field['description'])
         result.fields << property
       end
     end
@@ -157,11 +157,11 @@ class ApiConverter
   end
 
   def convertEnumOfConsts(from)
-      result = TypeEnum.new(name: "#{lib_prefix}#{from['name']}", parents: [], cases: [], summary: from['summary']&.gsub(/\n/, ''), description: from['description']&.gsub(/\n/, ''))
+      result = TypeEnum.new(name: "#{lib_prefix}#{from['name']}", parents: [], cases: [], summary: from['summary'], description: from['description'])
       (from['enum_consts'] || []).each do |enumConst|
           caseName = enumConst['name']
-          caseValue = enumConst['type']
-          result.cases << EnumCase.new(name: caseName, value: caseValue, summary: enumConst['summary']&.gsub(/\n/, ''), description: enumConst['description']&.gsub(/\n/, ''))
+          caseValue = enumConst['value']
+          result.cases << EnumCase.new(name: caseName, value: caseValue, summary: enumConst['summary'], description: enumConst['description'])
       end
 
       return result
@@ -170,7 +170,7 @@ class ApiConverter
   def convert_fucking_enum_of_types(enum)
     result = [
       TypeEnum.new(name: generate_enum_name(enum['name']), parents: [], cases: []),
-      TypeStruct.new(name: generate_struct_name(enum['name']), parents: [], fields: [], functions: [], summary: enum['summary']&.gsub(/\n/, ''), description: enum['description']&.gsub(/\n/, ''))
+      TypeStruct.new(name: generate_struct_name(enum['name']), parents: [], fields: [], functions: [], summary: enum['summary'], description: enum['description'])
     ]
     properties_name_set = Set.new
     properties = []
@@ -190,7 +190,7 @@ class ApiConverter
       if property['name'][/^dictionary$/]
         type = "TSDKMnemonicDictionary"
       end
-      result[1].fields << TypeStruct.new(name: property['name'], type: type, summary: property['summary']&.gsub(/\n/, ''), description: property['description']&.gsub(/\n/, ''))
+      result[1].fields << TypeStruct.new(name: property['name'], type: type, summary: property['summary'], description: property['description'])
     end
     result
   end
