@@ -99,7 +99,7 @@ end
         (type.cases || []).each do |enum_case|
           content << "#{checkComment(enum_case.summary, 1).gsub(/#/, '')}" if enum_case.summary
           content << "#{checkComment(enum_case.description, 1).gsub(/#/, '')}" if enum_case.description
-          content << "#{TAB}- case #{enum_case.name} = #{enum_case.value}\n"
+          content << "#{TAB}- case #{enum_case.name} = #{enum_case.value}\n\n"
         end
       end
 
@@ -110,7 +110,7 @@ end
         (type.fields || []).each do |field|
           content << "#{checkComment(field.summary, 1).gsub(/#/, '')}\n" if field.summary
           content << "#{checkComment(field.description, 1).gsub(/#/, '')}\n" if field.description
-          content << "#{TAB}- #{field.name}: #{field.type}\n"
+          content << "#{TAB}- #{field.name}: #{field.type}\n\n"
         end
       end
     end
