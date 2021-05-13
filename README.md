@@ -101,94 +101,94 @@ end
   - boc: BocConfig<Optional>
 
 - #### NetworkConfig
-  -   # DApp Server public address. For instance, for `net.ton.dev/graphql` GraphQL endpoint the server address will be net.ton.dev
+   DApp Server public address. For instance, for `net.ton.dev/graphql` GraphQL endpoint the server address will be net.ton.dev
   - server_address: String<Optional>
-  -   # List of DApp Server addresses.
-  -   # Any correct URL format can be specified, including IP addresses This parameter is prevailing over `server_address`.
+   List of DApp Server addresses.
+   Any correct URL format can be specified, including IP addresses This parameter is prevailing over `server_address`.
   - endpoints: Array<Optional>
-  -   # Deprecated.
-  -   # You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
+   Deprecated.
+   You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
   - network_retries_count: Number<Optional>
-  -   # Maximum time for sequential reconnections in ms.
-  -   # Default value is 120000 (2 min)
+   Maximum time for sequential reconnections in ms.
+   Default value is 120000 (2 min)
   - max_reconnect_timeout: Number<Optional>
-  -   # Deprecated
+   Deprecated
   - reconnect_timeout: Number<Optional>
-  -   # The number of automatic message processing retries that SDK performs in case of `Message Expired (507)` error - but only for those messages which local emulation was successful or failed with replay protection error. The default value is 5.
+   The number of automatic message processing retries that SDK performs in case of `Message Expired (507)` error - but only for those messages which local emulation was successful or failed with replay protection error. The default value is 5.
   - message_retries_count: Number<Optional>
-  -   # Timeout that is used to process message delivery for the contracts which ABI does not include "expire" header. If the message is not delivered within the specified timeout the appropriate error occurs.
+   Timeout that is used to process message delivery for the contracts which ABI does not include "expire" header. If the message is not delivered within the specified timeout the appropriate error occurs.
   - message_processing_timeout: Number<Optional>
-  -   # Maximum timeout that is used for query response. The default value is 40 sec.
+   Maximum timeout that is used for query response. The default value is 40 sec.
   - wait_for_timeout: Number<Optional>
-  -   # Maximum time difference between server and client.
-  -   # If client's device time is out of sync and difference is more than the threshold then error will occur. Also an error will occur if the specified threshold is more than`message_processing_timeout/2`.
-  # The default value is 15 sec.
+   Maximum time difference between server and client.
+   If client's device time is out of sync and difference is more than the threshold then error will occur. Also an error will occur if the specified threshold is more than`message_processing_timeout/2`.
+   The default value is 15 sec.
   - out_of_sync_threshold: Number<Optional>
-  -   # Maximum number of randomly chosen endpoints the library uses to send message. The default value is 2 endpoints.
+   Maximum number of randomly chosen endpoints the library uses to send message. The default value is 2 endpoints.
   - sending_endpoint_count: Number<Optional>
-  -   # Access key to GraphQL API.
-  -   # At the moment is not used in production
+   Access key to GraphQL API.
+   At the moment is not used in production
   - access_key: String<Optional>
 
 - #### CryptoConfig
-  -   # Mnemonic dictionary that will be used by default in crypto functions. If not specified, 1 dictionary will be used.
+   Mnemonic dictionary that will be used by default in crypto functions. If not specified, 1 dictionary will be used.
   - mnemonic_dictionary: Number<Optional>
-  -   # Mnemonic word count that will be used by default in crypto functions. If not specified the default value will be 12.
+   Mnemonic word count that will be used by default in crypto functions. If not specified the default value will be 12.
   - mnemonic_word_count: Number<Optional>
-  -   # Derivation path that will be used by default in crypto functions. If not specified `m/44'/396'/0'/0/0` will be used.
+   Derivation path that will be used by default in crypto functions. If not specified `m/44'/396'/0'/0/0` will be used.
   - hdkey_derivation_path: String<Optional>
 
 - #### AbiConfig
-  -   # Workchain id that is used by default in DeploySet
+   Workchain id that is used by default in DeploySet
   - workchain: Number<Optional>
-  -   # Message lifetime for contracts which ABI includes "expire" header. The default value is 40 sec.
+   Message lifetime for contracts which ABI includes "expire" header. The default value is 40 sec.
   - message_expiration_timeout: Number<Optional>
-  -   # Factor that increases the expiration timeout for each retry The default value is 1.5
+   Factor that increases the expiration timeout for each retry The default value is 1.5
   - message_expiration_timeout_grow_factor: Number<Optional>
 
 - #### BocConfig
-  -   # Maximum BOC cache size in kilobytes.
-  -   # Default is 10 MB
+   Maximum BOC cache size in kilobytes.
+   Default is 10 MB
   - cache_max_size: Number<Optional>
 
 - #### BuildInfoDependency
-  -   # Dependency name.
-  -   # Usually it is a crate name.
+   Dependency name.
+   Usually it is a crate name.
   - name: String
-  -   # Git commit hash of the related repository.
+   Git commit hash of the related repository.
   - git_commit: String
 
 - #### ParamsOfAppRequest
-  -   # Request ID.
-  -   # Should be used in `resolve_app_request` call
+   Request ID.
+   Should be used in `resolve_app_request` call
   - app_request_id: Number
-  -   # Request describing data
+   Request describing data
   - request_data: Value
 
 - #### AppRequestResult
   - type: AppRequestResult
-  -   # Error description
+   Error description
   - text: String
-  -   # Request processing result
+   Request processing result
   - result: Value
 
 - #### ResultOfGetApiReference
   - api: Value
 
 - #### ResultOfVersion
-  -   # Core Library version
+   Core Library version
   - version: String
 
 - #### ResultOfBuildInfo
-  -   # Build number assigned to this build by the CI.
+   Build number assigned to this build by the CI.
   - build_number: Number
-  -   # Fingerprint of the most important dependencies.
+   Fingerprint of the most important dependencies.
   - dependencies: Array
 
 - #### ParamsOfResolveAppRequest
-  -   # Request ID received from SDK
+   Request ID received from SDK
   - app_request_id: Number
-  -   # Result of request processing
+   Result of request processing
   - result: AppRequestResult
 
 - #### CryptoErrorCode
@@ -222,350 +222,350 @@ end
   - case Sign = Sign
 
 - #### ParamsOfFactorize
-  -   # Hexadecimal representation of u64 composite number.
+   Hexadecimal representation of u64 composite number.
   - composite: String
 
 - #### ResultOfFactorize
-  -   # Two factors of composite or empty if composite can't be factorized.
+   Two factors of composite or empty if composite can't be factorized.
   - factors: Array
 
 - #### ParamsOfModularPower
-  -   # `base` argument of calculation.
+   `base` argument of calculation.
   - base: String
-  -   # `exponent` argument of calculation.
+   `exponent` argument of calculation.
   - exponent: String
-  -   # `modulus` argument of calculation.
+   `modulus` argument of calculation.
   - modulus: String
 
 - #### ResultOfModularPower
-  -   # Result of modular exponentiation
+   Result of modular exponentiation
   - modular_power: String
 
 - #### ParamsOfTonCrc16
-  -   # Input data for CRC calculation.
-  -   # Encoded with `base64`.
+   Input data for CRC calculation.
+   Encoded with `base64`.
   - data: String
 
 - #### ResultOfTonCrc16
-  -   # Calculated CRC for input data.
+   Calculated CRC for input data.
   - crc: Number
 
 - #### ParamsOfGenerateRandomBytes
-  -   # Size of random byte array.
+   Size of random byte array.
   - length: Number
 
 - #### ResultOfGenerateRandomBytes
-  -   # Generated bytes encoded in `base64`.
+   Generated bytes encoded in `base64`.
   - bytes: String
 
 - #### ParamsOfConvertPublicKeyToTonSafeFormat
-  -   # Public key - 64 symbols hex string
+   Public key - 64 symbols hex string
   - public_key: String
 
 - #### ResultOfConvertPublicKeyToTonSafeFormat
-  -   # Public key represented in TON safe format.
+   Public key represented in TON safe format.
   - ton_public_key: String
 
 - #### KeyPair
-  -   # Public key - 64 symbols hex string
+   Public key - 64 symbols hex string
   - public: String
-  -   # Private key - u64 symbols hex string
+   Private key - u64 symbols hex string
   - secret: String
 
 - #### ParamsOfSign
-  -   # Data that must be signed encoded in `base64`.
+   Data that must be signed encoded in `base64`.
   - unsigned: String
-  -   # Sign keys.
+   Sign keys.
   - keys: KeyPair
 
 - #### ResultOfSign
-  -   # Signed data combined with signature encoded in `base64`.
+   Signed data combined with signature encoded in `base64`.
   - signed: String
-  -   # Signature encoded in `hex`.
+   Signature encoded in `hex`.
   - signature: String
 
 - #### ParamsOfVerifySignature
-  -   # Signed data that must be verified encoded in `base64`.
+   Signed data that must be verified encoded in `base64`.
   - signed: String
-  -   # Signer's public key - 64 symbols hex string
+   Signer's public key - 64 symbols hex string
   - public: String
 
 - #### ResultOfVerifySignature
-  -   # Unsigned data encoded in `base64`.
+   Unsigned data encoded in `base64`.
   - unsigned: String
 
 - #### ParamsOfHash
-  -   # Input data for hash calculation.
-  -   # Encoded with `base64`.
+   Input data for hash calculation.
+   Encoded with `base64`.
   - data: String
 
 - #### ResultOfHash
-  -   # Hash of input `data`.
-  -   # Encoded with 'hex'.
+   Hash of input `data`.
+   Encoded with 'hex'.
   - hash: String
 
 - #### ParamsOfScrypt
-  -   # The password bytes to be hashed. Must be encoded with `base64`.
+   The password bytes to be hashed. Must be encoded with `base64`.
   - password: String
-  -   # Salt bytes that modify the hash to protect against Rainbow table attacks. Must be encoded with `base64`.
+   Salt bytes that modify the hash to protect against Rainbow table attacks. Must be encoded with `base64`.
   - salt: String
-  -   # CPU/memory cost parameter
+   CPU/memory cost parameter
   - log_n: Number
-  -   # The block size parameter, which fine-tunes sequential memory read size and performance.
+   The block size parameter, which fine-tunes sequential memory read size and performance.
   - r: Number
-  -   # Parallelization parameter.
+   Parallelization parameter.
   - p: Number
-  -   # Intended output length in octets of the derived key.
+   Intended output length in octets of the derived key.
   - dk_len: Number
 
 - #### ResultOfScrypt
-  -   # Derived key.
-  -   # Encoded with `hex`.
+   Derived key.
+   Encoded with `hex`.
   - key: String
 
 - #### ParamsOfNaclSignKeyPairFromSecret
-  -   # Secret key - unprefixed 0-padded to 64 symbols hex string
+   Secret key - unprefixed 0-padded to 64 symbols hex string
   - secret: String
 
 - #### ParamsOfNaclSign
-  -   # Data that must be signed encoded in `base64`.
+   Data that must be signed encoded in `base64`.
   - unsigned: String
-  -   # Signer's secret key - unprefixed 0-padded to 64 symbols hex string
+   Signer's secret key - unprefixed 0-padded to 64 symbols hex string
   - secret: String
 
 - #### ResultOfNaclSign
-  -   # Signed data, encoded in `base64`.
+   Signed data, encoded in `base64`.
   - signed: String
 
 - #### ParamsOfNaclSignOpen
-  -   # Signed data that must be unsigned.
-  -   # Encoded with `base64`.
+   Signed data that must be unsigned.
+   Encoded with `base64`.
   - signed: String
-  -   # Signer's public key - unprefixed 0-padded to 64 symbols hex string
+   Signer's public key - unprefixed 0-padded to 64 symbols hex string
   - public: String
 
 - #### ResultOfNaclSignOpen
-  -   # Unsigned data, encoded in `base64`.
+   Unsigned data, encoded in `base64`.
   - unsigned: String
 
 - #### ResultOfNaclSignDetached
-  -   # Signature encoded in `hex`.
+   Signature encoded in `hex`.
   - signature: String
 
 - #### ParamsOfNaclSignDetachedVerify
-  -   # Unsigned data that must be verified.
-  -   # Encoded with `base64`.
+   Unsigned data that must be verified.
+   Encoded with `base64`.
   - unsigned: String
-  -   # Signature that must be verified.
-  -   # Encoded with `hex`.
+   Signature that must be verified.
+   Encoded with `hex`.
   - signature: String
-  -   # Signer's public key - unprefixed 0-padded to 64 symbols hex string.
+   Signer's public key - unprefixed 0-padded to 64 symbols hex string.
   - public: String
 
 - #### ResultOfNaclSignDetachedVerify
-  -   # `true` if verification succeeded or `false` if it failed
+   `true` if verification succeeded or `false` if it failed
   - succeeded: Boolean
 
 - #### ParamsOfNaclBoxKeyPairFromSecret
-  -   # Secret key - unprefixed 0-padded to 64 symbols hex string
+   Secret key - unprefixed 0-padded to 64 symbols hex string
   - secret: String
 
 - #### ParamsOfNaclBox
-  -   # Data that must be encrypted encoded in `base64`.
+   Data that must be encrypted encoded in `base64`.
   - decrypted: String
-  -   # Nonce, encoded in `hex`
+   Nonce, encoded in `hex`
   - nonce: String
-  -   # Receiver's public key - unprefixed 0-padded to 64 symbols hex string
+   Receiver's public key - unprefixed 0-padded to 64 symbols hex string
   - their_public: String
-  -   # Sender's private key - unprefixed 0-padded to 64 symbols hex string
+   Sender's private key - unprefixed 0-padded to 64 symbols hex string
   - secret: String
 
 - #### ResultOfNaclBox
-  -   # Encrypted data encoded in `base64`.
+   Encrypted data encoded in `base64`.
   - encrypted: String
 
 - #### ParamsOfNaclBoxOpen
-  -   # Data that must be decrypted.
-  -   # Encoded with `base64`.
+   Data that must be decrypted.
+   Encoded with `base64`.
   - encrypted: String
   - nonce: String
-  -   # Sender's public key - unprefixed 0-padded to 64 symbols hex string
+   Sender's public key - unprefixed 0-padded to 64 symbols hex string
   - their_public: String
-  -   # Receiver's private key - unprefixed 0-padded to 64 symbols hex string
+   Receiver's private key - unprefixed 0-padded to 64 symbols hex string
   - secret: String
 
 - #### ResultOfNaclBoxOpen
-  -   # Decrypted data encoded in `base64`.
+   Decrypted data encoded in `base64`.
   - decrypted: String
 
 - #### ParamsOfNaclSecretBox
-  -   # Data that must be encrypted.
-  -   # Encoded with `base64`.
+   Data that must be encrypted.
+   Encoded with `base64`.
   - decrypted: String
-  -   # Nonce in `hex`
+   Nonce in `hex`
   - nonce: String
-  -   # Secret key - unprefixed 0-padded to 64 symbols hex string
+   Secret key - unprefixed 0-padded to 64 symbols hex string
   - key: String
 
 - #### ParamsOfNaclSecretBoxOpen
-  -   # Data that must be decrypted.
-  -   # Encoded with `base64`.
+   Data that must be decrypted.
+   Encoded with `base64`.
   - encrypted: String
-  -   # Nonce in `hex`
+   Nonce in `hex`
   - nonce: String
-  -   # Public key - unprefixed 0-padded to 64 symbols hex string
+   Public key - unprefixed 0-padded to 64 symbols hex string
   - key: String
 
 - #### ParamsOfMnemonicWords
-  -   # Dictionary identifier
+   Dictionary identifier
   - dictionary: TSDKMnemonicDictionary
 
 - #### ResultOfMnemonicWords
-  -   # The list of mnemonic words
+   The list of mnemonic words
   - words: String
 
 - #### ParamsOfMnemonicFromRandom
-  -   # Dictionary identifier
+   Dictionary identifier
   - dictionary: TSDKMnemonicDictionary
-  -   # Mnemonic word count
+   Mnemonic word count
   - word_count: Number<Optional>
 
 - #### ResultOfMnemonicFromRandom
-  -   # String of mnemonic words
+   String of mnemonic words
   - phrase: String
 
 - #### ParamsOfMnemonicFromEntropy
-  -   # Entropy bytes.
-  -   # Hex encoded.
+   Entropy bytes.
+   Hex encoded.
   - entropy: String
-  -   # Dictionary identifier
+   Dictionary identifier
   - dictionary: TSDKMnemonicDictionary
-  -   # Mnemonic word count
+   Mnemonic word count
   - word_count: Number<Optional>
 
 - #### ResultOfMnemonicFromEntropy
-  -   # Phrase
+   Phrase
   - phrase: String
 
 - #### ParamsOfMnemonicVerify
-  -   # Phrase
+   Phrase
   - phrase: String
-  -   # Dictionary identifier
+   Dictionary identifier
   - dictionary: TSDKMnemonicDictionary
-  -   # Word count
+   Word count
   - word_count: Number<Optional>
 
 - #### ResultOfMnemonicVerify
-  -   # Flag indicating if the mnemonic is valid or not
+   Flag indicating if the mnemonic is valid or not
   - valid: Boolean
 
 - #### ParamsOfMnemonicDeriveSignKeys
-  -   # Phrase
+   Phrase
   - phrase: String
-  -   # Derivation path, for instance "m/44'/396'/0'/0/0"
+   Derivation path, for instance "m/44'/396'/0'/0/0"
   - path: String<Optional>
-  -   # Dictionary identifier
+   Dictionary identifier
   - dictionary: TSDKMnemonicDictionary
-  -   # Word count
+   Word count
   - word_count: Number<Optional>
 
 - #### ParamsOfHDKeyXPrvFromMnemonic
-  -   # String with seed phrase
+   String with seed phrase
   - phrase: String
-  -   # Dictionary identifier
+   Dictionary identifier
   - dictionary: TSDKMnemonicDictionary
-  -   # Mnemonic word count
+   Mnemonic word count
   - word_count: Number<Optional>
 
 - #### ResultOfHDKeyXPrvFromMnemonic
-  -   # Serialized extended master private key
+   Serialized extended master private key
   - xprv: String
 
 - #### ParamsOfHDKeyDeriveFromXPrv
-  -   # Serialized extended private key
+   Serialized extended private key
   - xprv: String
-  -   # Child index (see BIP-0032)
+   Child index (see BIP-0032)
   - child_index: Number
-  -   # Indicates the derivation of hardened/not-hardened key (see BIP-0032)
+   Indicates the derivation of hardened/not-hardened key (see BIP-0032)
   - hardened: Boolean
 
 - #### ResultOfHDKeyDeriveFromXPrv
-  -   # Serialized extended private key
+   Serialized extended private key
   - xprv: String
 
 - #### ParamsOfHDKeyDeriveFromXPrvPath
-  -   # Serialized extended private key
+   Serialized extended private key
   - xprv: String
-  -   # Derivation path, for instance "m/44'/396'/0'/0/0"
+   Derivation path, for instance "m/44'/396'/0'/0/0"
   - path: String
 
 - #### ResultOfHDKeyDeriveFromXPrvPath
-  -   # Derived serialized extended private key
+   Derived serialized extended private key
   - xprv: String
 
 - #### ParamsOfHDKeySecretFromXPrv
-  -   # Serialized extended private key
+   Serialized extended private key
   - xprv: String
 
 - #### ResultOfHDKeySecretFromXPrv
-  -   # Private key - 64 symbols hex string
+   Private key - 64 symbols hex string
   - secret: String
 
 - #### ParamsOfHDKeyPublicFromXPrv
-  -   # Serialized extended private key
+   Serialized extended private key
   - xprv: String
 
 - #### ResultOfHDKeyPublicFromXPrv
-  -   # Public key - 64 symbols hex string
+   Public key - 64 symbols hex string
   - public: String
 
 - #### ParamsOfChaCha20
-  -   # Source data to be encrypted or decrypted.
-  -   # Must be encoded with `base64`.
+   Source data to be encrypted or decrypted.
+   Must be encoded with `base64`.
   - data: String
-  -   # 256-bit key.
-  -   # Must be encoded with `hex`.
+   256-bit key.
+   Must be encoded with `hex`.
   - key: String
-  -   # 96-bit nonce.
-  -   # Must be encoded with `hex`.
+   96-bit nonce.
+   Must be encoded with `hex`.
   - nonce: String
 
 - #### ResultOfChaCha20
-  -   # Encrypted/decrypted data.
-  -   # Encoded with `base64`.
+   Encrypted/decrypted data.
+   Encoded with `base64`.
   - data: String
 
 - #### RegisteredSigningBox
-  -   # Handle of the signing box.
+   Handle of the signing box.
   - handle: SigningBoxHandle
 # Signing box callbacks.
 - #### ParamsOfAppSigningBox
   - type: ParamsOfAppSigningBox
-  -   # Data to sign encoded as base64
+   Data to sign encoded as base64
   - unsigned: String
 # Returning values from signing box callbacks.
 - #### ResultOfAppSigningBox
   - type: ResultOfAppSigningBox
-  -   # Signing box public key
+   Signing box public key
   - public_key: String
-  -   # Data signature encoded as hex
+   Data signature encoded as hex
   - signature: String
 
 - #### ResultOfSigningBoxGetPublicKey
-  -   # Public key of signing box.
-  -   # Encoded with hex
+   Public key of signing box.
+   Encoded with hex
   - pubkey: String
 
 - #### ParamsOfSigningBoxSign
-  -   # Signing Box handle.
+   Signing Box handle.
   - signing_box: SigningBoxHandle
-  -   # Unsigned user data.
-  -   # Must be encoded with `base64`.
+   Unsigned user data.
+   Must be encoded with `base64`.
   - unsigned: String
 
 - #### ResultOfSigningBoxSign
-  -   # Data signature.
-  -   # Encoded with `hex`.
+   Data signature.
+   Encoded with `hex`.
   - signature: String
 
 - #### AbiErrorCode
@@ -595,10 +595,10 @@ end
   - case SigningBox = SigningBox
 
 - #### MessageBodyType
-  -   # Message contains the input of the ABI function.  - case Input = 
-  -   # Message contains the output of the ABI function.  - case Output = 
-  -   # Message contains the input of the imported ABI function.  -   # Occurs when contract sends an internal message to othercontract.  - case InternalOutput = 
-  -   # Message contains the input of the ABI event.  - case Event = 
+   Message contains the input of the ABI function.  - case Input = 
+   Message contains the output of the ABI function.  - case Output = 
+   Message contains the input of the imported ABI function.   Occurs when contract sends an internal message to othercontract.  - case InternalOutput = 
+   Message contains the input of the ABI event.  - case Event = 
 
 - #### StateInitSource
   - case Message = Message
@@ -614,37 +614,37 @@ end
   - value: AbiContract
 
 - #### FunctionHeader
-  -   # Message expiration time in seconds. If not specified - calculated automatically from message_expiration_timeout(), try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
+   Message expiration time in seconds. If not specified - calculated automatically from message_expiration_timeout(), try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
   - expire: Number<Optional>
-  -   # Message creation time in milliseconds.
-  -   # If not specified, `now` is used (if ABI includes `time` header).
+   Message creation time in milliseconds.
+   If not specified, `now` is used (if ABI includes `time` header).
   - time: BigInt<Optional>
-  -   # Public key is used by the contract to check the signature.
-  -   # Encoded in `hex`. If not specified, method fails with exception (if ABI includes `pubkey` header)..
+   Public key is used by the contract to check the signature.
+   Encoded in `hex`. If not specified, method fails with exception (if ABI includes `pubkey` header)..
   - pubkey: String<Optional>
 
 - #### CallSet
-  -   # Function name that is being called. Or function id encoded as string in hex (starting with 0x).
+   Function name that is being called. Or function id encoded as string in hex (starting with 0x).
   - function_name: String
-  -   # Function header.
-  -   # If an application omits some header parameters required by thecontract's ABI, the library will set the default values forthem.
+   Function header.
+   If an application omits some header parameters required by thecontract's ABI, the library will set the default values forthem.
   - header: FunctionHeader<Optional>
-  -   # Function input parameters according to ABI.
+   Function input parameters according to ABI.
   - input: Value
 
 - #### DeploySet
-  -   # Content of TVC file encoded in `base64`.
+   Content of TVC file encoded in `base64`.
   - tvc: String
-  -   # Target workchain for destination address.
-  -   # Default is `0`.
+   Target workchain for destination address.
+   Default is `0`.
   - workchain_id: Number<Optional>
-  -   # List of initial values for contract's public variables.
+   List of initial values for contract's public variables.
   - initial_data: Value<Optional>
-  -   # Optional public key that can be provided in deploy set in order to substitute one in TVM file or provided by Signer.
-  -   # Public key resolving priority:
-  # 1. Public key from deploy set.
-  # 2. Public key, specified in TVM file.
-  # 3. Public key, provided by Signer.
+   Optional public key that can be provided in deploy set in order to substitute one in TVM file or provided by Signer.
+   Public key resolving priority:
+   1. Public key from deploy set.
+   2. Public key, specified in TVM file.
+   3. Public key, provided by Signer.
   - initial_pubkey: String<Optional>
 
 - #### Signer
@@ -656,14 +656,14 @@ end
 - #### StateInitSource
   - type: StateInitSource
   - source: MessageSource
-  -   # Code BOC.
-  -   # Encoded in `base64`.
+   Code BOC.
+   Encoded in `base64`.
   - code: String
-  -   # Data BOC.
-  -   # Encoded in `base64`.
+   Data BOC.
+   Encoded in `base64`.
   - data: String
-  -   # Library BOC.
-  -   # Encoded in `base64`.
+   Library BOC.
+   Encoded in `base64`.
   - library: String<Optional>
   - tvc: String
   - public_key: String<Optional>
@@ -708,171 +708,171 @@ end
   - data: Array<Optional>
 
 - #### ParamsOfEncodeMessageBody
-  -   # Contract ABI.
+   Contract ABI.
   - abi: Abi
-  -   # Function call parameters.
-  -   # Must be specified in non deploy message.
-  #     # In case of deploy message contains parameters of constructor.
+   Function call parameters.
+   Must be specified in non deploy message.
+        In case of deploy message contains parameters of constructor.
   - call_set: CallSet
-  -   # True if internal message body must be encoded.
+   True if internal message body must be encoded.
   - is_internal: Boolean
-  -   # Signing parameters.
+   Signing parameters.
   - signer: Signer
-  -   # Processing try index.
-  -   # Used in message processing with retries.
-  #     # Encoder uses the provided try index to calculate messageexpiration time.
-  #     # Expiration timeouts will grow with every retry.
-  #     # Default value is 0.
+   Processing try index.
+   Used in message processing with retries.
+        Encoder uses the provided try index to calculate messageexpiration time.
+        Expiration timeouts will grow with every retry.
+        Default value is 0.
   - processing_try_index: Number<Optional>
 
 - #### ResultOfEncodeMessageBody
-  -   # Message body BOC encoded with `base64`.
+   Message body BOC encoded with `base64`.
   - body: String
-  -   # Optional data to sign.
-  -   # Encoded with `base64`.
-  #     # # Presents when `message` is unsigned. Can be used for externalmessage signing. Is this case you need to sing this data andproduce signed message using `abi.attach_signature`.
+   Optional data to sign.
+   Encoded with `base64`.
+         Presents when `message` is unsigned. Can be used for externalmessage signing. Is this case you need to sing this data andproduce signed message using `abi.attach_signature`.
   - data_to_sign: String<Optional>
 
 - #### ParamsOfAttachSignatureToMessageBody
-  -   # Contract ABI
+   Contract ABI
   - abi: Abi
-  -   # Public key.
-  -   # Must be encoded with `hex`.
+   Public key.
+   Must be encoded with `hex`.
   - public_key: String
-  -   # Unsigned message body BOC.
-  -   # Must be encoded with `base64`.
+   Unsigned message body BOC.
+   Must be encoded with `base64`.
   - message: String
-  -   # Signature.
-  -   # Must be encoded with `hex`.
+   Signature.
+   Must be encoded with `hex`.
   - signature: String
 
 - #### ResultOfAttachSignatureToMessageBody
   - body: String
 
 - #### ParamsOfEncodeMessage
-  -   # Contract ABI.
+   Contract ABI.
   - abi: Abi
-  -   # Target address the message will be sent to.
-  -   # Must be specified in case of non-deploy message.
+   Target address the message will be sent to.
+   Must be specified in case of non-deploy message.
   - address: String<Optional>
-  -   # Deploy parameters.
-  -   # Must be specified in case of deploy message.
+   Deploy parameters.
+   Must be specified in case of deploy message.
   - deploy_set: DeploySet<Optional>
-  -   # Function call parameters.
-  -   # Must be specified in case of non-deploy message.
-  #     # In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
+   Function call parameters.
+   Must be specified in case of non-deploy message.
+        In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
   - call_set: CallSet<Optional>
-  -   # Signing parameters.
+   Signing parameters.
   - signer: Signer
-  -   # Processing try index.
-  -   # Used in message processing with retries (if contract's ABI includes "expire" header).
-  #     # Encoder uses the provided try index to calculate messageexpiration time. The 1st message expiration time is specified inClient config.
-  #     # Expiration timeouts will grow with every retry.
-  #     # Retry grow factor is set in Client config:
-  #     # <.....add config parameter with default value here>Default value is 0.
+   Processing try index.
+   Used in message processing with retries (if contract's ABI includes "expire" header).
+        Encoder uses the provided try index to calculate messageexpiration time. The 1st message expiration time is specified inClient config.
+        Expiration timeouts will grow with every retry.
+        Retry grow factor is set in Client config:
+        <.....add config parameter with default value here>Default value is 0.
   - processing_try_index: Number<Optional>
 
 - #### ResultOfEncodeMessage
-  -   # Message BOC encoded with `base64`.
+   Message BOC encoded with `base64`.
   - message: String
-  -   # Optional data to be signed encoded in `base64`.
-  -   # Returned in case of `Signer::External`. Can be used for externalmessage signing. Is this case you need to use this data to create signature andthen produce signed message using `abi.attach_signature`.
+   Optional data to be signed encoded in `base64`.
+   Returned in case of `Signer::External`. Can be used for externalmessage signing. Is this case you need to use this data to create signature andthen produce signed message using `abi.attach_signature`.
   - data_to_sign: String<Optional>
-  -   # Destination address.
+   Destination address.
   - address: String
-  -   # Message id.
+   Message id.
   - message_id: String
 
 - #### ParamsOfEncodeInternalMessage
-  -   # Contract ABI.
-  -   # Can be None if both deploy_set and call_set are None.
+   Contract ABI.
+   Can be None if both deploy_set and call_set are None.
   - abi: Abi<Optional>
-  -   # Target address the message will be sent to.
-  -   # Must be specified in case of non-deploy message.
+   Target address the message will be sent to.
+   Must be specified in case of non-deploy message.
   - address: String<Optional>
-  -   # Source address of the message.
+   Source address of the message.
   - src_address: String<Optional>
-  -   # Deploy parameters.
-  -   # Must be specified in case of deploy message.
+   Deploy parameters.
+   Must be specified in case of deploy message.
   - deploy_set: DeploySet<Optional>
-  -   # Function call parameters.
-  -   # Must be specified in case of non-deploy message.
-  #     # In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
+   Function call parameters.
+   Must be specified in case of non-deploy message.
+        In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
   - call_set: CallSet<Optional>
-  -   # Value in nanotokens to be sent with message.
+   Value in nanotokens to be sent with message.
   - value: String
-  -   # Flag of bounceable message.
-  -   # Default is true.
+   Flag of bounceable message.
+   Default is true.
   - bounce: Boolean<Optional>
-  -   # Enable Instant Hypercube Routing for the message.
-  -   # Default is false.
+   Enable Instant Hypercube Routing for the message.
+   Default is false.
   - enable_ihr: Boolean<Optional>
 
 - #### ResultOfEncodeInternalMessage
-  -   # Message BOC encoded with `base64`.
+   Message BOC encoded with `base64`.
   - message: String
-  -   # Destination address.
+   Destination address.
   - address: String
-  -   # Message id.
+   Message id.
   - message_id: String
 
 - #### ParamsOfAttachSignature
-  -   # Contract ABI
+   Contract ABI
   - abi: Abi
-  -   # Public key encoded in `hex`.
+   Public key encoded in `hex`.
   - public_key: String
-  -   # Unsigned message BOC encoded in `base64`.
+   Unsigned message BOC encoded in `base64`.
   - message: String
-  -   # Signature encoded in `hex`.
+   Signature encoded in `hex`.
   - signature: String
 
 - #### ResultOfAttachSignature
-  -   # Signed message BOC
+   Signed message BOC
   - message: String
-  -   # Message ID
+   Message ID
   - message_id: String
 
 - #### ParamsOfDecodeMessage
-  -   # contract ABI
+   contract ABI
   - abi: Abi
-  -   # Message BOC
+   Message BOC
   - message: String
 
 - #### DecodedMessageBody
-  -   # Type of the message body content.
+   Type of the message body content.
   - body_type: MessageBodyType
-  -   # Function or event name.
+   Function or event name.
   - name: String
-  -   # Parameters or result value.
+   Parameters or result value.
   - value: Value<Optional>
-  -   # Function header.
+   Function header.
   - header: FunctionHeader<Optional>
 
 - #### ParamsOfDecodeMessageBody
-  -   # Contract ABI used to decode.
+   Contract ABI used to decode.
   - abi: Abi
-  -   # Message body BOC encoded in `base64`.
+   Message body BOC encoded in `base64`.
   - body: String
-  -   # True if the body belongs to the internal message.
+   True if the body belongs to the internal message.
   - is_internal: Boolean
 
 - #### ParamsOfEncodeAccount
-  -   # Source of the account state init.
+   Source of the account state init.
   - state_init: StateInitSource
-  -   # Initial balance.
+   Initial balance.
   - balance: BigInt<Optional>
-  -   # Initial value for the `last_trans_lt`.
+   Initial value for the `last_trans_lt`.
   - last_trans_lt: BigInt<Optional>
-  -   # Initial value for the `last_paid`.
+   Initial value for the `last_paid`.
   - last_paid: Number<Optional>
-  -   # Cache type to put the result.
-  -   # The BOC itself returned if no cache type provided
+   Cache type to put the result.
+   The BOC itself returned if no cache type provided
   - boc_cache: BocCacheType<Optional>
 
 - #### ResultOfEncodeAccount
-  -   # Account BOC encoded in `base64`.
+   Account BOC encoded in `base64`.
   - account: String
-  -   # Account ID  encoded in `hex`.
+   Account ID  encoded in `hex`.
   - id: String
 
 - #### BocCacheType
@@ -899,92 +899,92 @@ end
   - pin: String
 
 - #### ParamsOfParse
-  -   # BOC encoded as base64
+   BOC encoded as base64
   - boc: String
 
 - #### ResultOfParse
-  -   # JSON containing parsed BOC
+   JSON containing parsed BOC
   - parsed: Value
 
 - #### ParamsOfParseShardstate
-  -   # BOC encoded as base64
+   BOC encoded as base64
   - boc: String
-  -   # Shardstate identificator
+   Shardstate identificator
   - id: String
-  -   # Workchain shardstate belongs to
+   Workchain shardstate belongs to
   - workchain_id: Number
 
 - #### ParamsOfGetBlockchainConfig
-  -   # Key block BOC or zerostate BOC encoded as base64
+   Key block BOC or zerostate BOC encoded as base64
   - block_boc: String
 
 - #### ResultOfGetBlockchainConfig
-  -   # Blockchain config BOC encoded as base64
+   Blockchain config BOC encoded as base64
   - config_boc: String
 
 - #### ParamsOfGetBocHash
-  -   # BOC encoded as base64
+   BOC encoded as base64
   - boc: String
 
 - #### ResultOfGetBocHash
-  -   # BOC root hash encoded with hex
+   BOC root hash encoded with hex
   - hash: String
 
 - #### ParamsOfGetCodeFromTvc
-  -   # Contract TVC image encoded as base64
+   Contract TVC image encoded as base64
   - tvc: String
 
 - #### ResultOfGetCodeFromTvc
-  -   # Contract code encoded as base64
+   Contract code encoded as base64
   - code: String
 
 - #### ParamsOfBocCacheGet
-  -   # Reference to the cached BOC
+   Reference to the cached BOC
   - boc_ref: String
 
 - #### ResultOfBocCacheGet
-  -   # BOC encoded as base64.
+   BOC encoded as base64.
   - boc: String<Optional>
 
 - #### ParamsOfBocCacheSet
-  -   # BOC encoded as base64 or BOC reference
+   BOC encoded as base64 or BOC reference
   - boc: String
-  -   # Cache type
+   Cache type
   - cache_type: BocCacheType
 
 - #### ResultOfBocCacheSet
-  -   # Reference to the cached BOC
+   Reference to the cached BOC
   - boc_ref: String
 
 - #### ParamsOfBocCacheUnpin
-  -   # Pinned name
+   Pinned name
   - pin: String
-  -   # Reference to the cached BOC.
-  -   # If it is provided then only referenced BOC is unpinned
+   Reference to the cached BOC.
+   If it is provided then only referenced BOC is unpinned
   - boc_ref: String<Optional>
 # Cell builder operation.
 - #### BuilderOp
   - type: BuilderOp
-  -   # Bit size of the value.
+   Bit size of the value.
   - size: Number
-  -   # Value: - `Number` containing integer number.
-  -   # e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
-  # - `0x` prefixed hexadecimal string.
-  #   e.g `0x123`, `0X123`, `-0x123`.
+   Value: - `Number` containing integer number.
+   e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
+   - `0x` prefixed hexadecimal string.
+     e.g `0x123`, `0X123`, `-0x123`.
   - value: Value
-  -   # Nested cell builder
+   Nested cell builder
   - builder: Array
-  -   # Nested cell BOC encoded with `base64` or BOC cache key.
+   Nested cell BOC encoded with `base64` or BOC cache key.
   - boc: String
 
 - #### ParamsOfEncodeBoc
-  -   # Cell builder operations.
+   Cell builder operations.
   - builder: Array
-  -   # Cache type to put the result. The BOC itself returned if no cache type provided.
+   Cache type to put the result. The BOC itself returned if no cache type provided.
   - boc_cache: BocCacheType<Optional>
 
 - #### ResultOfEncodeBoc
-  -   # Encoded cell BOC or BOC cache key.
+   Encoded cell BOC or BOC cache key.
   - boc: String
 
 - #### ProcessingErrorCode
@@ -1020,64 +1020,64 @@ end
   - message: String
 
 - #### ResultOfProcessMessage
-  -   # Parsed transaction.
-  -   # In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
+   Parsed transaction.
+   In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
   - transaction: Value
-  -   # List of output messages' BOCs.
-  -   # Encoded as `base64`
+   List of output messages' BOCs.
+   Encoded as `base64`
   - out_messages: Array
-  -   # Optional decoded message bodies according to the optional `abi` parameter.
+   Optional decoded message bodies according to the optional `abi` parameter.
   - decoded: DecodedOutput<Optional>
-  -   # Transaction fees
+   Transaction fees
   - fees: TransactionFees
 
 - #### DecodedOutput
-  -   # Decoded bodies of the out messages.
-  -   # If the message can't be decoded, then `None` will be stored inthe appropriate position.
+   Decoded bodies of the out messages.
+   If the message can't be decoded, then `None` will be stored inthe appropriate position.
   - out_messages: Array
-  -   # Decoded body of the function output message.
+   Decoded body of the function output message.
   - output: Value<Optional>
 
 - #### ParamsOfSendMessage
-  -   # Message BOC.
+   Message BOC.
   - message: String
-  -   # Optional message ABI.
-  -   # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
-  #     # The `message already expired` error will be returned in thiscase.
-  #     # Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
+   Optional message ABI.
+   If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
+        The `message already expired` error will be returned in thiscase.
+        Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
   - abi: Abi<Optional>
-  -   # Flag for requesting events sending
+   Flag for requesting events sending
   - send_events: Boolean
 
 - #### ResultOfSendMessage
-  -   # The last generated shard block of the message destination account before the message was sent.
-  -   # This block id must be used as a parameter of the`wait_for_transaction`.
+   The last generated shard block of the message destination account before the message was sent.
+   This block id must be used as a parameter of the`wait_for_transaction`.
   - shard_block_id: String
-  -   # The list of endpoints to which the message was sent.
-  -   # This list id must be used as a parameter of the`wait_for_transaction`.
+   The list of endpoints to which the message was sent.
+   This list id must be used as a parameter of the`wait_for_transaction`.
   - sending_endpoints: Array
 
 - #### ParamsOfWaitForTransaction
-  -   # Optional ABI for decoding the transaction result.
-  -   # If it is specified, then the output messages' bodies will bedecoded according to this ABI.
-  #     # The `abi_decoded` result field will be filled out.
+   Optional ABI for decoding the transaction result.
+   If it is specified, then the output messages' bodies will bedecoded according to this ABI.
+        The `abi_decoded` result field will be filled out.
   - abi: Abi<Optional>
-  -   # Message BOC.
-  -   # Encoded with `base64`.
+   Message BOC.
+   Encoded with `base64`.
   - message: String
-  -   # The last generated block id of the destination account shard before the message was sent.
-  -   # You must provide the same value as the `send_message` has returned.
+   The last generated block id of the destination account shard before the message was sent.
+   You must provide the same value as the `send_message` has returned.
   - shard_block_id: String
-  -   # Flag that enables/disables intermediate events
+   Flag that enables/disables intermediate events
   - send_events: Boolean
-  -   # The list of endpoints to which the message was sent.
-  -   # You must provide the same value as the `send_message` has returned.
+   The list of endpoints to which the message was sent.
+   You must provide the same value as the `send_message` has returned.
   - sending_endpoints: Array<Optional>
 
 - #### ParamsOfProcessMessage
-  -   # Message encode parameters.
+   Message encode parameters.
   - message_encode_params: ParamsOfEncodeMessage
-  -   # Flag for requesting events sending
+   Flag for requesting events sending
   - send_events: Boolean
 
 - #### AddressStringFormat
@@ -1092,13 +1092,13 @@ end
   - bounce: Boolean
 
 - #### ParamsOfConvertAddress
-  -   # Account address in any TON format.
+   Account address in any TON format.
   - address: String
-  -   # Specify the format to convert to.
+   Specify the format to convert to.
   - output_format: AddressStringFormat
 
 - #### ResultOfConvertAddress
-  -   # Address in the specified format
+   Address in the specified format
   - address: String
 
 - #### ParamsOfCalcStorageFee
@@ -1109,25 +1109,25 @@ end
   - fee: String
 
 - #### ParamsOfCompressZstd
-  -   # Uncompressed data.
-  -   # Must be encoded as base64.
+   Uncompressed data.
+   Must be encoded as base64.
   - uncompressed: String
-  -   # Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
+   Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
   - level: Number<Optional>
 
 - #### ResultOfCompressZstd
-  -   # Compressed data.
-  -   # Must be encoded as base64.
+   Compressed data.
+   Must be encoded as base64.
   - compressed: String
 
 - #### ParamsOfDecompressZstd
-  -   # Compressed data.
-  -   # Must be encoded as base64.
+   Compressed data.
+   Must be encoded as base64.
   - compressed: String
 
 - #### ResultOfDecompressZstd
-  -   # Decompressed data.
-  -   # Must be encoded as base64.
+   Decompressed data.
+   Must be encoded as base64.
   - decompressed: String
 
 - #### TvmErrorCode
@@ -1152,22 +1152,22 @@ end
   - case Account = Account
 
 - #### ExecutionOptions
-  -   # boc with config
+   boc with config
   - blockchain_config: String<Optional>
-  -   # time that is used as transaction time
+   time that is used as transaction time
   - block_time: Number<Optional>
-  -   # block logical time
+   block logical time
   - block_lt: BigInt<Optional>
-  -   # transaction logical time
+   transaction logical time
   - transaction_lt: BigInt<Optional>
 
 - #### AccountForExecutor
   - type: AccountForExecutor
-  -   # Account BOC.
-  -   # Encoded as base64.
+   Account BOC.
+   Encoded as base64.
   - boc: String
-  -   # Flag for running account with the unlimited balance.
-  -   # Can be used to calculate transaction fees without balance check
+   Flag for running account with the unlimited balance.
+   Can be used to calculate transaction fees without balance check
   - unlimited_balance: Boolean<Optional>
 
 - #### TransactionFees
@@ -1179,83 +1179,83 @@ end
   - total_output: BigInt
 
 - #### ParamsOfRunExecutor
-  -   # Input message BOC.
-  -   # Must be encoded as base64.
+   Input message BOC.
+   Must be encoded as base64.
   - message: String
-  -   # Account to run on executor
+   Account to run on executor
   - account: AccountForExecutor
-  -   # Execution options.
+   Execution options.
   - execution_options: ExecutionOptions<Optional>
-  -   # Contract ABI for decoding output messages
+   Contract ABI for decoding output messages
   - abi: Abi<Optional>
-  -   # Skip transaction check flag
+   Skip transaction check flag
   - skip_transaction_check: Boolean<Optional>
-  -   # Cache type to put the result.
-  -   # The BOC itself returned if no cache type provided
+   Cache type to put the result.
+   The BOC itself returned if no cache type provided
   - boc_cache: BocCacheType<Optional>
-  -   # Return updated account flag.
-  -   # Empty string is returned if the flag is `false`
+   Return updated account flag.
+   Empty string is returned if the flag is `false`
   - return_updated_account: Boolean<Optional>
 
 - #### ResultOfRunExecutor
-  -   # Parsed transaction.
-  -   # In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
+   Parsed transaction.
+   In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
   - transaction: Value
-  -   # List of output messages' BOCs.
-  -   # Encoded as `base64`
+   List of output messages' BOCs.
+   Encoded as `base64`
   - out_messages: Array
-  -   # Optional decoded message bodies according to the optional `abi` parameter.
+   Optional decoded message bodies according to the optional `abi` parameter.
   - decoded: DecodedOutput<Optional>
-  -   # Updated account state BOC.
-  -   # Encoded as `base64`
+   Updated account state BOC.
+   Encoded as `base64`
   - account: String
-  -   # Transaction fees
+   Transaction fees
   - fees: TransactionFees
 
 - #### ParamsOfRunTvm
-  -   # Input message BOC.
-  -   # Must be encoded as base64.
+   Input message BOC.
+   Must be encoded as base64.
   - message: String
-  -   # Account BOC.
-  -   # Must be encoded as base64.
+   Account BOC.
+   Must be encoded as base64.
   - account: String
-  -   # Execution options.
+   Execution options.
   - execution_options: ExecutionOptions<Optional>
-  -   # Contract ABI for decoding output messages
+   Contract ABI for decoding output messages
   - abi: Abi<Optional>
-  -   # Cache type to put the result.
-  -   # The BOC itself returned if no cache type provided
+   Cache type to put the result.
+   The BOC itself returned if no cache type provided
   - boc_cache: BocCacheType<Optional>
-  -   # Return updated account flag.
-  -   # Empty string is returned if the flag is `false`
+   Return updated account flag.
+   Empty string is returned if the flag is `false`
   - return_updated_account: Boolean<Optional>
 
 - #### ResultOfRunTvm
-  -   # List of output messages' BOCs.
-  -   # Encoded as `base64`
+   List of output messages' BOCs.
+   Encoded as `base64`
   - out_messages: Array
-  -   # Optional decoded message bodies according to the optional `abi` parameter.
+   Optional decoded message bodies according to the optional `abi` parameter.
   - decoded: DecodedOutput<Optional>
-  -   # Updated account state BOC.
-  -   # Encoded as `base64`. Attention! Only `account_state.storage.state.data` part of the BOC is updated.
+   Updated account state BOC.
+   Encoded as `base64`. Attention! Only `account_state.storage.state.data` part of the BOC is updated.
   - account: String
 
 - #### ParamsOfRunGet
-  -   # Account BOC in `base64`
+   Account BOC in `base64`
   - account: String
-  -   # Function name
+   Function name
   - function_name: String
-  -   # Input parameters
+   Input parameters
   - input: Value
-  -   # Execution options
+   Execution options
   - execution_options: ExecutionOptions<Optional>
-  -   # Convert lists based on nested tuples in the **result** into plain arrays.
-  -   # Default is `false`. Input parameters may use any of lists representationsIf you receive this error on Web: "Runtime error. Unreachable code should not be executed...",set this flag to true.
-  #     # This may happen, for example, when elector contract contains too many participants
+   Convert lists based on nested tuples in the **result** into plain arrays.
+   Default is `false`. Input parameters may use any of lists representationsIf you receive this error on Web: "Runtime error. Unreachable code should not be executed...",set this flag to true.
+        This may happen, for example, when elector contract contains too many participants
   - tuple_list_as_array: Boolean<Optional>
 
 - #### ResultOfRunGet
-  -   # Values returned by get-method on stack
+   Values returned by get-method on stack
   - output: Value
 
 - #### NetErrorCode
@@ -1285,11 +1285,11 @@ end
   - case QueryCounterparties = QueryCounterparties
 
 - #### AggregationFn
-  -   # Returns count of filtered record  - case COUNT = 
-  -   # Returns the minimal value for a field in filtered records  - case MIN = 
-  -   # Returns the maximal value for a field in filtered records  - case MAX = 
-  -   # Returns a sum of values for a field in filtered records  - case SUM = 
-  -   # Returns an average value for a field in filtered records  - case AVERAGE = 
+   Returns count of filtered record  - case COUNT = 
+   Returns the minimal value for a field in filtered records  - case MIN = 
+   Returns the maximal value for a field in filtered records  - case MAX = 
+   Returns a sum of values for a field in filtered records  - case SUM = 
+   Returns an average value for a field in filtered records  - case AVERAGE = 
 
 - #### OrderBy
   - path: String
@@ -1299,108 +1299,108 @@ end
   - type: ParamsOfQueryOperation
 
 - #### FieldAggregation
-  -   # Dot separated path to the field
+   Dot separated path to the field
   - field: String
-  -   # Aggregation function that must be applied to field values
+   Aggregation function that must be applied to field values
   - fn: AggregationFn
 
 - #### ParamsOfQuery
-  -   # GraphQL query text.
+   GraphQL query text.
   - query: String
-  -   # Variables used in query.
-  -   # Must be a map with named values that can be used in query.
+   Variables used in query.
+   Must be a map with named values that can be used in query.
   - variables: Value
 
 - #### ResultOfQuery
-  -   # Result provided by DAppServer.
+   Result provided by DAppServer.
   - result: Value
 
 - #### ParamsOfBatchQuery
-  -   # List of query operations that must be performed per single fetch.
+   List of query operations that must be performed per single fetch.
   - operations: Array
 
 - #### ResultOfBatchQuery
-  -   # Result values for batched queries.
-  -   # Returns an array of values. Each value corresponds to `queries` item.
+   Result values for batched queries.
+   Returns an array of values. Each value corresponds to `queries` item.
   - results: Array
 
 - #### ParamsOfQueryCollection
-  -   # Collection name (accounts, blocks, transactions, messages, block_signatures)
+   Collection name (accounts, blocks, transactions, messages, block_signatures)
   - collection: String
-  -   # Collection filter
+   Collection filter
   - filter: Value
-  -   # Projection (result) string
+   Projection (result) string
   - result: String
-  -   # Sorting order
+   Sorting order
   - order: Array<Optional>
-  -   # Number of documents to return
+   Number of documents to return
   - limit: Number<Optional>
 
 - #### ResultOfQueryCollection
-  -   # Objects that match the provided criteria
+   Objects that match the provided criteria
   - result: Array
 
 - #### ParamsOfAggregateCollection
-  -   # Collection name (accounts, blocks, transactions, messages, block_signatures)
+   Collection name (accounts, blocks, transactions, messages, block_signatures)
   - collection: String
-  -   # Collection filter
+   Collection filter
   - filter: Value
-  -   # Projection (result) string
+   Projection (result) string
   - fields: Array<Optional>
 
 - #### ResultOfAggregateCollection
-  -   # Values for requested fields.
-  -   # Returns an array of strings. Each string refers to the corresponding `fields` item.
-  #     # Numeric value is returned as a decimal string representations.
+   Values for requested fields.
+   Returns an array of strings. Each string refers to the corresponding `fields` item.
+        Numeric value is returned as a decimal string representations.
   - values: Value
 
 - #### ParamsOfWaitForCollection
-  -   # Collection name (accounts, blocks, transactions, messages, block_signatures)
+   Collection name (accounts, blocks, transactions, messages, block_signatures)
   - collection: String
-  -   # Collection filter
+   Collection filter
   - filter: Value
-  -   # Projection (result) string
+   Projection (result) string
   - result: String
-  -   # Query timeout
+   Query timeout
   - timeout: Number<Optional>
 
 - #### ResultOfWaitForCollection
-  -   # First found object that matches the provided criteria
+   First found object that matches the provided criteria
   - result: Value
 
 - #### ResultOfSubscribeCollection
-  -   # Subscription handle.
-  -   # Must be closed with `unsubscribe`
+   Subscription handle.
+   Must be closed with `unsubscribe`
   - handle: Number
 
 - #### ParamsOfSubscribeCollection
-  -   # Collection name (accounts, blocks, transactions, messages, block_signatures)
+   Collection name (accounts, blocks, transactions, messages, block_signatures)
   - collection: String
-  -   # Collection filter
+   Collection filter
   - filter: Value
-  -   # Projection (result) string
+   Projection (result) string
   - result: String
 
 - #### ParamsOfFindLastShardBlock
-  -   # Account address
+   Account address
   - address: String
 
 - #### ResultOfFindLastShardBlock
-  -   # Account shard last block ID
+   Account shard last block ID
   - block_id: String
 
 - #### EndpointsSet
-  -   # List of endpoints provided by server
+   List of endpoints provided by server
   - endpoints: Array
 
 - #### ParamsOfQueryCounterparties
-  -   # Account address
+   Account address
   - account: String
-  -   # Projection (result) string
+   Projection (result) string
   - result: String
-  -   # Number of counterparties to return
+   Number of counterparties to return
   - first: Number<Optional>
-  -   # `cursor` field of the last received result
+   `cursor` field of the last received result
   - after: String<Optional>
 
 - #### DebotErrorCode
@@ -1438,134 +1438,134 @@ end
   - case Approve = Approve
 
 - #### DebotAction
-  -   # A short action description.
-  -   # Should be used by Debot Browser as name of menu item.
+   A short action description.
+   Should be used by Debot Browser as name of menu item.
   - description: String
-  -   # Depends on action type.
-  -   # Can be a debot function name or a print string (for Print Action).
+   Depends on action type.
+   Can be a debot function name or a print string (for Print Action).
   - name: String
-  -   # Action type.
+   Action type.
   - action_type: Number
-  -   # ID of debot context to switch after action execution.
+   ID of debot context to switch after action execution.
   - to: Number
-  -   # Action attributes.
-  -   # In the form of "param=value,flag". attribute example: instant, args, fargs, sign.
+   Action attributes.
+   In the form of "param=value,flag". attribute example: instant, args, fargs, sign.
   - attributes: String
-  -   # Some internal action data.
-  -   # Used by debot only.
+   Some internal action data.
+   Used by debot only.
   - misc: String
 
 - #### DebotInfo
-  -   # DeBot short name.
+   DeBot short name.
   - name: String<Optional>
-  -   # DeBot semantic version.
+   DeBot semantic version.
   - version: String<Optional>
-  -   # The name of DeBot deployer.
+   The name of DeBot deployer.
   - publisher: String<Optional>
-  -   # Short info about DeBot.
+   Short info about DeBot.
   - caption: String<Optional>
-  -   # The name of DeBot developer.
+   The name of DeBot developer.
   - author: String<Optional>
-  -   # TON address of author for questions and donations.
+   TON address of author for questions and donations.
   - support: String<Optional>
-  -   # String with the first messsage from DeBot.
+   String with the first messsage from DeBot.
   - hello: String<Optional>
-  -   # String with DeBot interface language (ISO-639).
+   String with DeBot interface language (ISO-639).
   - language: String<Optional>
-  -   # String with DeBot ABI.
+   String with DeBot ABI.
   - dabi: String<Optional>
-  -   # DeBot icon.
+   DeBot icon.
   - icon: String<Optional>
-  -   # Vector with IDs of DInterfaces used by DeBot.
+   Vector with IDs of DInterfaces used by DeBot.
   - interfaces: Array
 # [UNSTABLE](UNSTABLE.md) Describes the operation that the DeBot wants to perform.
 - #### DebotActivity
   - type: DebotActivity
-  -   # External inbound message BOC.
+   External inbound message BOC.
   - msg: String
-  -   # Target smart contract address.
+   Target smart contract address.
   - dst: String
-  -   # List of spendings as a result of transaction.
+   List of spendings as a result of transaction.
   - out: Array
-  -   # Transaction total fee.
+   Transaction total fee.
   - fee: BigInt
-  -   # Indicates if target smart contract updates its code.
+   Indicates if target smart contract updates its code.
   - setcode: Boolean
-  -   # Public key from keypair that was used to sign external message.
+   Public key from keypair that was used to sign external message.
   - signkey: String
 
 - #### Spending
-  -   # Amount of nanotokens that will be sent to `dst` address.
+   Amount of nanotokens that will be sent to `dst` address.
   - amount: BigInt
-  -   # Destination address of recipient of funds.
+   Destination address of recipient of funds.
   - dst: String
 
 - #### ParamsOfInit
-  -   # Debot smart contract address
+   Debot smart contract address
   - address: String
 
 - #### RegisteredDebot
-  -   # Debot handle which references an instance of debot engine.
+   Debot handle which references an instance of debot engine.
   - debot_handle: DebotHandle
-  -   # Debot abi as json string.
+   Debot abi as json string.
   - debot_abi: String
-  -   # Debot metadata.
+   Debot metadata.
   - info: DebotInfo
 # [UNSTABLE](UNSTABLE.md) Debot Browser callbacks# Called by debot engine to communicate with debot browser.
 - #### ParamsOfAppDebotBrowser
   - type: ParamsOfAppDebotBrowser
-  -   # A string that must be printed to user.
+   A string that must be printed to user.
   - msg: String
-  -   # Debot context ID to which debot is switched.
+   Debot context ID to which debot is switched.
   - context_id: Number
-  -   # Debot action that must be shown to user as menu item. At least `description` property must be shown from [DebotAction] structure.
+   Debot action that must be shown to user as menu item. At least `description` property must be shown from [DebotAction] structure.
   - action: DebotAction
-  -   # A prompt string that must be printed to user before input request.
+   A prompt string that must be printed to user before input request.
   - prompt: String
-  -   # Address of debot in blockchain.
+   Address of debot in blockchain.
   - debot_addr: String
-  -   # Internal message to DInterface address.
-  -   # Message body contains interface function and parameters.
+   Internal message to DInterface address.
+   Message body contains interface function and parameters.
   - message: String
-  -   # DeBot activity details.
+   DeBot activity details.
   - activity: DebotActivity
 # [UNSTABLE](UNSTABLE.md) Returning values from Debot Browser callbacks.
 - #### ResultOfAppDebotBrowser
   - type: ResultOfAppDebotBrowser
-  -   # String entered by user.
+   String entered by user.
   - value: String
-  -   # Signing box for signing data requested by debot engine.
-  -   # Signing box is owned and disposed by debot engine
+   Signing box for signing data requested by debot engine.
+   Signing box is owned and disposed by debot engine
   - signing_box: SigningBoxHandle
-  -   # Indicates whether the DeBot is allowed to perform the specified operation.
+   Indicates whether the DeBot is allowed to perform the specified operation.
   - approved: Boolean
 
 - #### ParamsOfStart
-  -   # Debot handle which references an instance of debot engine.
+   Debot handle which references an instance of debot engine.
   - debot_handle: DebotHandle
 
 - #### ParamsOfFetch
-  -   # Debot smart contract address.
+   Debot smart contract address.
   - address: String
 
 - #### ResultOfFetch
-  -   # Debot metadata.
+   Debot metadata.
   - info: DebotInfo
 
 - #### ParamsOfExecute
-  -   # Debot handle which references an instance of debot engine.
+   Debot handle which references an instance of debot engine.
   - debot_handle: DebotHandle
-  -   # Debot Action that must be executed.
+   Debot Action that must be executed.
   - action: DebotAction
 
 - #### ParamsOfSend
-  -   # Debot handle which references an instance of debot engine.
+   Debot handle which references an instance of debot engine.
   - debot_handle: DebotHandle
-  -   # BOC of internal message to debot encoded in base64 format.
+   BOC of internal message to debot encoded in base64 format.
   - message: String
 
 - #### ParamsOfRemove
-  -   # Debot handle which references an instance of debot engine.
+   Debot handle which references an instance of debot engine.
   - debot_handle: DebotHandle
 </details>
 
