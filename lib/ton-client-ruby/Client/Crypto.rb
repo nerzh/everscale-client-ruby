@@ -213,7 +213,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfMnemonicWords
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # RESPONSE: ResultOfMnemonicWords
     # words: String -     #     # The list of mnemonic words
     def mnemonic_words(payload, &block)
@@ -221,7 +221,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfMnemonicFromRandom
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number<Optional> -     #     # Mnemonic word count
     # RESPONSE: ResultOfMnemonicFromRandom
     # phrase: String -     #     # String of mnemonic words
@@ -231,7 +231,7 @@ module TonClient
 
     # INPUT: ParamsOfMnemonicFromEntropy
     # entropy: String -     #     # Entropy bytes.    #     # Hex encoded.
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number<Optional> -     #     # Mnemonic word count
     # RESPONSE: ResultOfMnemonicFromEntropy
     # phrase: String -     #     # Phrase
@@ -241,7 +241,7 @@ module TonClient
 
     # INPUT: ParamsOfMnemonicVerify
     # phrase: String -     #     # Phrase
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number<Optional> -     #     # Word count
     # RESPONSE: ResultOfMnemonicVerify
     # valid: Boolean -     #     # Flag indicating if the mnemonic is valid or not
@@ -252,7 +252,7 @@ module TonClient
     # INPUT: ParamsOfMnemonicDeriveSignKeys
     # phrase: String -     #     # Phrase
     # path: String<Optional> -     #     # Derivation path, for instance "m/44'/396'/0'/0/0"
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number<Optional> -     #     # Word count
     # RESPONSE: KeyPair
     # public: String -     #     # Public key - 64 symbols hex string
@@ -263,7 +263,7 @@ module TonClient
 
     # INPUT: ParamsOfHDKeyXPrvFromMnemonic
     # phrase: String -     #     # String with seed phrase
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number<Optional> -     #     # Mnemonic word count
     # RESPONSE: ResultOfHDKeyXPrvFromMnemonic
     # xprv: String -     #     # Serialized extended master private key

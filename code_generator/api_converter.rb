@@ -115,7 +115,7 @@ class ApiConverter
         if ( (from['name'] || "")[/Params/] || (field['name'] || "")[/input/]) && type[/Value/]
           type = "Value"
         elsif (field['name'] || "")[/^dictionary$/]
-          type = "TSDKMnemonicDictionary"
+          type = "#{lib_prefix}MnemonicDictionary"
         elsif type[/Abi<Optional>/]
           type = "Value<Optional>"
         elsif type[/Abi/]
@@ -192,7 +192,7 @@ class ApiConverter
     properties.each do |property|
       type = generateType(property)
       if property['name'][/^dictionary$/]
-        type = "TSDKMnemonicDictionary"
+        type = "#{lib_prefix}MnemonicDictionary"
       end
       result[1].fields << StructField.new(name: property['name'], type: type, summary: property['summary'], description: property['description'])
     end

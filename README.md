@@ -50,6 +50,18 @@ end
   <summary>Types</summary>
 
 
+- #### MnemonicDictionary
+  - case TON = 0
+  - case ENGLISH = 1
+  - case CHINESE_SIMPLIFIED = 2
+  - case CHINESE_TRADITIONAL = 3
+  - case FRENCH = 4
+  - case ITALIAN = 5
+  - case JAPANESE = 6
+  - case KOREAN = 7
+  - case SPANISH = 8
+
+
 - #### ClientErrorCode
   - case NotImplemented = 1
 
@@ -574,7 +586,7 @@ end
 
 - #### ParamsOfMnemonicWords
    Dictionary identifier
-  - dictionary: TSDKMnemonicDictionary
+  - dictionary: MnemonicDictionary
 
 
 - #### ResultOfMnemonicWords
@@ -584,7 +596,7 @@ end
 
 - #### ParamsOfMnemonicFromRandom
    Dictionary identifier
-  - dictionary: TSDKMnemonicDictionary
+  - dictionary: MnemonicDictionary
 
    Mnemonic word count
   - word_count: Number&lt;Optional&gt;
@@ -601,7 +613,7 @@ end
   - entropy: String
 
    Dictionary identifier
-  - dictionary: TSDKMnemonicDictionary
+  - dictionary: MnemonicDictionary
 
    Mnemonic word count
   - word_count: Number&lt;Optional&gt;
@@ -617,7 +629,7 @@ end
   - phrase: String
 
    Dictionary identifier
-  - dictionary: TSDKMnemonicDictionary
+  - dictionary: MnemonicDictionary
 
    Word count
   - word_count: Number&lt;Optional&gt;
@@ -636,7 +648,7 @@ end
   - path: String&lt;Optional&gt;
 
    Dictionary identifier
-  - dictionary: TSDKMnemonicDictionary
+  - dictionary: MnemonicDictionary
 
    Word count
   - word_count: Number&lt;Optional&gt;
@@ -647,7 +659,7 @@ end
   - phrase: String
 
    Dictionary identifier
-  - dictionary: TSDKMnemonicDictionary
+  - dictionary: MnemonicDictionary
 
    Mnemonic word count
   - word_count: Number&lt;Optional&gt;
@@ -2465,7 +2477,7 @@ end
     # Prints the list of words from the specified dictionary
     def mnemonic_words(payload, &block)
     # INPUT: ParamsOfMnemonicWords
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
 
     # RESPONSE: ResultOfMnemonicWords
     # words: String -     #     # The list of mnemonic words
@@ -2474,7 +2486,7 @@ end
     # Generates a random mnemonic from the specified dictionary and word count
     def mnemonic_from_random(payload, &block)
     # INPUT: ParamsOfMnemonicFromRandom
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number&lt;Optional&gt; -     #     # Mnemonic word count
 
     # RESPONSE: ResultOfMnemonicFromRandom
@@ -2485,7 +2497,7 @@ end
     def mnemonic_from_entropy(payload, &block)
     # INPUT: ParamsOfMnemonicFromEntropy
     # entropy: String -     #     # Entropy bytes.    #     # Hex encoded.
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number&lt;Optional&gt; -     #     # Mnemonic word count
 
     # RESPONSE: ResultOfMnemonicFromEntropy
@@ -2496,7 +2508,7 @@ end
     def mnemonic_verify(payload, &block)
     # INPUT: ParamsOfMnemonicVerify
     # phrase: String -     #     # Phrase
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number&lt;Optional&gt; -     #     # Word count
 
     # RESPONSE: ResultOfMnemonicVerify
@@ -2508,7 +2520,7 @@ end
     # INPUT: ParamsOfMnemonicDeriveSignKeys
     # phrase: String -     #     # Phrase
     # path: String&lt;Optional&gt; -     #     # Derivation path, for instance "m/44'/396'/0'/0/0"
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number&lt;Optional&gt; -     #     # Word count
 
     # RESPONSE: KeyPair
@@ -2520,7 +2532,7 @@ end
     def hdkey_xprv_from_mnemonic(payload, &block)
     # INPUT: ParamsOfHDKeyXPrvFromMnemonic
     # phrase: String -     #     # String with seed phrase
-    # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
+    # dictionary: MnemonicDictionary -     #     # Dictionary identifier
     # word_count: Number&lt;Optional&gt; -     #     # Mnemonic word count
 
     # RESPONSE: ResultOfHDKeyXPrvFromMnemonic

@@ -3,6 +3,7 @@ require 'json'
 require File.dirname(__FILE__) + '/helpers.rb'
 
 class CodeGenerator
+  include InstanceHelpers
 
   attr_accessor :types
   attr_accessor :root_dir
@@ -91,6 +92,9 @@ end
 
     # types
     content << "<details>\n#{TAB}<summary>Types</summary>\n\n"
+    
+    content << "#{customTypes()}\n"
+
     types.modules.each do |mod|
       (mod.enums || []).each do |type|
         content << checkComment(type.summary, 0) if type.summary
@@ -169,6 +173,22 @@ giver_amount=10000000000
   private def checkContent(content)
     content.gsub!(/^([\s]+)# RESPONSE/, "\n\\1# RESPONSE")
     content.gsub(/<Optional>/i, '&lt;Optional&gt;')
+  end
+
+  def customTypes
+    content = %{
+- #### #{lib_prefix}MnemonicDictionary
+#{TAB}- case TON = 0
+#{TAB}- case ENGLISH = 1
+#{TAB}- case CHINESE_SIMPLIFIED = 2
+#{TAB}- case CHINESE_TRADITIONAL = 3
+#{TAB}- case FRENCH = 4
+#{TAB}- case ITALIAN = 5
+#{TAB}- case JAPANESE = 6
+#{TAB}- case KOREAN = 7
+#{TAB}- case SPANISH = 8
+}
+  content
   end
 
   private def checkComment(string, tabs = 1)
