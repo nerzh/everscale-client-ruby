@@ -133,82 +133,82 @@ end
 
 
 - #### ClientConfig
-  - network: NetworkConfig<Optional>
+  - network: NetworkConfig&lt;Optional&gt;
 
-  - crypto: CryptoConfig<Optional>
+  - crypto: CryptoConfig&lt;Optional&gt;
 
   - abi: Value
 
-  - boc: BocConfig<Optional>
+  - boc: BocConfig&lt;Optional&gt;
 
 
 - #### NetworkConfig
    DApp Server public address. For instance, for `net.ton.dev/graphql` GraphQL endpoint the server address will be net.ton.dev
-  - server_address: String<Optional>
+  - server_address: String&lt;Optional&gt;
 
    List of DApp Server addresses.
    Any correct URL format can be specified, including IP addresses This parameter is prevailing over `server_address`.
-  - endpoints: Array<Optional>
+  - endpoints: Array&lt;Optional&gt;
 
    Deprecated.
    You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
-  - network_retries_count: Number<Optional>
+  - network_retries_count: Number&lt;Optional&gt;
 
    Maximum time for sequential reconnections in ms.
    Default value is 120000 (2 min)
-  - max_reconnect_timeout: Number<Optional>
+  - max_reconnect_timeout: Number&lt;Optional&gt;
 
    Deprecated
-  - reconnect_timeout: Number<Optional>
+  - reconnect_timeout: Number&lt;Optional&gt;
 
    The number of automatic message processing retries that SDK performs in case of `Message Expired (507)` error - but only for those messages which local emulation was successful or failed with replay protection error. The default value is 5.
-  - message_retries_count: Number<Optional>
+  - message_retries_count: Number&lt;Optional&gt;
 
    Timeout that is used to process message delivery for the contracts which ABI does not include "expire" header. If the message is not delivered within the specified timeout the appropriate error occurs.
-  - message_processing_timeout: Number<Optional>
+  - message_processing_timeout: Number&lt;Optional&gt;
 
    Maximum timeout that is used for query response. The default value is 40 sec.
-  - wait_for_timeout: Number<Optional>
+  - wait_for_timeout: Number&lt;Optional&gt;
 
    Maximum time difference between server and client.
    If client's device time is out of sync and difference is more than the threshold then error will occur. Also an error will occur if the specified threshold is more than`message_processing_timeout/2`.
    The default value is 15 sec.
-  - out_of_sync_threshold: Number<Optional>
+  - out_of_sync_threshold: Number&lt;Optional&gt;
 
    Maximum number of randomly chosen endpoints the library uses to send message. The default value is 2 endpoints.
-  - sending_endpoint_count: Number<Optional>
+  - sending_endpoint_count: Number&lt;Optional&gt;
 
    Access key to GraphQL API.
    At the moment is not used in production
-  - access_key: String<Optional>
+  - access_key: String&lt;Optional&gt;
 
 
 - #### CryptoConfig
    Mnemonic dictionary that will be used by default in crypto functions. If not specified, 1 dictionary will be used.
-  - mnemonic_dictionary: Number<Optional>
+  - mnemonic_dictionary: Number&lt;Optional&gt;
 
    Mnemonic word count that will be used by default in crypto functions. If not specified the default value will be 12.
-  - mnemonic_word_count: Number<Optional>
+  - mnemonic_word_count: Number&lt;Optional&gt;
 
    Derivation path that will be used by default in crypto functions. If not specified `m/44'/396'/0'/0/0` will be used.
-  - hdkey_derivation_path: String<Optional>
+  - hdkey_derivation_path: String&lt;Optional&gt;
 
 
 - #### AbiConfig
    Workchain id that is used by default in DeploySet
-  - workchain: Number<Optional>
+  - workchain: Number&lt;Optional&gt;
 
    Message lifetime for contracts which ABI includes "expire" header. The default value is 40 sec.
-  - message_expiration_timeout: Number<Optional>
+  - message_expiration_timeout: Number&lt;Optional&gt;
 
    Factor that increases the expiration timeout for each retry The default value is 1.5
-  - message_expiration_timeout_grow_factor: Number<Optional>
+  - message_expiration_timeout_grow_factor: Number&lt;Optional&gt;
 
 
 - #### BocConfig
    Maximum BOC cache size in kilobytes.
    Default is 10 MB
-  - cache_max_size: Number<Optional>
+  - cache_max_size: Number&lt;Optional&gt;
 
 
 - #### BuildInfoDependency
@@ -587,7 +587,7 @@ end
   - dictionary: TSDKMnemonicDictionary
 
    Mnemonic word count
-  - word_count: Number<Optional>
+  - word_count: Number&lt;Optional&gt;
 
 
 - #### ResultOfMnemonicFromRandom
@@ -604,7 +604,7 @@ end
   - dictionary: TSDKMnemonicDictionary
 
    Mnemonic word count
-  - word_count: Number<Optional>
+  - word_count: Number&lt;Optional&gt;
 
 
 - #### ResultOfMnemonicFromEntropy
@@ -620,7 +620,7 @@ end
   - dictionary: TSDKMnemonicDictionary
 
    Word count
-  - word_count: Number<Optional>
+  - word_count: Number&lt;Optional&gt;
 
 
 - #### ResultOfMnemonicVerify
@@ -633,13 +633,13 @@ end
   - phrase: String
 
    Derivation path, for instance "m/44'/396'/0'/0/0"
-  - path: String<Optional>
+  - path: String&lt;Optional&gt;
 
    Dictionary identifier
   - dictionary: TSDKMnemonicDictionary
 
    Word count
-  - word_count: Number<Optional>
+  - word_count: Number&lt;Optional&gt;
 
 
 - #### ParamsOfHDKeyXPrvFromMnemonic
@@ -650,7 +650,7 @@ end
   - dictionary: TSDKMnemonicDictionary
 
    Mnemonic word count
-  - word_count: Number<Optional>
+  - word_count: Number&lt;Optional&gt;
 
 
 - #### ResultOfHDKeyXPrvFromMnemonic
@@ -848,15 +848,15 @@ end
 
 - #### FunctionHeader
    Message expiration time in seconds. If not specified - calculated automatically from message_expiration_timeout(), try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
-  - expire: Number<Optional>
+  - expire: Number&lt;Optional&gt;
 
    Message creation time in milliseconds.
    If not specified, `now` is used (if ABI includes `time` header).
-  - time: BigInt<Optional>
+  - time: BigInt&lt;Optional&gt;
 
    Public key is used by the contract to check the signature.
    Encoded in `hex`. If not specified, method fails with exception (if ABI includes `pubkey` header)..
-  - pubkey: String<Optional>
+  - pubkey: String&lt;Optional&gt;
 
 
 - #### CallSet
@@ -865,7 +865,7 @@ end
 
    Function header.
    If an application omits some header parameters required by thecontract's ABI, the library will set the default values forthem.
-  - header: FunctionHeader<Optional>
+  - header: FunctionHeader&lt;Optional&gt;
 
    Function input parameters according to ABI.
   - input: Value
@@ -877,17 +877,17 @@ end
 
    Target workchain for destination address.
    Default is `0`.
-  - workchain_id: Number<Optional>
+  - workchain_id: Number&lt;Optional&gt;
 
    List of initial values for contract's public variables.
-  - initial_data: Value<Optional>
+  - initial_data: Value&lt;Optional&gt;
 
    Optional public key that can be provided in deploy set in order to substitute one in TVM file or provided by Signer.
    Public key resolving priority:
    1. Public key from deploy set.
    2. Public key, specified in TVM file.
    3. Public key, provided by Signer.
-  - initial_pubkey: String<Optional>
+  - initial_pubkey: String&lt;Optional&gt;
 
 
 - #### Signer
@@ -915,13 +915,13 @@ end
 
    Library BOC.
    Encoded in `base64`.
-  - library: String<Optional>
+  - library: String&lt;Optional&gt;
 
   - tvc: String
 
-  - public_key: String<Optional>
+  - public_key: String&lt;Optional&gt;
 
-  - init_params: StateInitParams<Optional>
+  - init_params: StateInitParams&lt;Optional&gt;
 
 
 - #### StateInitParams
@@ -935,7 +935,7 @@ end
 
   - message: String
 
-  - abi: Abi<Optional>
+  - abi: Abi&lt;Optional&gt;
 
 
 - #### AbiParam
@@ -943,7 +943,7 @@ end
 
   - type: String
 
-  - components: Array<Optional>
+  - components: Array&lt;Optional&gt;
 
 
 - #### AbiEvent
@@ -951,7 +951,7 @@ end
 
   - inputs: Array
 
-  - id: String<Optional>
+  - id: String&lt;Optional&gt;
 
 
 - #### AbiData
@@ -961,7 +961,7 @@ end
 
   - type: String
 
-  - components: Array<Optional>
+  - components: Array&lt;Optional&gt;
 
 
 - #### AbiFunction
@@ -971,19 +971,19 @@ end
 
   - outputs: Array
 
-  - id: String<Optional>
+  - id: String&lt;Optional&gt;
 
 
 - #### AbiContract
-  - abi_version: Number<Optional>
+  - abi_version: Number&lt;Optional&gt;
 
-  - header: Array<Optional>
+  - header: Array&lt;Optional&gt;
 
-  - functions: Array<Optional>
+  - functions: Array&lt;Optional&gt;
 
-  - events: Array<Optional>
+  - events: Array&lt;Optional&gt;
 
-  - data: Array<Optional>
+  - data: Array&lt;Optional&gt;
 
 
 - #### ParamsOfEncodeMessageBody
@@ -1006,7 +1006,7 @@ end
         Encoder uses the provided try index to calculate messageexpiration time.
         Expiration timeouts will grow with every retry.
         Default value is 0.
-  - processing_try_index: Number<Optional>
+  - processing_try_index: Number&lt;Optional&gt;
 
 
 - #### ResultOfEncodeMessageBody
@@ -1016,7 +1016,7 @@ end
    Optional data to sign.
    Encoded with `base64`.
          Presents when `message` is unsigned. Can be used for externalmessage signing. Is this case you need to sing this data andproduce signed message using `abi.attach_signature`.
-  - data_to_sign: String<Optional>
+  - data_to_sign: String&lt;Optional&gt;
 
 
 - #### ParamsOfAttachSignatureToMessageBody
@@ -1046,16 +1046,16 @@ end
 
    Target address the message will be sent to.
    Must be specified in case of non-deploy message.
-  - address: String<Optional>
+  - address: String&lt;Optional&gt;
 
    Deploy parameters.
    Must be specified in case of deploy message.
-  - deploy_set: DeploySet<Optional>
+  - deploy_set: DeploySet&lt;Optional&gt;
 
    Function call parameters.
    Must be specified in case of non-deploy message.
         In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
-  - call_set: CallSet<Optional>
+  - call_set: CallSet&lt;Optional&gt;
 
    Signing parameters.
   - signer: Signer
@@ -1066,7 +1066,7 @@ end
         Expiration timeouts will grow with every retry.
         Retry grow factor is set in Client config:
         <.....add config parameter with default value here>Default value is 0.
-  - processing_try_index: Number<Optional>
+  - processing_try_index: Number&lt;Optional&gt;
 
 
 - #### ResultOfEncodeMessage
@@ -1075,7 +1075,7 @@ end
 
    Optional data to be signed encoded in `base64`.
    Returned in case of `Signer::External`. Can be used for externalmessage signing. Is this case you need to use this data to create signature andthen produce signed message using `abi.attach_signature`.
-  - data_to_sign: String<Optional>
+  - data_to_sign: String&lt;Optional&gt;
 
    Destination address.
   - address: String
@@ -1087,34 +1087,34 @@ end
 - #### ParamsOfEncodeInternalMessage
    Contract ABI.
    Can be None if both deploy_set and call_set are None.
-  - abi: Value<Optional>
+  - abi: Value&lt;Optional&gt;
 
    Target address the message will be sent to.
    Must be specified in case of non-deploy message.
-  - address: String<Optional>
+  - address: String&lt;Optional&gt;
 
    Source address of the message.
-  - src_address: String<Optional>
+  - src_address: String&lt;Optional&gt;
 
    Deploy parameters.
    Must be specified in case of deploy message.
-  - deploy_set: DeploySet<Optional>
+  - deploy_set: DeploySet&lt;Optional&gt;
 
    Function call parameters.
    Must be specified in case of non-deploy message.
         In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
-  - call_set: CallSet<Optional>
+  - call_set: CallSet&lt;Optional&gt;
 
    Value in nanotokens to be sent with message.
   - value: String
 
    Flag of bounceable message.
    Default is true.
-  - bounce: Boolean<Optional>
+  - bounce: Boolean&lt;Optional&gt;
 
    Enable Instant Hypercube Routing for the message.
    Default is false.
-  - enable_ihr: Boolean<Optional>
+  - enable_ihr: Boolean&lt;Optional&gt;
 
 
 - #### ResultOfEncodeInternalMessage
@@ -1166,10 +1166,10 @@ end
   - name: String
 
    Parameters or result value.
-  - value: Value<Optional>
+  - value: Value&lt;Optional&gt;
 
    Function header.
-  - header: FunctionHeader<Optional>
+  - header: FunctionHeader&lt;Optional&gt;
 
 
 - #### ParamsOfDecodeMessageBody
@@ -1188,17 +1188,17 @@ end
   - state_init: StateInitSource
 
    Initial balance.
-  - balance: BigInt<Optional>
+  - balance: BigInt&lt;Optional&gt;
 
    Initial value for the `last_trans_lt`.
-  - last_trans_lt: BigInt<Optional>
+  - last_trans_lt: BigInt&lt;Optional&gt;
 
    Initial value for the `last_paid`.
-  - last_paid: Number<Optional>
+  - last_paid: Number&lt;Optional&gt;
 
    Cache type to put the result.
    The BOC itself returned if no cache type provided
-  - boc_cache: BocCacheType<Optional>
+  - boc_cache: BocCacheType&lt;Optional&gt;
 
 
 - #### ResultOfEncodeAccount
@@ -1305,7 +1305,7 @@ end
 
 - #### ResultOfBocCacheGet
    BOC encoded as base64.
-  - boc: String<Optional>
+  - boc: String&lt;Optional&gt;
 
 
 - #### ParamsOfBocCacheSet
@@ -1327,7 +1327,7 @@ end
 
    Reference to the cached BOC.
    If it is provided then only referenced BOC is unpinned
-  - boc_ref: String<Optional>
+  - boc_ref: String&lt;Optional&gt;
 
 # Cell builder operation.
 - #### BuilderOp
@@ -1354,7 +1354,7 @@ end
   - builder: Array
 
    Cache type to put the result. The BOC itself returned if no cache type provided.
-  - boc_cache: BocCacheType<Optional>
+  - boc_cache: BocCacheType&lt;Optional&gt;
 
 
 - #### ResultOfEncodeBoc
@@ -1430,7 +1430,7 @@ end
   - out_messages: Array
 
    Optional decoded message bodies according to the optional `abi` parameter.
-  - decoded: DecodedOutput<Optional>
+  - decoded: DecodedOutput&lt;Optional&gt;
 
    Transaction fees
   - fees: TransactionFees
@@ -1442,7 +1442,7 @@ end
   - out_messages: Array
 
    Decoded body of the function output message.
-  - output: Value<Optional>
+  - output: Value&lt;Optional&gt;
 
 
 - #### ParamsOfSendMessage
@@ -1453,7 +1453,7 @@ end
    If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
         The `message already expired` error will be returned in thiscase.
         Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
-  - abi: Value<Optional>
+  - abi: Value&lt;Optional&gt;
 
    Flag for requesting events sending
   - send_events: Boolean
@@ -1473,7 +1473,7 @@ end
    Optional ABI for decoding the transaction result.
    If it is specified, then the output messages' bodies will bedecoded according to this ABI.
         The `abi_decoded` result field will be filled out.
-  - abi: Value<Optional>
+  - abi: Value&lt;Optional&gt;
 
    Message BOC.
    Encoded with `base64`.
@@ -1488,7 +1488,7 @@ end
 
    The list of endpoints to which the message was sent.
    You must provide the same value as the `send_message` has returned.
-  - sending_endpoints: Array<Optional>
+  - sending_endpoints: Array&lt;Optional&gt;
 
 
 - #### ParamsOfProcessMessage
@@ -1546,7 +1546,7 @@ end
   - uncompressed: String
 
    Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
-  - level: Number<Optional>
+  - level: Number&lt;Optional&gt;
 
 
 - #### ResultOfCompressZstd
@@ -1607,16 +1607,16 @@ end
 
 - #### ExecutionOptions
    boc with config
-  - blockchain_config: String<Optional>
+  - blockchain_config: String&lt;Optional&gt;
 
    time that is used as transaction time
-  - block_time: Number<Optional>
+  - block_time: Number&lt;Optional&gt;
 
    block logical time
-  - block_lt: BigInt<Optional>
+  - block_lt: BigInt&lt;Optional&gt;
 
    transaction logical time
-  - transaction_lt: BigInt<Optional>
+  - transaction_lt: BigInt&lt;Optional&gt;
 
 
 - #### AccountForExecutor
@@ -1628,7 +1628,7 @@ end
 
    Flag for running account with the unlimited balance.
    Can be used to calculate transaction fees without balance check
-  - unlimited_balance: Boolean<Optional>
+  - unlimited_balance: Boolean&lt;Optional&gt;
 
 
 - #### TransactionFees
@@ -1654,21 +1654,21 @@ end
   - account: AccountForExecutor
 
    Execution options.
-  - execution_options: ExecutionOptions<Optional>
+  - execution_options: ExecutionOptions&lt;Optional&gt;
 
    Contract ABI for decoding output messages
-  - abi: Value<Optional>
+  - abi: Value&lt;Optional&gt;
 
    Skip transaction check flag
-  - skip_transaction_check: Boolean<Optional>
+  - skip_transaction_check: Boolean&lt;Optional&gt;
 
    Cache type to put the result.
    The BOC itself returned if no cache type provided
-  - boc_cache: BocCacheType<Optional>
+  - boc_cache: BocCacheType&lt;Optional&gt;
 
    Return updated account flag.
    Empty string is returned if the flag is `false`
-  - return_updated_account: Boolean<Optional>
+  - return_updated_account: Boolean&lt;Optional&gt;
 
 
 - #### ResultOfRunExecutor
@@ -1681,7 +1681,7 @@ end
   - out_messages: Array
 
    Optional decoded message bodies according to the optional `abi` parameter.
-  - decoded: DecodedOutput<Optional>
+  - decoded: DecodedOutput&lt;Optional&gt;
 
    Updated account state BOC.
    Encoded as `base64`
@@ -1701,18 +1701,18 @@ end
   - account: String
 
    Execution options.
-  - execution_options: ExecutionOptions<Optional>
+  - execution_options: ExecutionOptions&lt;Optional&gt;
 
    Contract ABI for decoding output messages
-  - abi: Value<Optional>
+  - abi: Value&lt;Optional&gt;
 
    Cache type to put the result.
    The BOC itself returned if no cache type provided
-  - boc_cache: BocCacheType<Optional>
+  - boc_cache: BocCacheType&lt;Optional&gt;
 
    Return updated account flag.
    Empty string is returned if the flag is `false`
-  - return_updated_account: Boolean<Optional>
+  - return_updated_account: Boolean&lt;Optional&gt;
 
 
 - #### ResultOfRunTvm
@@ -1721,7 +1721,7 @@ end
   - out_messages: Array
 
    Optional decoded message bodies according to the optional `abi` parameter.
-  - decoded: DecodedOutput<Optional>
+  - decoded: DecodedOutput&lt;Optional&gt;
 
    Updated account state BOC.
    Encoded as `base64`. Attention! Only `account_state.storage.state.data` part of the BOC is updated.
@@ -1739,12 +1739,12 @@ end
   - input: Value
 
    Execution options
-  - execution_options: ExecutionOptions<Optional>
+  - execution_options: ExecutionOptions&lt;Optional&gt;
 
    Convert lists based on nested tuples in the **result** into plain arrays.
    Default is `false`. Input parameters may use any of lists representationsIf you receive this error on Web: "Runtime error. Unreachable code should not be executed...",set this flag to true.
         This may happen, for example, when elector contract contains too many participants
-  - tuple_list_as_array: Boolean<Optional>
+  - tuple_list_as_array: Boolean&lt;Optional&gt;
 
 
 - #### ResultOfRunGet
@@ -1864,10 +1864,10 @@ end
   - result: String
 
    Sorting order
-  - order: Array<Optional>
+  - order: Array&lt;Optional&gt;
 
    Number of documents to return
-  - limit: Number<Optional>
+  - limit: Number&lt;Optional&gt;
 
 
 - #### ResultOfQueryCollection
@@ -1883,7 +1883,7 @@ end
   - filter: Value
 
    Projection (result) string
-  - fields: Array<Optional>
+  - fields: Array&lt;Optional&gt;
 
 
 - #### ResultOfAggregateCollection
@@ -1904,7 +1904,7 @@ end
   - result: String
 
    Query timeout
-  - timeout: Number<Optional>
+  - timeout: Number&lt;Optional&gt;
 
 
 - #### ResultOfWaitForCollection
@@ -1952,10 +1952,10 @@ end
   - result: String
 
    Number of counterparties to return
-  - first: Number<Optional>
+  - first: Number&lt;Optional&gt;
 
    `cursor` field of the last received result
-  - after: String<Optional>
+  - after: String&lt;Optional&gt;
 
 
 - #### DebotErrorCode
@@ -2044,34 +2044,34 @@ end
 
 - #### DebotInfo
    DeBot short name.
-  - name: String<Optional>
+  - name: String&lt;Optional&gt;
 
    DeBot semantic version.
-  - version: String<Optional>
+  - version: String&lt;Optional&gt;
 
    The name of DeBot deployer.
-  - publisher: String<Optional>
+  - publisher: String&lt;Optional&gt;
 
    Short info about DeBot.
-  - caption: String<Optional>
+  - caption: String&lt;Optional&gt;
 
    The name of DeBot developer.
-  - author: String<Optional>
+  - author: String&lt;Optional&gt;
 
    TON address of author for questions and donations.
-  - support: String<Optional>
+  - support: String&lt;Optional&gt;
 
    String with the first messsage from DeBot.
-  - hello: String<Optional>
+  - hello: String&lt;Optional&gt;
 
    String with DeBot interface language (ISO-639).
-  - language: String<Optional>
+  - language: String&lt;Optional&gt;
 
    String with DeBot ABI.
-  - dabi: String<Optional>
+  - dabi: String&lt;Optional&gt;
 
    DeBot icon.
-  - icon: String<Optional>
+  - icon: String&lt;Optional&gt;
 
    Vector with IDs of DInterfaces used by DeBot.
   - interfaces: Array
@@ -2475,7 +2475,7 @@ end
     def mnemonic_from_random(payload, &block)
     # INPUT: ParamsOfMnemonicFromRandom
     # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
-    # word_count: Number<Optional> -     #     # Mnemonic word count
+    # word_count: Number&lt;Optional&gt; -     #     # Mnemonic word count
 
     # RESPONSE: ResultOfMnemonicFromRandom
     # phrase: String -     #     # String of mnemonic words
@@ -2486,7 +2486,7 @@ end
     # INPUT: ParamsOfMnemonicFromEntropy
     # entropy: String -     #     # Entropy bytes.    #     # Hex encoded.
     # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
-    # word_count: Number<Optional> -     #     # Mnemonic word count
+    # word_count: Number&lt;Optional&gt; -     #     # Mnemonic word count
 
     # RESPONSE: ResultOfMnemonicFromEntropy
     # phrase: String -     #     # Phrase
@@ -2497,7 +2497,7 @@ end
     # INPUT: ParamsOfMnemonicVerify
     # phrase: String -     #     # Phrase
     # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
-    # word_count: Number<Optional> -     #     # Word count
+    # word_count: Number&lt;Optional&gt; -     #     # Word count
 
     # RESPONSE: ResultOfMnemonicVerify
     # valid: Boolean -     #     # Flag indicating if the mnemonic is valid or not
@@ -2507,9 +2507,9 @@ end
     def mnemonic_derive_sign_keys(payload, &block)
     # INPUT: ParamsOfMnemonicDeriveSignKeys
     # phrase: String -     #     # Phrase
-    # path: String<Optional> -     #     # Derivation path, for instance "m/44'/396'/0'/0/0"
+    # path: String&lt;Optional&gt; -     #     # Derivation path, for instance "m/44'/396'/0'/0/0"
     # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
-    # word_count: Number<Optional> -     #     # Word count
+    # word_count: Number&lt;Optional&gt; -     #     # Word count
 
     # RESPONSE: KeyPair
     # public: String -     #     # Public key - 64 symbols hex string
@@ -2521,7 +2521,7 @@ end
     # INPUT: ParamsOfHDKeyXPrvFromMnemonic
     # phrase: String -     #     # String with seed phrase
     # dictionary: TSDKMnemonicDictionary -     #     # Dictionary identifier
-    # word_count: Number<Optional> -     #     # Mnemonic word count
+    # word_count: Number&lt;Optional&gt; -     #     # Mnemonic word count
 
     # RESPONSE: ResultOfHDKeyXPrvFromMnemonic
     # xprv: String -     #     # Serialized extended master private key
@@ -2632,14 +2632,14 @@ end
     #   #     # In case of deploy message contains parameters of constructor.
     # is_internal: Boolean -     #     # True if internal message body must be encoded.
     # signer: Signer -     #     # Signing parameters.
-    # processing_try_index: Number<Optional> -     #     # Processing try index.    #     # Used in message processing with retries.
+    # processing_try_index: Number&lt;Optional&gt; -     #     # Processing try index.    #     # Used in message processing with retries.
     #   #     # Encoder uses the provided try index to calculate messageexpiration time.
     #   #     # Expiration timeouts will grow with every retry.
     #   #     # Default value is 0.
 
     # RESPONSE: ResultOfEncodeMessageBody
     # body: String -     #     # Message body BOC encoded with `base64`.
-    # data_to_sign: String<Optional> -     #     # Optional data to sign.    #     # Encoded with `base64`.
+    # data_to_sign: String&lt;Optional&gt; -     #     # Optional data to sign.    #     # Encoded with `base64`.
     #   #     # # Presents when `message` is unsigned. Can be used for externalmessage signing. Is this case you need to sing this data andproduce signed message using `abi.attach_signature`.
 ```
 ```ruby
@@ -2674,12 +2674,12 @@ end
     def encode_message(payload, &block)
     # INPUT: ParamsOfEncodeMessage
     # abi: Value -     #     # Contract ABI.
-    # address: String<Optional> -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
-    # deploy_set: DeploySet<Optional> -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
-    # call_set: CallSet<Optional> -     #     # Function call parameters.    #     # Must be specified in case of non-deploy message.
+    # address: String&lt;Optional&gt; -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
+    # deploy_set: DeploySet&lt;Optional&gt; -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
+    # call_set: CallSet&lt;Optional&gt; -     #     # Function call parameters.    #     # Must be specified in case of non-deploy message.
     #   #     # In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
     # signer: Signer -     #     # Signing parameters.
-    # processing_try_index: Number<Optional> -     #     # Processing try index.    #     # Used in message processing with retries (if contract's ABI includes "expire" header).
+    # processing_try_index: Number&lt;Optional&gt; -     #     # Processing try index.    #     # Used in message processing with retries (if contract's ABI includes "expire" header).
     #   #     # Encoder uses the provided try index to calculate messageexpiration time. The 1st message expiration time is specified inClient config.
     #   #     # Expiration timeouts will grow with every retry.
     #   #     # Retry grow factor is set in Client config:
@@ -2687,7 +2687,7 @@ end
 
     # RESPONSE: ResultOfEncodeMessage
     # message: String -     #     # Message BOC encoded with `base64`.
-    # data_to_sign: String<Optional> -     #     # Optional data to be signed encoded in `base64`.    #     # Returned in case of `Signer::External`. Can be used for externalmessage signing. Is this case you need to use this data to create signature andthen produce signed message using `abi.attach_signature`.
+    # data_to_sign: String&lt;Optional&gt; -     #     # Optional data to be signed encoded in `base64`.    #     # Returned in case of `Signer::External`. Can be used for externalmessage signing. Is this case you need to use this data to create signature andthen produce signed message using `abi.attach_signature`.
     # address: String -     #     # Destination address.
     # message_id: String -     #     # Message id.
 ```
@@ -2702,15 +2702,15 @@ end
     # 2. Public key, specified in TVM file.
     def encode_internal_message(payload, &block)
     # INPUT: ParamsOfEncodeInternalMessage
-    # abi: Value<Optional> -     #     # Contract ABI.    #     # Can be None if both deploy_set and call_set are None.
-    # address: String<Optional> -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
-    # src_address: String<Optional> -     #     # Source address of the message.
-    # deploy_set: DeploySet<Optional> -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
-    # call_set: CallSet<Optional> -     #     # Function call parameters.    #     # Must be specified in case of non-deploy message.
+    # abi: Value&lt;Optional&gt; -     #     # Contract ABI.    #     # Can be None if both deploy_set and call_set are None.
+    # address: String&lt;Optional&gt; -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
+    # src_address: String&lt;Optional&gt; -     #     # Source address of the message.
+    # deploy_set: DeploySet&lt;Optional&gt; -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
+    # call_set: CallSet&lt;Optional&gt; -     #     # Function call parameters.    #     # Must be specified in case of non-deploy message.
     #   #     # In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
     # value: String -     #     # Value in nanotokens to be sent with message.
-    # bounce: Boolean<Optional> -     #     # Flag of bounceable message.    #     # Default is true.
-    # enable_ihr: Boolean<Optional> -     #     # Enable Instant Hypercube Routing for the message.    #     # Default is false.
+    # bounce: Boolean&lt;Optional&gt; -     #     # Flag of bounceable message.    #     # Default is true.
+    # enable_ihr: Boolean&lt;Optional&gt; -     #     # Enable Instant Hypercube Routing for the message.    #     # Default is false.
 
     # RESPONSE: ResultOfEncodeInternalMessage
     # message: String -     #     # Message BOC encoded with `base64`.
@@ -2740,8 +2740,8 @@ end
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
     # name: String -     #     # Function or event name.
-    # value: Value<Optional> -     #     # Parameters or result value.
-    # header: FunctionHeader<Optional> -     #     # Function header.
+    # value: Value&lt;Optional&gt; -     #     # Parameters or result value.
+    # header: FunctionHeader&lt;Optional&gt; -     #     # Function header.
 ```
 ```ruby
     # Decodes message body using provided body BOC and ABI.
@@ -2754,8 +2754,8 @@ end
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
     # name: String -     #     # Function or event name.
-    # value: Value<Optional> -     #     # Parameters or result value.
-    # header: FunctionHeader<Optional> -     #     # Function header.
+    # value: Value&lt;Optional&gt; -     #     # Parameters or result value.
+    # header: FunctionHeader&lt;Optional&gt; -     #     # Function header.
 ```
 ```ruby
     # Creates account state BOC    # Creates account state provided with one of these sets of data :
@@ -2763,10 +2763,10 @@ end
     def encode_account(payload, &block)
     # INPUT: ParamsOfEncodeAccount
     # state_init: StateInitSource -     #     # Source of the account state init.
-    # balance: BigInt<Optional> -     #     # Initial balance.
-    # last_trans_lt: BigInt<Optional> -     #     # Initial value for the `last_trans_lt`.
-    # last_paid: Number<Optional> -     #     # Initial value for the `last_paid`.
-    # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
+    # balance: BigInt&lt;Optional&gt; -     #     # Initial balance.
+    # last_trans_lt: BigInt&lt;Optional&gt; -     #     # Initial value for the `last_trans_lt`.
+    # last_paid: Number&lt;Optional&gt; -     #     # Initial value for the `last_paid`.
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
 
     # RESPONSE: ResultOfEncodeAccount
     # account: String -     #     # Account BOC encoded in `base64`.
@@ -2858,7 +2858,7 @@ end
     # boc_ref: String -     #     # Reference to the cached BOC
 
     # RESPONSE: ResultOfBocCacheGet
-    # boc: String<Optional> -     #     # BOC encoded as base64.
+    # boc: String&lt;Optional&gt; -     #     # BOC encoded as base64.
 ```
 ```ruby
     # Save BOC into cache
@@ -2875,14 +2875,14 @@ end
     def cache_unpin(payload, &block)
     # INPUT: ParamsOfBocCacheUnpin
     # pin: String -     #     # Pinned name
-    # boc_ref: String<Optional> -     #     # Reference to the cached BOC.    #     # If it is provided then only referenced BOC is unpinned
+    # boc_ref: String&lt;Optional&gt; -     #     # Reference to the cached BOC.    #     # If it is provided then only referenced BOC is unpinned
 ```
 ```ruby
     # Encodes BOC from builder operations.
     def encode_boc(payload, &block)
     # INPUT: ParamsOfEncodeBoc
     # builder: Array -     #     # Cell builder operations.
-    # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
 
     # RESPONSE: ResultOfEncodeBoc
     # boc: String -     #     # Encoded cell BOC or BOC cache key.
@@ -2897,7 +2897,7 @@ end
     def send_message(payload, &block)
     # INPUT: ParamsOfSendMessage
     # message: String -     #     # Message BOC.
-    # abi: Value<Optional> -     #     # Optional message ABI.    #     # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
+    # abi: Value&lt;Optional&gt; -     #     # Optional message ABI.    #     # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
     #   #     # The `message already expired` error will be returned in thiscase.
     #   #     # Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
     # send_events: Boolean -     #     # Flag for requesting events sending
@@ -2917,17 +2917,17 @@ end
     # - If maximum block gen time is reached and no result transaction is found,the processing will exit with an error.
     def wait_for_transaction(payload, &block)
     # INPUT: ParamsOfWaitForTransaction
-    # abi: Value<Optional> -     #     # Optional ABI for decoding the transaction result.    #     # If it is specified, then the output messages' bodies will bedecoded according to this ABI.
+    # abi: Value&lt;Optional&gt; -     #     # Optional ABI for decoding the transaction result.    #     # If it is specified, then the output messages' bodies will bedecoded according to this ABI.
     #   #     # The `abi_decoded` result field will be filled out.
     # message: String -     #     # Message BOC.    #     # Encoded with `base64`.
     # shard_block_id: String -     #     # The last generated block id of the destination account shard before the message was sent.    #     # You must provide the same value as the `send_message` has returned.
     # send_events: Boolean -     #     # Flag that enables/disables intermediate events
-    # sending_endpoints: Array<Optional> -     #     # The list of endpoints to which the message was sent.    #     # You must provide the same value as the `send_message` has returned.
+    # sending_endpoints: Array&lt;Optional&gt; -     #     # The list of endpoints to which the message was sent.    #     # You must provide the same value as the `send_message` has returned.
 
     # RESPONSE: ResultOfProcessMessage
     # transaction: Value -     #     # Parsed transaction.    #     # In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
-    # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
+    # decoded: DecodedOutput&lt;Optional&gt; -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
 ```
 ```ruby
@@ -2945,7 +2945,7 @@ end
     # RESPONSE: ResultOfProcessMessage
     # transaction: Value -     #     # Parsed transaction.    #     # In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
-    # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
+    # decoded: DecodedOutput&lt;Optional&gt; -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
 ```
 </details>
@@ -2978,7 +2978,7 @@ end
     def compress_zstd(payload, &block)
     # INPUT: ParamsOfCompressZstd
     # uncompressed: String -     #     # Uncompressed data.    #     # Must be encoded as base64.
-    # level: Number<Optional> -     #     # Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
+    # level: Number&lt;Optional&gt; -     #     # Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
 
     # RESPONSE: ResultOfCompressZstd
     # compressed: String -     #     # Compressed data.    #     # Must be encoded as base64.
@@ -3011,16 +3011,16 @@ end
     # INPUT: ParamsOfRunExecutor
     # message: String -     #     # Input message BOC.    #     # Must be encoded as base64.
     # account: AccountForExecutor -     #     # Account to run on executor
-    # execution_options: ExecutionOptions<Optional> -     #     # Execution options.
-    # abi: Value<Optional> -     #     # Contract ABI for decoding output messages
-    # skip_transaction_check: Boolean<Optional> -     #     # Skip transaction check flag
-    # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
-    # return_updated_account: Boolean<Optional> -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
+    # execution_options: ExecutionOptions&lt;Optional&gt; -     #     # Execution options.
+    # abi: Value&lt;Optional&gt; -     #     # Contract ABI for decoding output messages
+    # skip_transaction_check: Boolean&lt;Optional&gt; -     #     # Skip transaction check flag
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
+    # return_updated_account: Boolean&lt;Optional&gt; -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
 
     # RESPONSE: ResultOfRunExecutor
     # transaction: Value -     #     # Parsed transaction.    #     # In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
-    # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
+    # decoded: DecodedOutput&lt;Optional&gt; -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # account: String -     #     # Updated account state BOC.    #     # Encoded as `base64`
     # fees: TransactionFees -     #     # Transaction fees
 ```
@@ -3034,14 +3034,14 @@ end
     # INPUT: ParamsOfRunTvm
     # message: String -     #     # Input message BOC.    #     # Must be encoded as base64.
     # account: String -     #     # Account BOC.    #     # Must be encoded as base64.
-    # execution_options: ExecutionOptions<Optional> -     #     # Execution options.
-    # abi: Value<Optional> -     #     # Contract ABI for decoding output messages
-    # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
-    # return_updated_account: Boolean<Optional> -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
+    # execution_options: ExecutionOptions&lt;Optional&gt; -     #     # Execution options.
+    # abi: Value&lt;Optional&gt; -     #     # Contract ABI for decoding output messages
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
+    # return_updated_account: Boolean&lt;Optional&gt; -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
 
     # RESPONSE: ResultOfRunTvm
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
-    # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
+    # decoded: DecodedOutput&lt;Optional&gt; -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # account: String -     #     # Updated account state BOC.    #     # Encoded as `base64`. Attention! Only `account_state.storage.state.data` part of the BOC is updated.
 ```
 ```ruby
@@ -3051,8 +3051,8 @@ end
     # account: String -     #     # Account BOC in `base64`
     # function_name: String -     #     # Function name
     # input: Value -     #     # Input parameters
-    # execution_options: ExecutionOptions<Optional> -     #     # Execution options
-    # tuple_list_as_array: Boolean<Optional> -     #     # Convert lists based on nested tuples in the **result** into plain arrays.    #     # Default is `false`. Input parameters may use any of lists representationsIf you receive this error on Web: "Runtime error. Unreachable code should not be executed...",set this flag to true.
+    # execution_options: ExecutionOptions&lt;Optional&gt; -     #     # Execution options
+    # tuple_list_as_array: Boolean&lt;Optional&gt; -     #     # Convert lists based on nested tuples in the **result** into plain arrays.    #     # Default is `false`. Input parameters may use any of lists representationsIf you receive this error on Web: "Runtime error. Unreachable code should not be executed...",set this flag to true.
     #   #     # This may happen, for example, when elector contract contains too many participants
 
     # RESPONSE: ResultOfRunGet
@@ -3090,8 +3090,8 @@ end
     # collection: String -     #     # Collection name (accounts, blocks, transactions, messages, block_signatures)
     # filter: Value -     #     # Collection filter
     # result: String -     #     # Projection (result) string
-    # order: Array<Optional> -     #     # Sorting order
-    # limit: Number<Optional> -     #     # Number of documents to return
+    # order: Array&lt;Optional&gt; -     #     # Sorting order
+    # limit: Number&lt;Optional&gt; -     #     # Number of documents to return
 
     # RESPONSE: ResultOfQueryCollection
     # result: Array -     #     # Objects that match the provided criteria
@@ -3102,7 +3102,7 @@ end
     # INPUT: ParamsOfAggregateCollection
     # collection: String -     #     # Collection name (accounts, blocks, transactions, messages, block_signatures)
     # filter: Value -     #     # Collection filter
-    # fields: Array<Optional> -     #     # Projection (result) string
+    # fields: Array&lt;Optional&gt; -     #     # Projection (result) string
 
     # RESPONSE: ResultOfAggregateCollection
     # values: Value -     #     # Values for requested fields.    #     # Returns an array of strings. Each string refers to the corresponding `fields` item.
@@ -3118,7 +3118,7 @@ end
     # collection: String -     #     # Collection name (accounts, blocks, transactions, messages, block_signatures)
     # filter: Value -     #     # Collection filter
     # result: String -     #     # Projection (result) string
-    # timeout: Number<Optional> -     #     # Query timeout
+    # timeout: Number&lt;Optional&gt; -     #     # Query timeout
 
     # RESPONSE: ResultOfWaitForCollection
     # result: Value -     #     # First found object that matches the provided criteria
@@ -3192,8 +3192,8 @@ end
     # INPUT: ParamsOfQueryCounterparties
     # account: String -     #     # Account address
     # result: String -     #     # Projection (result) string
-    # first: Number<Optional> -     #     # Number of counterparties to return
-    # after: String<Optional> -     #     # `cursor` field of the last received result
+    # first: Number&lt;Optional&gt; -     #     # Number of counterparties to return
+    # after: String&lt;Optional&gt; -     #     # `cursor` field of the last received result
 
     # RESPONSE: ResultOfQueryCollection
     # result: Array -     #     # Objects that match the provided criteria

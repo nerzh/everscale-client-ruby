@@ -159,11 +159,16 @@ giver_amount=10000000000
 **rspec spec/tvm.rb**   
 **rspec spec/utils.rb**
 }
-    content.gsub!(/^([\s]+)# RESPONSE/, "\n\\1# RESPONSE")
+    content = checkContent(content)    
     if File.exists?(readmePath)
         File.delete(readmePath)
     end
     File.open(readmePath, 'w+') { |f| f.write(content) }
+  end
+
+  private def checkContent(content)
+    content.gsub!(/^([\s]+)# RESPONSE/, "\n\\1# RESPONSE")
+    content.gsub(/<Optional>/i, '&lt;Optional&gt;')
   end
 
   private def checkComment(string, tabs = 1)
