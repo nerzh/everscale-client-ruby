@@ -137,7 +137,7 @@ end
 
   - crypto: CryptoConfig<Optional>
 
-  - abi: AbiConfig<Optional>
+  - abi: Value
 
   - boc: BocConfig<Optional>
 
@@ -925,7 +925,7 @@ end
 
 
 - #### StateInitParams
-  - abi: Abi
+  - abi: Value
 
   - value: Value
 
@@ -988,7 +988,7 @@ end
 
 - #### ParamsOfEncodeMessageBody
    Contract ABI.
-  - abi: Abi
+  - abi: Value
 
    Function call parameters.
    Must be specified in non deploy message.
@@ -1021,7 +1021,7 @@ end
 
 - #### ParamsOfAttachSignatureToMessageBody
    Contract ABI
-  - abi: Abi
+  - abi: Value
 
    Public key.
    Must be encoded with `hex`.
@@ -1042,7 +1042,7 @@ end
 
 - #### ParamsOfEncodeMessage
    Contract ABI.
-  - abi: Abi
+  - abi: Value
 
    Target address the message will be sent to.
    Must be specified in case of non-deploy message.
@@ -1087,7 +1087,7 @@ end
 - #### ParamsOfEncodeInternalMessage
    Contract ABI.
    Can be None if both deploy_set and call_set are None.
-  - abi: Abi<Optional>
+  - abi: Value<Optional>
 
    Target address the message will be sent to.
    Must be specified in case of non-deploy message.
@@ -1130,7 +1130,7 @@ end
 
 - #### ParamsOfAttachSignature
    Contract ABI
-  - abi: Abi
+  - abi: Value
 
    Public key encoded in `hex`.
   - public_key: String
@@ -1152,7 +1152,7 @@ end
 
 - #### ParamsOfDecodeMessage
    contract ABI
-  - abi: Abi
+  - abi: Value
 
    Message BOC
   - message: String
@@ -1174,7 +1174,7 @@ end
 
 - #### ParamsOfDecodeMessageBody
    Contract ABI used to decode.
-  - abi: Abi
+  - abi: Value
 
    Message body BOC encoded in `base64`.
   - body: String
@@ -1453,7 +1453,7 @@ end
    If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
         The `message already expired` error will be returned in thiscase.
         Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
-  - abi: Abi<Optional>
+  - abi: Value<Optional>
 
    Flag for requesting events sending
   - send_events: Boolean
@@ -1473,7 +1473,7 @@ end
    Optional ABI for decoding the transaction result.
    If it is specified, then the output messages' bodies will bedecoded according to this ABI.
         The `abi_decoded` result field will be filled out.
-  - abi: Abi<Optional>
+  - abi: Value<Optional>
 
    Message BOC.
    Encoded with `base64`.
@@ -1657,7 +1657,7 @@ end
   - execution_options: ExecutionOptions<Optional>
 
    Contract ABI for decoding output messages
-  - abi: Abi<Optional>
+  - abi: Value<Optional>
 
    Skip transaction check flag
   - skip_transaction_check: Boolean<Optional>
@@ -1704,7 +1704,7 @@ end
   - execution_options: ExecutionOptions<Optional>
 
    Contract ABI for decoding output messages
-  - abi: Abi<Optional>
+  - abi: Value<Optional>
 
    Cache type to put the result.
    The BOC itself returned if no cache type provided
@@ -2627,7 +2627,7 @@ end
     # Encodes message body according to ABI function call.
     def encode_message_body(payload, &block)
     # INPUT: ParamsOfEncodeMessageBody
-    # abi: Abi -     #     # Contract ABI.
+    # abi: Value -     #     # Contract ABI.
     # call_set: CallSet -     #     # Function call parameters.    #     # Must be specified in non deploy message.
     #   #     # In case of deploy message contains parameters of constructor.
     # is_internal: Boolean -     #     # True if internal message body must be encoded.
@@ -2646,7 +2646,7 @@ end
 
     def attach_signature_to_message_body(payload, &block)
     # INPUT: ParamsOfAttachSignatureToMessageBody
-    # abi: Abi -     #     # Contract ABI
+    # abi: Value -     #     # Contract ABI
     # public_key: String -     #     # Public key.    #     # Must be encoded with `hex`.
     # message: String -     #     # Unsigned message body BOC.    #     # Must be encoded with `base64`.
     # signature: String -     #     # Signature.    #     # Must be encoded with `hex`.
@@ -2673,7 +2673,7 @@ end
     # 3. Public key, provided by signer.
     def encode_message(payload, &block)
     # INPUT: ParamsOfEncodeMessage
-    # abi: Abi -     #     # Contract ABI.
+    # abi: Value -     #     # Contract ABI.
     # address: String<Optional> -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
     # deploy_set: DeploySet<Optional> -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
     # call_set: CallSet<Optional> -     #     # Function call parameters.    #     # Must be specified in case of non-deploy message.
@@ -2702,7 +2702,7 @@ end
     # 2. Public key, specified in TVM file.
     def encode_internal_message(payload, &block)
     # INPUT: ParamsOfEncodeInternalMessage
-    # abi: Abi<Optional> -     #     # Contract ABI.    #     # Can be None if both deploy_set and call_set are None.
+    # abi: Value<Optional> -     #     # Contract ABI.    #     # Can be None if both deploy_set and call_set are None.
     # address: String<Optional> -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
     # src_address: String<Optional> -     #     # Source address of the message.
     # deploy_set: DeploySet<Optional> -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
@@ -2721,7 +2721,7 @@ end
     # Combines `hex`-encoded `signature` with `base64`-encoded `unsigned_message`. Returns signed message encoded in `base64`.
     def attach_signature(payload, &block)
     # INPUT: ParamsOfAttachSignature
-    # abi: Abi -     #     # Contract ABI
+    # abi: Value -     #     # Contract ABI
     # public_key: String -     #     # Public key encoded in `hex`.
     # message: String -     #     # Unsigned message BOC encoded in `base64`.
     # signature: String -     #     # Signature encoded in `hex`.
@@ -2734,7 +2734,7 @@ end
     # Decodes message body using provided message BOC and ABI.
     def decode_message(payload, &block)
     # INPUT: ParamsOfDecodeMessage
-    # abi: Abi -     #     # contract ABI
+    # abi: Value -     #     # contract ABI
     # message: String -     #     # Message BOC
 
     # RESPONSE: DecodedMessageBody
@@ -2747,7 +2747,7 @@ end
     # Decodes message body using provided body BOC and ABI.
     def decode_message_body(payload, &block)
     # INPUT: ParamsOfDecodeMessageBody
-    # abi: Abi -     #     # Contract ABI used to decode.
+    # abi: Value -     #     # Contract ABI used to decode.
     # body: String -     #     # Message body BOC encoded in `base64`.
     # is_internal: Boolean -     #     # True if the body belongs to the internal message.
 
@@ -2897,7 +2897,7 @@ end
     def send_message(payload, &block)
     # INPUT: ParamsOfSendMessage
     # message: String -     #     # Message BOC.
-    # abi: Abi<Optional> -     #     # Optional message ABI.    #     # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
+    # abi: Value<Optional> -     #     # Optional message ABI.    #     # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
     #   #     # The `message already expired` error will be returned in thiscase.
     #   #     # Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
     # send_events: Boolean -     #     # Flag for requesting events sending
@@ -2917,7 +2917,7 @@ end
     # - If maximum block gen time is reached and no result transaction is found,the processing will exit with an error.
     def wait_for_transaction(payload, &block)
     # INPUT: ParamsOfWaitForTransaction
-    # abi: Abi<Optional> -     #     # Optional ABI for decoding the transaction result.    #     # If it is specified, then the output messages' bodies will bedecoded according to this ABI.
+    # abi: Value<Optional> -     #     # Optional ABI for decoding the transaction result.    #     # If it is specified, then the output messages' bodies will bedecoded according to this ABI.
     #   #     # The `abi_decoded` result field will be filled out.
     # message: String -     #     # Message BOC.    #     # Encoded with `base64`.
     # shard_block_id: String -     #     # The last generated block id of the destination account shard before the message was sent.    #     # You must provide the same value as the `send_message` has returned.
@@ -3012,7 +3012,7 @@ end
     # message: String -     #     # Input message BOC.    #     # Must be encoded as base64.
     # account: AccountForExecutor -     #     # Account to run on executor
     # execution_options: ExecutionOptions<Optional> -     #     # Execution options.
-    # abi: Abi<Optional> -     #     # Contract ABI for decoding output messages
+    # abi: Value<Optional> -     #     # Contract ABI for decoding output messages
     # skip_transaction_check: Boolean<Optional> -     #     # Skip transaction check flag
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
     # return_updated_account: Boolean<Optional> -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
@@ -3035,7 +3035,7 @@ end
     # message: String -     #     # Input message BOC.    #     # Must be encoded as base64.
     # account: String -     #     # Account BOC.    #     # Must be encoded as base64.
     # execution_options: ExecutionOptions<Optional> -     #     # Execution options.
-    # abi: Abi<Optional> -     #     # Contract ABI for decoding output messages
+    # abi: Value<Optional> -     #     # Contract ABI for decoding output messages
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
     # return_updated_account: Boolean<Optional> -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
 

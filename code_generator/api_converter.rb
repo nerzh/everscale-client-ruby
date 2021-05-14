@@ -116,6 +116,10 @@ class ApiConverter
           type = "Value"
         elsif (field['name'] || "")[/^dictionary$/]
           type = "TSDKMnemonicDictionary"
+        elsif type[/Abi<Optional>/]
+          type = "Value<Optional>"
+        elsif type[/Abi/]
+          type = "Value"
         end
         property = StructField.new(name: checkPropertyName(field['name']), type: type, summary: field['summary'], description: field['description'])
         result.fields << property

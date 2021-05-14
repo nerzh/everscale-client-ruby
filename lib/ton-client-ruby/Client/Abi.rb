@@ -12,7 +12,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfEncodeMessageBody
-    # abi: Abi -     #     # Contract ABI.
+    # abi: Value -     #     # Contract ABI.
     # call_set: CallSet -     #     # Function call parameters.    #     # Must be specified in non deploy message.
     # In case of deploy message contains parameters of constructor.
     # is_internal: Boolean -     #     # True if internal message body must be encoded.
@@ -30,7 +30,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfAttachSignatureToMessageBody
-    # abi: Abi -     #     # Contract ABI
+    # abi: Value -     #     # Contract ABI
     # public_key: String -     #     # Public key.    #     # Must be encoded with `hex`.
     # message: String -     #     # Unsigned message body BOC.    #     # Must be encoded with `base64`.
     # signature: String -     #     # Signature.    #     # Must be encoded with `hex`.
@@ -41,7 +41,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfEncodeMessage
-    # abi: Abi -     #     # Contract ABI.
+    # abi: Value -     #     # Contract ABI.
     # address: String<Optional> -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
     # deploy_set: DeploySet<Optional> -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
     # call_set: CallSet<Optional> -     #     # Function call parameters.    #     # Must be specified in case of non-deploy message.
@@ -62,7 +62,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfEncodeInternalMessage
-    # abi: Abi<Optional> -     #     # Contract ABI.    #     # Can be None if both deploy_set and call_set are None.
+    # abi: Value<Optional> -     #     # Contract ABI.    #     # Can be None if both deploy_set and call_set are None.
     # address: String<Optional> -     #     # Target address the message will be sent to.    #     # Must be specified in case of non-deploy message.
     # src_address: String<Optional> -     #     # Source address of the message.
     # deploy_set: DeploySet<Optional> -     #     # Deploy parameters.    #     # Must be specified in case of deploy message.
@@ -80,7 +80,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfAttachSignature
-    # abi: Abi -     #     # Contract ABI
+    # abi: Value -     #     # Contract ABI
     # public_key: String -     #     # Public key encoded in `hex`.
     # message: String -     #     # Unsigned message BOC encoded in `base64`.
     # signature: String -     #     # Signature encoded in `hex`.
@@ -92,7 +92,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfDecodeMessage
-    # abi: Abi -     #     # contract ABI
+    # abi: Value -     #     # contract ABI
     # message: String -     #     # Message BOC
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
@@ -104,7 +104,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfDecodeMessageBody
-    # abi: Abi -     #     # Contract ABI used to decode.
+    # abi: Value -     #     # Contract ABI used to decode.
     # body: String -     #     # Message body BOC encoded in `base64`.
     # is_internal: Boolean -     #     # True if the body belongs to the internal message.
     # RESPONSE: DecodedMessageBody

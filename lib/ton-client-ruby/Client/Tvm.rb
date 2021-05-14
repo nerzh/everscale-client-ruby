@@ -15,7 +15,7 @@ module TonClient
     # message: String -     #     # Input message BOC.    #     # Must be encoded as base64.
     # account: AccountForExecutor -     #     # Account to run on executor
     # execution_options: ExecutionOptions<Optional> -     #     # Execution options.
-    # abi: Abi<Optional> -     #     # Contract ABI for decoding output messages
+    # abi: Value<Optional> -     #     # Contract ABI for decoding output messages
     # skip_transaction_check: Boolean<Optional> -     #     # Skip transaction check flag
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
     # return_updated_account: Boolean<Optional> -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
@@ -33,7 +33,7 @@ module TonClient
     # message: String -     #     # Input message BOC.    #     # Must be encoded as base64.
     # account: String -     #     # Account BOC.    #     # Must be encoded as base64.
     # execution_options: ExecutionOptions<Optional> -     #     # Execution options.
-    # abi: Abi<Optional> -     #     # Contract ABI for decoding output messages
+    # abi: Value<Optional> -     #     # Contract ABI for decoding output messages
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
     # return_updated_account: Boolean<Optional> -     #     # Return updated account flag.    #     # Empty string is returned if the flag is `false`
     # RESPONSE: ResultOfRunTvm

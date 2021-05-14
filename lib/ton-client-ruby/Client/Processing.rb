@@ -13,7 +13,7 @@ module TonClient
 
     # INPUT: ParamsOfSendMessage
     # message: String -     #     # Message BOC.
-    # abi: Abi<Optional> -     #     # Optional message ABI.    #     # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
+    # abi: Value<Optional> -     #     # Optional message ABI.    #     # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
     # The `message already expired` error will be returned in thiscase.
     # Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
     # send_events: Boolean -     #     # Flag for requesting events sending
@@ -25,7 +25,7 @@ module TonClient
     end
 
     # INPUT: ParamsOfWaitForTransaction
-    # abi: Abi<Optional> -     #     # Optional ABI for decoding the transaction result.    #     # If it is specified, then the output messages' bodies will bedecoded according to this ABI.
+    # abi: Value<Optional> -     #     # Optional ABI for decoding the transaction result.    #     # If it is specified, then the output messages' bodies will bedecoded according to this ABI.
     # The `abi_decoded` result field will be filled out.
     # message: String -     #     # Message BOC.    #     # Encoded with `base64`.
     # shard_block_id: String -     #     # The last generated block id of the destination account shard before the message was sent.    #     # You must provide the same value as the `send_message` has returned.
