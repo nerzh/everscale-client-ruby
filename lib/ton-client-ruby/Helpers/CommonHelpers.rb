@@ -1,4 +1,31 @@
 
+module TonClient
+
+  def self.read_abi(path_to_file)
+    file = File.read(path_to_file)
+    JSON.parse(file)
+  end
+
+  def self.read_tvc(path_to_file)
+    data = File.open(path_to_file).read
+    # Encode the puppy
+    encoded = Base64.encode64(data)
+    # Spit it out into one continous string
+    encoded.gsub(/\n/, '')
+  end
+
+  def self.callLibraryMethodSync(method, *args)
+    responses = []
+    queue = Queue.new
+    method.call(*args) do |response|
+      responses << response
+      queue.push 1 if response.finished == true
+    end
+    queue.pop
+    yield(responses) if block_given?
+  end
+end
+
 module CommonClassHelpers
   
   def class_attr_accessor(*names)
