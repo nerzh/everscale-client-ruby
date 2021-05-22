@@ -34,4 +34,5 @@ elsif ARGV[0] == 'setup'
   system("cd #{GEM_DIR}/TON-SDK && git pull --ff-only")
   system("cd #{GEM_DIR}/TON-SDK && cargo update")
   system("cd #{GEM_DIR}/TON-SDK && cargo build --release")
+  puts "PATH TO YOR DYNAMIC LIBRARY IS: #{GEM_DIR}/TON-SDK/target/release/libton_client.dylib"
 end

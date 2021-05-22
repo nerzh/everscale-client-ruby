@@ -1,8 +1,11 @@
+require 'bundler/setup'
+Bundler.setup
 require 'ffi'
 require "base64"
 require 'json'
 require 'byebug'
 require 'dotenv'
+require 'fileutils'
 require 'ton-client-ruby/Helpers/CommonHelpers.rb'
 require 'ton-client-ruby/Binding/struct.rb'
 require 'ton-client-ruby/Binding/binding.rb'

@@ -1,8 +1,3 @@
-require 'bundler/setup'
-require 'json'
-require 'fileutils'
-Bundler.setup
-
 require 'ton-client-ruby' # and any other gems you need
 
 include CommonInstanceHelpers

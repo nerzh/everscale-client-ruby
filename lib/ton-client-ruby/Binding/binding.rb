@@ -147,14 +147,11 @@ module TonClient
       end
 
       if string[:content].address > 1
-        # string = string[:content].read_string(string[:len]).force_encoding('UTF-8') + ''
-        # tc_destroy_string(tc_string_handle) if is_ref
-        # return string
-        return string[:content].read_string(string[:len]).force_encoding('UTF-8') + ''
+        string = string[:content].read_string(string[:len]).force_encoding('UTF-8') + ''
+        tc_destroy_string(tc_string_handle) if is_ref
+        return string
       end
       nil
-    ensure
-      tc_destroy_string(tc_string_handle) if is_ref
     end
 
     def self.read_string_to_hash(tc_string_handle_t_ref)
