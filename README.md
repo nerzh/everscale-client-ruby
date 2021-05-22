@@ -13,6 +13,7 @@ gem install ton-client-ruby
 Install TON-SDK
 ```bash
 ton-client-ruby setup
+# result - path to dylib file for ton-client-ruby configuration  
 ```
 
 ### Manual build FreeTON SDK
