@@ -30,7 +30,9 @@ elsif ARGV[0] == 'update' && ARGV[1] == nil
   p 'soon from github'
 elsif ARGV[0] == 'setup'
   raise "\nPLEASE INSTALL RUST TO YOUR SYSTEM. \nTry this command: \ncurl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh" if `which rustc`.strip.empty?
-  system("cd #{GEM_DIR} && git clone https://github.com/tonlabs/TON-SDK ./TON-SDK")
+  unless Dir.exist?("#{GEM_DIR}/TON-SDK")
+    system("cd #{GEM_DIR} && git clone https://github.com/tonlabs/TON-SDK ./TON-SDK")
+  end
   system("cd #{GEM_DIR}/TON-SDK && git pull --ff-only")
   system("cd #{GEM_DIR}/TON-SDK && cargo update")
   system("cd #{GEM_DIR}/TON-SDK && cargo build --release")

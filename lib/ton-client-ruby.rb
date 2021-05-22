@@ -1,5 +1,3 @@
-require 'bundler/setup'
-Bundler.setup
 require 'ffi'
 require "base64"
 require 'json'
