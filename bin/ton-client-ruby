@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require File.dirname(__FILE__) + '/../code_generator/api_converter.rb'
-require File.dirname(__FILE__) + '/../code_generator/code_generator.rb'
+require File.dirname(__FILE__) + '/../lib/code_generator/api_converter.rb'
+require File.dirname(__FILE__) + '/../lib/code_generator/code_generator.rb'
 
 GEM_DIR = File.dirname(__FILE__) + '/..'
 
