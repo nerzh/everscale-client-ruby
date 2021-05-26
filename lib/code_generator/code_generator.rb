@@ -58,6 +58,7 @@ gem install ton-client-ruby
 Install TON-SDK
 ```bash
 ton-client-ruby setup
+# result - path to dylib file for ton-client-ruby configuration
 ```
 
 ### Manual build FreeTON SDK
@@ -162,6 +163,12 @@ giver_amount=10000000000
 **rspec spec/processing.rb**   
 **rspec spec/tvm.rb**   
 **rspec spec/utils.rb**
+
+\n## Update\n\n
+```\n
+curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json\n\n
+ton-client-ruby update api.json\n 
+```\n 
 }
     content = checkContent(content)    
     if File.exists?(readmePath)
