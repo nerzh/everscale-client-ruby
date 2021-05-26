@@ -13,7 +13,7 @@ gem install ton-client-ruby
 Install TON-SDK
 ```bash
 ton-client-ruby setup
-# result - path to dylib file for ton-client-ruby configuration  
+# result - path to dylib file for ton-client-ruby configuration
 ```
 
 ### Manual build FreeTON SDK
@@ -167,32 +167,46 @@ end
    You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
   - network_retries_count: Number&lt;Optional&gt;
 
-   Maximum time for sequential reconnections in ms.
-   Default value is 120000 (2 min)
+   Maximum time for sequential reconnections.
+   Must be specified in milliseconds. Default is 120000 (2 min).
   - max_reconnect_timeout: Number&lt;Optional&gt;
 
    Deprecated
   - reconnect_timeout: Number&lt;Optional&gt;
 
-   The number of automatic message processing retries that SDK performs in case of `Message Expired (507)` error - but only for those messages which local emulation was successful or failed with replay protection error. The default value is 5.
+   The number of automatic message processing retries that SDK performs in case of `Message Expired (507)` error - but only for those messages which local emulation was successful or failed with replay protection error.
+   Default is 5.
   - message_retries_count: Number&lt;Optional&gt;
 
    Timeout that is used to process message delivery for the contracts which ABI does not include "expire" header. If the message is not delivered within the specified timeout the appropriate error occurs.
+   Must be specified in milliseconds. Default is 40000 (40 sec).
   - message_processing_timeout: Number&lt;Optional&gt;
 
-   Maximum timeout that is used for query response. The default value is 40 sec.
+   Maximum timeout that is used for query response.
+   Must be specified in milliseconds. Default is 40000 (40 sec).
   - wait_for_timeout: Number&lt;Optional&gt;
 
    Maximum time difference between server and client.
    If client's device time is out of sync and difference is more than the threshold then error will occur. Also an error will occur if the specified threshold is more than`message_processing_timeout/2`.
-   The default value is 15 sec.
+   Must be specified in milliseconds. Default is 15000 (15 sec).
   - out_of_sync_threshold: Number&lt;Optional&gt;
 
-   Maximum number of randomly chosen endpoints the library uses to send message. The default value is 2 endpoints.
+   Maximum number of randomly chosen endpoints the library uses to broadcast a message.
+   Default is 2.
   - sending_endpoint_count: Number&lt;Optional&gt;
 
+   Frequency of sync latency detection.
+   Library periodically checks the current endpoint for blockchain data syncronization latency.
+   If the latency (time-lag) is less then `NetworkConfig.max_latency`then library selects another endpoint.
+   Must be specified in milliseconds. Default is 60000 (1 min).
+  - latency_detection_interval: Number&lt;Optional&gt;
+
+   Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data syncronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
+   Must be specified in milliseconds. Default is 60000 (1 min).
+  - max_latency: Number&lt;Optional&gt;
+
    Access key to GraphQL API.
-   At the moment is not used in production
+   At the moment is not used in production.
   - access_key: String&lt;Optional&gt;
 
 
@@ -968,7 +982,7 @@ end
 
 
 - #### AbiData
-  - key: BigInt
+  - key: Number
 
   - name: String
 
@@ -1841,6 +1855,59 @@ end
   - fn: AggregationFn
 
 
+- #### TransactionNode
+   Transaction id.
+  - id: String
+
+   In message id.
+  - in_msg: String
+
+   Out message ids.
+  - out_msgs: Array
+
+   Account address.
+  - account_addr: String
+
+   Transactions total fees.
+  - total_fees: String
+
+   Aborted flag.
+  - aborted: Boolean
+
+   Compute phase exit code.
+  - exit_code: Number&lt;Optional&gt;
+
+
+- #### MessageNode
+   Message id.
+  - id: String
+
+   Source transaction id.
+   This field is missing for an external inbound messages.
+  - src_transaction_id: String&lt;Optional&gt;
+
+   Destination transaction id.
+   This field is missing for an external outbound messages.
+  - dst_transaction_id: String&lt;Optional&gt;
+
+   Source address.
+  - src: String&lt;Optional&gt;
+
+   Destination address.
+  - dst: String&lt;Optional&gt;
+
+   Transferred tokens value.
+  - value: String&lt;Optional&gt;
+
+   Bounce flag.
+  - bounce: Boolean
+
+   Decoded body.
+   Library tries to decode message body using provided `params.abi_registry`.
+   This field will be missing if none of the provided abi can be used to decode.
+  - decoded_body: DecodedMessageBody&lt;Optional&gt;
+
+
 - #### ParamsOfQuery
    GraphQL query text.
   - query: String
@@ -1957,6 +2024,14 @@ end
   - endpoints: Array
 
 
+- #### ResultOfGetEndpoints
+   Current query endpoint
+  - query: String
+
+   List of all endpoints used by client
+  - endpoints: Array
+
+
 - #### ParamsOfQueryCounterparties
    Account address
   - account: String
@@ -1969,6 +2044,22 @@ end
 
    `cursor` field of the last received result
   - after: String&lt;Optional&gt;
+
+
+- #### ParamsOfQueryTransactionTree
+   Input message id.
+  - in_msg: String
+
+   List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
+  - abi_registry: Array&lt;Optional&gt;
+
+
+- #### ResultOfQueryTransactionTree
+   Messages.
+  - messages: Array
+
+   Transactions.
+  - transactions: Array
 
 
 - #### DebotErrorCode
@@ -2110,6 +2201,9 @@ end
 
    Public key from keypair that was used to sign external message.
   - signkey: String
+
+   Signing box handle used to sign external message.
+  - signing_box_handle: Number
 
 
 - #### Spending
@@ -3012,13 +3106,20 @@ end
 
 ```ruby
     # Emulates all the phases of contract execution locally    # Performs all the phases of contract execution on Transaction Executor -the same component that is used on Validator Nodes.
-    # Can be used for contract debugginh, to find out the reason why message was not delivered successfully - because Validators just throw away the failed external inbound messages, here you can catch them.
-    # Another use case is to estimate fees for message execution. Set  `AccountForExecutor::Account.unlimited_balance`to `true` so that emulation will not depend on the actual balance.
-    # One more use case - you can produce the sequence of operations,thus emulating the multiple contract calls locally.
+    # Can be used for contract debugging, to find out the reason why a message was not delivered successfully.
+    # Validators throw away the failed external inbound messages (if they failed bedore `ACCEPT`) in the real network.
+    # This is why these messages are impossible to debug in the real network.
+    # With the help of run_executor you can do that. In fact, `process_message` functionperforms local check with `run_executor` if there was no transaction as a result of processingand returns the error, if there is one.
+    # Another use case to use `run_executor` is to estimate fees for message execution.
+    # Set  `AccountForExecutor::Account.unlimited_balance`to `true` so that emulation will not depend on the actual balance.
+    # This may be needed to calculate deploy fees for an account that does not exist yet.
+    # JSON with fees is in `fees` field of the result.
+    # One more use case - you can produce the sequence of operations,thus emulating the sequential contract calls locally.
     # And so on.
-    # To get the account BOC (bag of cells) - use `net.query` method to download it from GraphQL API(field `boc` of `account`) or generate it with `abi.encode_account` method.
-    # To get the message BOC - use `abi.encode_message` or prepare it any other way, for instance, with FIFT script.
-    # If you need this emulation to be as precise as possible then specify `ParamsOfRunExecutor` parameter.
+    # Transaction executor requires account BOC (bag of cells) as a parameter.
+    # To get the account BOC - use `net.query` method to download it from GraphQL API(field `boc` of `account`) or generate it with `abi.encode_account` method.
+    # Also it requires message BOC. To get the message BOC - use `abi.encode_message` or `abi.encode_internal_message`.
+    # If you need this emulation to be as precise as possible (for instance - emulate transactionwith particular lt in particular block or use particular blockchain config,in case you want to download it from a particular key block - then specify `ParamsOfRunExecutor` parameter.
     # If you need to see the aborted transaction as a result, not as an error, set `skip_transaction_check` to `true`.
     def run_executor(payload, &block)
     # INPUT: ParamsOfRunExecutor
@@ -3200,6 +3301,14 @@ end
     # endpoints: Array -     #     # List of endpoints provided by server
 ```
 ```ruby
+    # Requests the list of alternative endpoints from server
+    def get_endpoints(&block)
+
+    # RESPONSE: ResultOfGetEndpoints
+    # query: String -     #     # Current query endpoint
+    # endpoints: Array -     #     # List of all endpoints used by client
+```
+```ruby
     # Allows to query and paginate through the list of accounts that the specified account has interacted with, sorted by the time of the last internal message between accounts    # *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in TON OS SE (will be supported in SE in future),but is always accessible via [TON OS Devnet/Mainnet Clouds](https://docs.ton.dev/86757ecb2/p/85c869-networks)
     def query_counterparties(payload, &block)
     # INPUT: ParamsOfQueryCounterparties
@@ -3210,6 +3319,23 @@ end
 
     # RESPONSE: ResultOfQueryCollection
     # result: Array -     #     # Objects that match the provided criteria
+```
+```ruby
+    # Returns transactions tree for specific message.    # Performs recursive retrieval of the transactions tree produced by the specific message:
+    # in_msg -> dst_transaction -> out_messages -> dst_transaction -> ...
+    # All retrieved messages and transactions will be includedinto `result.messages` and `result.transactions` respectively.
+    # The retrieval process will stop when the retrieved transaction count is more than 50.
+    # It is guaranteed that each message in `result.messages` has the corresponding transactionin the `result.transactions`.
+    # But there are no guaranties that all messages from transactions `out_msgs` arepresented in `result.messages`.
+    # So the application have to continue retrieval for missing messages if it requires.
+    def query_transaction_tree(payload, &block)
+    # INPUT: ParamsOfQueryTransactionTree
+    # in_msg: String -     #     # Input message id.
+    # abi_registry: Array&lt;Optional&gt; -     #     # List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
+
+    # RESPONSE: ResultOfQueryTransactionTree
+    # messages: Array -     #     # Messages.
+    # transactions: Array -     #     # Transactions.
 ```
 </details>
 
@@ -3295,3 +3421,17 @@ giver_amount=10000000000
 **rspec spec/processing.rb**   
 **rspec spec/tvm.rb**   
 **rspec spec/utils.rb**
+
+
+## Update
+
+
+```
+
+curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
+
+
+ton-client-ruby update api.json
+ 
+```
+ 

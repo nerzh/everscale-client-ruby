@@ -106,6 +106,13 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # RESPONSE: ResultOfGetEndpoints
+    # query: String -     #     # Current query endpoint
+    # endpoints: Array -     #     # List of all endpoints used by client
+    def get_endpoints(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+    end
+
     # INPUT: ParamsOfQueryCounterparties
     # account: String -     #     # Account address
     # result: String -     #     # Projection (result) string
@@ -114,6 +121,16 @@ module TonClient
     # RESPONSE: ResultOfQueryCollection
     # result: Array -     #     # Objects that match the provided criteria
     def query_counterparties(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfQueryTransactionTree
+    # in_msg: String -     #     # Input message id.
+    # abi_registry: Array<Optional> -     #     # List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
+    # RESPONSE: ResultOfQueryTransactionTree
+    # messages: Array -     #     # Messages.
+    # transactions: Array -     #     # Transactions.
+    def query_transaction_tree(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
