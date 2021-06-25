@@ -127,6 +127,8 @@ module TonClient
     # INPUT: ParamsOfQueryTransactionTree
     # in_msg: String -     #     # Input message id.
     # abi_registry: Array<Optional> -     #     # List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
+    # timeout: Number<Optional> -     #     # Timeout used to limit waiting time for the missing messages and transaction.    #     # If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
+    # Default value is 60000 (1 min).
     # RESPONSE: ResultOfQueryTransactionTree
     # messages: Array -     #     # Messages.
     # transactions: Array -     #     # Transactions.

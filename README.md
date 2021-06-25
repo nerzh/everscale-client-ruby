@@ -332,6 +332,8 @@ end
 
   - case InvalidSignature = 122
 
+  - case EncryptionBoxNotRegistered = 123
+
 
 - #### ParamsOfAppSigningBox
   - case GetPublicKey = GetPublicKey
@@ -343,6 +345,36 @@ end
   - case GetPublicKey = GetPublicKey
 
   - case Sign = Sign
+
+
+- #### ParamsOfAppEncryptionBox
+  - case GetInfo = GetInfo
+
+  - case Encrypt = Encrypt
+
+  - case Decrypt = Decrypt
+
+
+- #### ResultOfAppEncryptionBox
+  - case GetInfo = GetInfo
+
+  - case Encrypt = Encrypt
+
+  - case Decrypt = Decrypt
+
+
+- #### EncryptionBoxInfo
+   Derivation path, for instance "m/44'/396'/0'/0/0"
+  - hdpath: String&lt;Optional&gt;
+
+   Cryptographic algorithm, used by this encryption box
+  - algorithm: String&lt;Optional&gt;
+
+   Options, depends on algorithm and specific encryption box implementation
+  - options: Value&lt;Optional&gt;
+
+   Public information, depends on algorithm
+  - public: Value&lt;Optional&gt;
 
 
 - #### ParamsOfFactorize
@@ -795,6 +827,63 @@ end
    Data signature.
    Encoded with `hex`.
   - signature: String
+
+
+- #### RegisteredEncryptionBox
+   Handle of the encryption box
+  - handle: EncryptionBoxHandle
+
+# Encryption box callbacks.
+- #### ParamsOfAppEncryptionBox
+  - type: ParamsOfAppEncryptionBox
+
+   Data, encoded in Base64
+  - data: String
+
+# Returning values from signing box callbacks.
+- #### ResultOfAppEncryptionBox
+  - type: ResultOfAppEncryptionBox
+
+  - info: EncryptionBoxInfo
+
+   Encrypted data, encoded in Base64
+  - data: String
+
+
+- #### ParamsOfEncryptionBoxGetInfo
+   Encryption box handle
+  - encryption_box: EncryptionBoxHandle
+
+
+- #### ResultOfEncryptionBoxGetInfo
+   Encryption box information
+  - info: EncryptionBoxInfo
+
+
+- #### ParamsOfEncryptionBoxEncrypt
+   Encryption box handle
+  - encryption_box: EncryptionBoxHandle
+
+   Data to be encrypted, encoded in Base64
+  - data: String
+
+
+- #### ResultOfEncryptionBoxEncrypt
+   Encrypted data, encoded in Base64
+  - data: String
+
+
+- #### ParamsOfEncryptionBoxDecrypt
+   Encryption box handle
+  - encryption_box: EncryptionBoxHandle
+
+   Data to be decrypted, encoded in Base64
+  - data: String
+
+
+- #### ResultOfEncryptionBoxDecrypt
+   Decrypted data, encoded in Base64
+  - data: String
 
 
 - #### AbiErrorCode
@@ -1514,7 +1603,9 @@ end
   - send_events: Boolean
 
    The list of endpoints to which the message was sent.
-   You must provide the same value as the `send_message` has returned.
+   Use this field to get more informative errors.
+        Provide the same value as the `send_message` has returned.
+        If the message was not delivered (expired), SDK will log the endpoint URLs, used for its sending.
   - sending_endpoints: Array&lt;Optional&gt;
 
 
@@ -2053,6 +2144,11 @@ end
    List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
   - abi_registry: Array&lt;Optional&gt;
 
+   Timeout used to limit waiting time for the missing messages and transaction.
+   If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
+        Default value is 60000 (1 min).
+  - timeout: Number&lt;Optional&gt;
+
 
 - #### ResultOfQueryTransactionTree
    Messages.
@@ -2345,7 +2441,8 @@ end
   <summary>CRYPTO</summary>
 
 ```ruby
-    # Performs prime factorization – decomposition of a composite number into a product of smaller prime integers (factors). See [https://en.wikipedia.org/wiki/Integer_factorization]
+    # Integer factorization    # Performs prime factorization – decomposition of a composite numberinto a product of smaller prime integers (factors).
+    # See [https://en.wikipedia.org/wiki/Integer_factorization]
     def factorize(payload, &block)
     # INPUT: ParamsOfFactorize
     # composite: String -     #     # Hexadecimal representation of u64 composite number.
@@ -2354,7 +2451,8 @@ end
     # factors: Array -     #     # Two factors of composite or empty if composite can't be factorized.
 ```
 ```ruby
-    # Performs modular exponentiation for big integers (`base`^`exponent` mod `modulus`). See [https://en.wikipedia.org/wiki/Modular_exponentiation]
+    # Modular exponentiation    # Performs modular exponentiation for big integers (`base`^`exponent` mod `modulus`).
+    # See [https://en.wikipedia.org/wiki/Modular_exponentiation]
     def modular_power(payload, &block)
     # INPUT: ParamsOfModularPower
     # base: String -     #     # `base` argument of calculation.
@@ -2439,7 +2537,9 @@ end
     # hash: String -     #     # Hash of input `data`.    #     # Encoded with 'hex'.
 ```
 ```ruby
-    # Derives key from `password` and `key` using `scrypt` algorithm. See [https://en.wikipedia.org/wiki/Scrypt].    # # Arguments- `log_n` - The log2 of the Scrypt parameter `N`- `r` - The Scrypt parameter `r`- `p` - The Scrypt parameter `p`# Conditions- `log_n` must be less than `64`- `r` must be greater than `0` and less than or equal to `4294967295`- `p` must be greater than `0` and less than `4294967295`# Recommended values sufficient for most use-cases- `log_n = 15` (`n = 32768`)- `r = 8`- `p = 1`
+    # Perform `scrypt` encryption    # Derives key from `password` and `key` using `scrypt` algorithm.
+    # See [https://en.wikipedia.org/wiki/Scrypt].
+    # # Arguments- `log_n` - The log2 of the Scrypt parameter `N`- `r` - The Scrypt parameter `r`- `p` - The Scrypt parameter `p`# Conditions- `log_n` must be less than `64`- `r` must be greater than `0` and less than or equal to `4294967295`- `p` must be greater than `0` and less than `4294967295`# Recommended values sufficient for most use-cases- `log_n = 15` (`n = 32768`)- `r = 8`- `p = 1`
     def scrypt(payload, &block)
     # INPUT: ParamsOfScrypt
     # password: String -     #     # The password bytes to be hashed. Must be encoded with `base64`.
@@ -2578,7 +2678,7 @@ end
     # words: String -     #     # The list of mnemonic words
 ```
 ```ruby
-    # Generates a random mnemonic from the specified dictionary and word count
+    # Generates a random mnemonic    # Generates a random mnemonic from the specified dictionary and word count
     def mnemonic_from_random(payload, &block)
     # INPUT: ParamsOfMnemonicFromRandom
     # dictionary: MnemonicDictionary -     #     # Dictionary identifier
@@ -2599,7 +2699,7 @@ end
     # phrase: String -     #     # Phrase
 ```
 ```ruby
-    # The phrase supplied will be checked for word length and validated according to the checksum specified in BIP0039.
+    # Validates a mnemonic phrase    # The phrase supplied will be checked for word length and validated according to the checksumspecified in BIP0039.
     def mnemonic_verify(payload, &block)
     # INPUT: ParamsOfMnemonicVerify
     # phrase: String -     #     # Phrase
@@ -2610,7 +2710,7 @@ end
     # valid: Boolean -     #     # Flag indicating if the mnemonic is valid or not
 ```
 ```ruby
-    # Validates the seed phrase, generates master key and then derives the key pair from the master key and the specified path
+    # Derives a key pair for signing from the seed phrase    # Validates the seed phrase, generates master key and then derivesthe key pair from the master key and the specified path
     def mnemonic_derive_sign_keys(payload, &block)
     # INPUT: ParamsOfMnemonicDeriveSignKeys
     # phrase: String -     #     # Phrase
@@ -2724,6 +2824,48 @@ end
     def remove_signing_box(payload, &block)
     # INPUT: RegisteredSigningBox
     # handle: SigningBoxHandle -     #     # Handle of the signing box.
+```
+```ruby
+    # Register an application implemented encryption box.
+    def register_encryption_box(&block)
+
+    # RESPONSE: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+```
+```ruby
+    # Removes encryption box from SDK
+    def remove_encryption_box(payload, &block)
+    # INPUT: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+```
+```ruby
+    # Queries info from the given encryption box
+    def encryption_box_get_info(payload, &block)
+    # INPUT: ParamsOfEncryptionBoxGetInfo
+    # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
+
+    # RESPONSE: ResultOfEncryptionBoxGetInfo
+    # info: EncryptionBoxInfo -     #     # Encryption box information
+```
+```ruby
+    # Encrypts data using given encryption box
+    def encryption_box_encrypt(payload, &block)
+    # INPUT: ParamsOfEncryptionBoxEncrypt
+    # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
+    # data: String -     #     # Data to be encrypted, encoded in Base64
+
+    # RESPONSE: ResultOfEncryptionBoxEncrypt
+    # data: String -     #     # Encrypted data, encoded in Base64
+```
+```ruby
+    # Decrypts data using given encryption box
+    def encryption_box_decrypt(payload, &block)
+    # INPUT: ParamsOfEncryptionBoxDecrypt
+    # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
+    # data: String -     #     # Data to be decrypted, encoded in Base64
+
+    # RESPONSE: ResultOfEncryptionBoxDecrypt
+    # data: String -     #     # Decrypted data, encoded in Base64
 ```
 </details>
 
@@ -3029,7 +3171,9 @@ end
     # message: String -     #     # Message BOC.    #     # Encoded with `base64`.
     # shard_block_id: String -     #     # The last generated block id of the destination account shard before the message was sent.    #     # You must provide the same value as the `send_message` has returned.
     # send_events: Boolean -     #     # Flag that enables/disables intermediate events
-    # sending_endpoints: Array&lt;Optional&gt; -     #     # The list of endpoints to which the message was sent.    #     # You must provide the same value as the `send_message` has returned.
+    # sending_endpoints: Array&lt;Optional&gt; -     #     # The list of endpoints to which the message was sent.    #     # Use this field to get more informative errors.
+    #   #     # Provide the same value as the `send_message` has returned.
+    #   #     # If the message was not delivered (expired), SDK will log the endpoint URLs, used for its sending.
 
     # RESPONSE: ResultOfProcessMessage
     # transaction: Value -     #     # Parsed transaction.    #     # In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
@@ -3332,6 +3476,8 @@ end
     # INPUT: ParamsOfQueryTransactionTree
     # in_msg: String -     #     # Input message id.
     # abi_registry: Array&lt;Optional&gt; -     #     # List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
+    # timeout: Number&lt;Optional&gt; -     #     # Timeout used to limit waiting time for the missing messages and transaction.    #     # If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
+    #   #     # Default value is 60000 (1 min).
 
     # RESPONSE: ResultOfQueryTransactionTree
     # messages: Array -     #     # Messages.
@@ -3430,6 +3576,11 @@ giver_amount=10000000000
 
 curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
 
+
+```
+
+
+```
 
 ton-client-ruby update api.json
  

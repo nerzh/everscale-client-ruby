@@ -354,6 +354,44 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # RESPONSE: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    def register_encryption_box(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+    end
+
+    # INPUT: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    def remove_encryption_box(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfEncryptionBoxGetInfo
+    # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
+    # RESPONSE: ResultOfEncryptionBoxGetInfo
+    # info: EncryptionBoxInfo -     #     # Encryption box information
+    def encryption_box_get_info(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfEncryptionBoxEncrypt
+    # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
+    # data: String -     #     # Data to be encrypted, encoded in Base64
+    # RESPONSE: ResultOfEncryptionBoxEncrypt
+    # data: String -     #     # Encrypted data, encoded in Base64
+    def encryption_box_encrypt(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfEncryptionBoxDecrypt
+    # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
+    # data: String -     #     # Data to be decrypted, encoded in Base64
+    # RESPONSE: ResultOfEncryptionBoxDecrypt
+    # data: String -     #     # Decrypted data, encoded in Base64
+    def encryption_box_decrypt(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
   end
 end
 

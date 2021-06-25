@@ -30,7 +30,9 @@ module TonClient
     # message: String -     #     # Message BOC.    #     # Encoded with `base64`.
     # shard_block_id: String -     #     # The last generated block id of the destination account shard before the message was sent.    #     # You must provide the same value as the `send_message` has returned.
     # send_events: Boolean -     #     # Flag that enables/disables intermediate events
-    # sending_endpoints: Array<Optional> -     #     # The list of endpoints to which the message was sent.    #     # You must provide the same value as the `send_message` has returned.
+    # sending_endpoints: Array<Optional> -     #     # The list of endpoints to which the message was sent.    #     # Use this field to get more informative errors.
+    # Provide the same value as the `send_message` has returned.
+    # If the message was not delivered (expired), SDK will log the endpoint URLs, used for its sending.
     # RESPONSE: ResultOfProcessMessage
     # transaction: Value -     #     # Parsed transaction.    #     # In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
