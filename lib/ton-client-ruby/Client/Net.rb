@@ -136,6 +136,93 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfCreateBlockIterator
+    # start_time: Number<Optional> -     #     # Starting time to iterate from.    #     # If the application specifies this parameter then the iterationincludes blocks with `gen_utime` >= `start_time`.
+    # Otherwise the iteration starts from zero state.
+    # Must be specified in seconds.
+    # end_time: Number<Optional> -     #     # Optional end time to iterate for.    #     # If the application specifies this parameter then the iterationincludes blocks with `gen_utime` < `end_time`.
+    # Otherwise the iteration never stops.
+    # Must be specified in seconds.
+    # shard_filter: Array<Optional> -     #     # Shard prefix filter.    #     # If the application specifies this parameter and it is not the empty arraythen the iteration will include items related to accounts that belongs tothe specified shard prefixes.
+    # Shard prefix must be represented as a string "workchain:prefix".
+    # Where `workchain` is a signed integer and the `prefix` if a hexadecimalrepresentation if the 64-bit unsigned integer with tagged shard prefix.
+    # For example: "0:3800000000000000".
+    # result: String<Optional> -     #     # Projection (result) string.    #     # List of the fields that must be returned for iterated items.
+    # This field is the same as the `result` parameter ofthe `query_collection` function.
+    # Note that iterated items can contains additional fields that arenot requested in the `result`.
+    # RESPONSE: RegisteredIterator
+    # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
+    def create_block_iterator(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfResumeBlockIterator
+    # resume_state: Value -     #     # Iterator state from which to resume.    #     # Same as value returned from `iterator_next`.
+    # RESPONSE: RegisteredIterator
+    # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
+    def resume_block_iterator(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfCreateTransactionIterator
+    # start_time: Number<Optional> -     #     # Starting time to iterate from.    #     # If the application specifies this parameter then the iterationincludes blocks with `gen_utime` >= `start_time`.
+    # Otherwise the iteration starts from zero state.
+    # Must be specified in seconds.
+    # end_time: Number<Optional> -     #     # Optional end time to iterate for.    #     # If the application specifies this parameter then the iterationincludes blocks with `gen_utime` < `end_time`.
+    # Otherwise the iteration never stops.
+    # Must be specified in seconds.
+    # shard_filter: Array<Optional> -     #     # Shard prefix filters.    #     # If the application specifies this parameter and it is not an empty arraythen the iteration will include items related to accounts that belongs tothe specified shard prefixes.
+    # Shard prefix must be represented as a string "workchain:prefix".
+    # Where `workchain` is a signed integer and the `prefix` if a hexadecimalrepresentation if the 64-bit unsigned integer with tagged shard prefix.
+    # For example: "0:3800000000000000".
+    # Account address conforms to the shard filter ifit belongs to the filter workchain and the first bits of address match tothe shard prefix. Only transactions with suitable account addresses are iterated.
+    # accounts_filter: Array<Optional> -     #     # Account address filter.    #     # Application can specify the list of accounts for whichit wants to iterate transactions.
+    # If this parameter is missing or an empty list then the library iteratestransactions for all accounts that pass the shard filter.
+    # Note that the library doesn't detect conflicts between the account filter and the shard filterif both are specified.
+    # So it is an application responsibility to specify the correct filter combination.
+    # result: String<Optional> -     #     # Projection (result) string.    #     # List of the fields that must be returned for iterated items.
+    # This field is the same as the `result` parameter ofthe `query_collection` function.
+    # Note that iterated items can contain additional fields that arenot requested in the `result`.
+    # include_transfers: Boolean<Optional> -     #     # Include `transfers` field in iterated transactions.    #     # If this parameter is `true` then each transaction contains field`transfers` with list of transfer. See more about this structure in function description.
+    # RESPONSE: RegisteredIterator
+    # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
+    def create_transaction_iterator(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfResumeTransactionIterator
+    # resume_state: Value -     #     # Iterator state from which to resume.    #     # Same as value returned from `iterator_next`.
+    # accounts_filter: Array<Optional> -     #     # Account address filter.    #     # Application can specify the list of accounts for whichit wants to iterate transactions.
+    # If this parameter is missing or an empty list then the library iteratestransactions for all accounts that passes the shard filter.
+    # Note that the library doesn't detect conflicts between the account filter and the shard filterif both are specified.
+    # So it is the application's responsibility to specify the correct filter combination.
+    # RESPONSE: RegisteredIterator
+    # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
+    def resume_transaction_iterator(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfIteratorNext
+    # iterator: Number -     #     # Iterator handle
+    # limit: Number<Optional> -     #     # Maximum count of the returned items.    #     # If value is missing or is less than 1 the library uses 1.
+    # return_resume_state: Boolean<Optional> -     #     # Indicates that function must return the iterator state that can be used for resuming iteration.
+    # RESPONSE: ResultOfIteratorNext
+    # items: Array -     #     # Next available items.    #     # Note that `iterator_next` can return an empty items and `has_more` equals to `true`.
+    # In this case the application have to continue iteration.
+    # Such situation can take place when there is no data yet butthe requested `end_time` is not reached.
+    # has_more: Boolean -     #     # Indicates that there are more available items in iterated range.
+    # resume_state: Value<Optional> -     #     # Optional iterator state that can be used for resuming iteration.    #     # This field is returned only if the `return_resume_state` parameteris specified.
+    # Note that `resume_state` corresponds to the iteration positionafter the returned items.
+    def iterator_next(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: RegisteredIterator
+    # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
+    def remove_iterator(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
   end
 end
 

@@ -129,6 +129,15 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfDecodeAccountData
+    # abi: Value -     #     # Contract ABI
+    # data: String -     #     # Data BOC    #     # Must be encoded with base64
+    # RESPONSE: ResultOfDecodeData
+    # data: Value -     #     # Decoded data as a JSON structure.
+    def decode_account_data(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
   end
 end
 

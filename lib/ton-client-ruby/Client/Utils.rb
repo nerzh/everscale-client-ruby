@@ -20,6 +20,14 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfGetAddressType
+    # address: String -     #     # Account address in any TON format.
+    # RESPONSE: ResultOfGetAddressType
+    # address_type: AccountAddressType -     #     # Account address type.
+    def get_address_type(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
     # INPUT: ParamsOfCalcStorageFee
     # account: String - 
     # period: Number - 
