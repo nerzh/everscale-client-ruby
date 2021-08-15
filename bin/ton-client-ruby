@@ -5,15 +5,22 @@ require File.dirname(__FILE__) + '/../lib/code_generator/code_generator.rb'
 
 GEM_DIR = File.dirname(__FILE__) + '/..'
 
-if ARGV[0] == 'update'
-  if !ARGV[1]
-    puts ''
-    puts ''
-    p "PLEASE DOWNLOAD api.json from https://github.com/tonlabs/TON-SDK/blob/master/tools/api.json and pass as second parameter."
-    p "Example: ton-client-ruby update ./api.json" 
-    puts ''
-    return
+if ARGV[0] == 'update' && ARGV[1] == nil
+  script_file_path = File.expand_path(File.dirname(__FILE__))
+  `cd #{script_file_path}/.. && curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json`
+  api_json_path = "#{script_file_path}/../api.json"
+  json = ''
+  if File.exists?(api_json_path)
+    json = File.read(api_json_path)
+  else
+    p "File #{api_json_path} is not exist"
+    exit 0
   end
+  converter = ApiConverter.new(json)
+  types = converter.convert
+  generator = CodeGenerator.new(types, GEM_DIR)
+  generator.generate_self_code
+elsif ARGV[0] == 'update'
   api_json_path = ARGV[1]
   json = ''
   if File.exists?(api_json_path)
@@ -26,8 +33,7 @@ if ARGV[0] == 'update'
   types = converter.convert
   generator = CodeGenerator.new(types, GEM_DIR)
   generator.generate_self_code
-elsif ARGV[0] == 'update' && ARGV[1] == nil
-  p 'soon from github'
+
 elsif ARGV[0] == 'setup'
   raise "\nPLEASE INSTALL RUST TO YOUR SYSTEM. \nTry this command: \ncurl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh" if `which rustc`.strip.empty?
   unless Dir.exist?("#{GEM_DIR}/TON-SDK")

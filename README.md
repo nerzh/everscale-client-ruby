@@ -207,6 +207,11 @@ end
    Must be specified in milliseconds. Default is 60000 (1 min).
   - max_latency: Number&lt;Optional&gt;
 
+   Default timeout for http requests.
+   Is is used when no timeout specified for the request to limit the answer waiting time. If no answer received during the timeout requests ends witherror.
+   Must be specified in milliseconds. Default is 60000 (1 min).
+  - query_timeout: Number&lt;Optional&gt;
+
    Access key to GraphQL API.
    At the moment is not used in production.
   - access_key: String&lt;Optional&gt;
@@ -520,7 +525,7 @@ end
    Data that must be signed encoded in `base64`.
   - unsigned: String
 
-   Signer's secret key - unprefixed 0-padded to 64 symbols hex string
+   Signer's secret key - unprefixed 0-padded to 128 symbols hex string (concatenation of 64 symbols secret and 64 symbols public keys). See `nacl_sign_keypair_from_secret_key`.
   - secret: String
 
 
@@ -1097,6 +1102,8 @@ end
 - #### AbiContract
   - abi_version: Number&lt;Optional&gt;
 
+  - version: String&lt;Optional&gt;
+
   - header: Array&lt;Optional&gt;
 
   - functions: Array&lt;Optional&gt;
@@ -1335,8 +1342,7 @@ end
    Contract ABI
   - abi: Value
 
-   Data BOC
-   Must be encoded with base64
+   Data BOC or BOC handle
   - data: String
 
 
@@ -2710,7 +2716,8 @@ end
     # key: String -     #     # Derived key.    #     # Encoded with `hex`.
 ```
 ```ruby
-    # Generates a key pair for signing from the secret key
+    # Generates a key pair for signing from the secret key    # **NOTE:** In the result the secret key is actually the concatenationof secret and public keys (128 symbols hex string) by design of [NaCL](http://nacl.cr.yp.to/sign.html).
+    # See also [the stackexchange question](https://crypto.stackexchange.com/questions/54353/).
     def nacl_sign_keypair_from_secret_key(payload, &block)
     # INPUT: ParamsOfNaclSignKeyPairFromSecret
     # secret: String -     #     # Secret key - unprefixed 0-padded to 64 symbols hex string
@@ -2724,7 +2731,7 @@ end
     def nacl_sign(payload, &block)
     # INPUT: ParamsOfNaclSign
     # unsigned: String -     #     # Data that must be signed encoded in `base64`.
-    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 64 symbols hex string
+    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 128 symbols hex string (concatenation of 64 symbols secret and 64 symbols public keys). See `nacl_sign_keypair_from_secret_key`.
 
     # RESPONSE: ResultOfNaclSign
     # signed: String -     #     # Signed data, encoded in `base64`.
@@ -2745,7 +2752,7 @@ end
     def nacl_sign_detached(payload, &block)
     # INPUT: ParamsOfNaclSign
     # unsigned: String -     #     # Data that must be signed encoded in `base64`.
-    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 64 symbols hex string
+    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 128 symbols hex string (concatenation of 64 symbols secret and 64 symbols public keys). See `nacl_sign_keypair_from_secret_key`.
 
     # RESPONSE: ResultOfNaclSignDetached
     # signature: String -     #     # Signature encoded in `hex`.
@@ -3183,7 +3190,7 @@ end
     def decode_account_data(payload, &block)
     # INPUT: ParamsOfDecodeAccountData
     # abi: Value -     #     # Contract ABI
-    # data: String -     #     # Data BOC    #     # Must be encoded with base64
+    # data: String -     #     # Data BOC or BOC handle
 
     # RESPONSE: ResultOfDecodeData
     # data: Value -     #     # Decoded data as a JSON structure.
@@ -3382,7 +3389,7 @@ end
     # address: String -     #     # Address in the specified format
 ```
 ```ruby
-    # Validates and returns the type of any TON address.    # Address types are the following`0:919db8e740d50bf349df2eea03fa30c385d846b991ff5542e67098ee833fc7f7` - standart TON address mostcommonly used in all cases. Also called as hex addres`919db8e740d50bf349df2eea03fa30c385d846b991ff5542e67098ee833fc7f7` - account ID. A part of fulladdress. Identifies account inside particular workchain`EQCRnbjnQNUL80nfLuoD+jDDhdhGuZH/VULmcJjugz/H9wam` - base64 address. Also called "user-friendly".
+    # Validates and returns the type of any TON address.    # Address types are the following`0:919db8e740d50bf349df2eea03fa30c385d846b991ff5542e67098ee833fc7f7` - standard TON address mostcommonly used in all cases. Also called as hex address`919db8e740d50bf349df2eea03fa30c385d846b991ff5542e67098ee833fc7f7` - account ID. A part of fulladdress. Identifies account inside particular workchain`EQCRnbjnQNUL80nfLuoD+jDDhdhGuZH/VULmcJjugz/H9wam` - base64 address. Also called "user-friendly".
     # Was used at the beginning of TON. Now it is supported for compatibility
     def get_address_type(payload, &block)
     # INPUT: ParamsOfGetAddressType

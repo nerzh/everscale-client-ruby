@@ -131,7 +131,7 @@ module TonClient
 
     # INPUT: ParamsOfDecodeAccountData
     # abi: Value -     #     # Contract ABI
-    # data: String -     #     # Data BOC    #     # Must be encoded with base64
+    # data: String -     #     # Data BOC or BOC handle
     # RESPONSE: ResultOfDecodeData
     # data: Value -     #     # Decoded data as a JSON structure.
     def decode_account_data(payload, &block)

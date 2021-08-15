@@ -119,7 +119,7 @@ module TonClient
 
     # INPUT: ParamsOfNaclSign
     # unsigned: String -     #     # Data that must be signed encoded in `base64`.
-    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 64 symbols hex string
+    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 128 symbols hex string (concatenation of 64 symbols secret and 64 symbols public keys). See `nacl_sign_keypair_from_secret_key`.
     # RESPONSE: ResultOfNaclSign
     # signed: String -     #     # Signed data, encoded in `base64`.
     def nacl_sign(payload, &block)
@@ -137,7 +137,7 @@ module TonClient
 
     # INPUT: ParamsOfNaclSign
     # unsigned: String -     #     # Data that must be signed encoded in `base64`.
-    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 64 symbols hex string
+    # secret: String -     #     # Signer's secret key - unprefixed 0-padded to 128 symbols hex string (concatenation of 64 symbols secret and 64 symbols public keys). See `nacl_sign_keypair_from_secret_key`.
     # RESPONSE: ResultOfNaclSignDetached
     # signature: String -     #     # Signature encoded in `hex`.
     def nacl_sign_detached(payload, &block)
