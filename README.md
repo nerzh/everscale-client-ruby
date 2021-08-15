@@ -3884,6 +3884,16 @@ giver_amount=10000000000
 
 ```
 
+ton-client-ruby update
+ 
+```
+
+
+or
+
+ 
+```
+
 curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
 
 
@@ -3892,7 +3902,7 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 
 ```
 
-ton-client-ruby update api.json
- 
+ton-client-ruby update ./api.json
+
 ```
  

@@ -166,10 +166,14 @@ giver_amount=10000000000
 
 \n## Update\n\n
 ```\n
+ton-client-ruby update\n 
+```\n\n
+or\n\n 
+```\n
 curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json\n\n
 ```\n\n
 ```\n
-ton-client-ruby update api.json\n 
+ton-client-ruby update ./api.json\n
 ```\n 
 }
     content = checkContent(content)    
