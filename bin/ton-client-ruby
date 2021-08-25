@@ -20,6 +20,7 @@ if ARGV[0] == 'update' && ARGV[1] == nil
   types = converter.convert
   generator = CodeGenerator.new(types, GEM_DIR)
   generator.generate_self_code
+  system(%{bash -lc 'ruby #{script_file_path}/../lib/code_generator/release.rb'})
 elsif ARGV[0] == 'update'
   api_json_path = ARGV[1]
   json = ''
@@ -33,6 +34,7 @@ elsif ARGV[0] == 'update'
   types = converter.convert
   generator = CodeGenerator.new(types, GEM_DIR)
   generator.generate_self_code
+  system(%{bash -lc 'ruby #{script_file_path}/../lib/code_generator/release.rb'})
 
 elsif ARGV[0] == 'setup'
   raise "\nPLEASE INSTALL RUST TO YOUR SYSTEM. \nTry this command: \ncurl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh" if `which rustc`.strip.empty?
