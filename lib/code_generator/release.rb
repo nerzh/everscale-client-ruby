@@ -10,7 +10,7 @@ if file[/VERSION = "(\d+)\.(\d+)\.(\d+)"/]
   current = $3
   version = "#{major}.#{minor}.#{current.to_i + 1}"
   data = "module TonClient\n  VERSION = \"#{version}\"\nend\n\n"
-  File.open(version_file, 'wb').write{ |f| f.write(data) }
+  File.open(version_file, 'wb') { |f| f.write(data) }
 end
 
 system(%{cd #{script_file_path}/../../ && rake release})
