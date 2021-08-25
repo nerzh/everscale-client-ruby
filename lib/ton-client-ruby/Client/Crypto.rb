@@ -378,7 +378,7 @@ module TonClient
     # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
     # data: String -     #     # Data to be encrypted, encoded in Base64
     # RESPONSE: ResultOfEncryptionBoxEncrypt
-    # data: String -     #     # Encrypted data, encoded in Base64
+    # data: String -     #     # Encrypted data, encoded in Base64.    #     # Padded to cipher block size
     def encryption_box_encrypt(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
@@ -387,8 +387,16 @@ module TonClient
     # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
     # data: String -     #     # Data to be decrypted, encoded in Base64
     # RESPONSE: ResultOfEncryptionBoxDecrypt
-    # data: String -     #     # Decrypted data, encoded in Base64
+    # data: String -     #     # Decrypted data, encoded in Base64.
     def encryption_box_decrypt(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfCreateEncryptionBox
+    # algorithm: EncryptionAlgorithm -     #     # Encryption algorithm specifier including cipher parameters (key, IV, etc)
+    # RESPONSE: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    def create_encryption_box(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 

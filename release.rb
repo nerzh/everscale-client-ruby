@@ -37,11 +37,13 @@ if file[/VERSION = "(\d+)\.(\d+)\.(\d+)"/]
   p version_file
   File.open(version_file, 'wb') { |f| f.write(data) }
   p 'update version'
-end
 
-puts "make release? Y/N"
-option = gets
-if option.strip.downcase == 'y'
-  system(%{cd #{script_file_path}/../../ && rake release})
+  puts "make release? Y/N"
+  option = gets
+  if option.strip.downcase == 'y'
+    system(%{cd #{script_file_path} && git add .})
+    system(%{cd #{script_file_path} && git commit -m 'version #{version}'})
+    system(%{cd #{script_file_path} && bash -lc 'rake release'})
+  end
 end
 

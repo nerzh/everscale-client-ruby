@@ -341,6 +341,34 @@ end
 
   - case EncryptionBoxNotRegistered = 123
 
+  - case InvalidIvSize = 124
+
+  - case UnsupportedCipherMode = 125
+
+  - case CannotCreateCipher = 126
+
+  - case EncryptDataError = 127
+
+  - case DecryptDataError = 128
+
+  - case IvRequired = 129
+
+
+- #### EncryptionAlgorithm
+  - case AES = AES
+
+
+- #### CipherMode
+  - case CBC = 
+
+  - case CFB = 
+
+  - case CTR = 
+
+  - case ECB = 
+
+  - case OFB = 
+
 
 - #### ParamsOfAppSigningBox
   - case GetPublicKey = GetPublicKey
@@ -382,6 +410,24 @@ end
 
    Public information, depends on algorithm
   - public: Value&lt;Optional&gt;
+
+
+- #### EncryptionAlgorithm
+  - type: EncryptionAlgorithm
+
+
+- #### AesParams
+  - mode: CipherMode
+
+  - key: String
+
+  - iv: String&lt;Optional&gt;
+
+
+- #### AesInfo
+  - mode: CipherMode
+
+  - iv: String&lt;Optional&gt;
 
 
 - #### ParamsOfFactorize
@@ -876,7 +922,8 @@ end
 
 
 - #### ResultOfEncryptionBoxEncrypt
-   Encrypted data, encoded in Base64
+   Encrypted data, encoded in Base64.
+   Padded to cipher block size
   - data: String
 
 
@@ -889,8 +936,13 @@ end
 
 
 - #### ResultOfEncryptionBoxDecrypt
-   Decrypted data, encoded in Base64
+   Decrypted data, encoded in Base64.
   - data: String
+
+
+- #### ParamsOfCreateEncryptionBox
+   Encryption algorithm specifier including cipher parameters (key, IV, etc)
+  - algorithm: EncryptionAlgorithm
 
 
 - #### AbiErrorCode
@@ -3012,24 +3064,33 @@ end
     # info: EncryptionBoxInfo -     #     # Encryption box information
 ```
 ```ruby
-    # Encrypts data using given encryption box
+    # Encrypts data using given encryption box Note.    # Block cipher algorithms pad data to cipher block size so encrypted data can be longer then original data. Client should store the original data size after encryption and use it afterdecryption to retrieve the original data from decrypted data.
     def encryption_box_encrypt(payload, &block)
     # INPUT: ParamsOfEncryptionBoxEncrypt
     # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
     # data: String -     #     # Data to be encrypted, encoded in Base64
 
     # RESPONSE: ResultOfEncryptionBoxEncrypt
-    # data: String -     #     # Encrypted data, encoded in Base64
+    # data: String -     #     # Encrypted data, encoded in Base64.    #     # Padded to cipher block size
 ```
 ```ruby
-    # Decrypts data using given encryption box
+    # Decrypts data using given encryption box Note.    # Block cipher algorithms pad data to cipher block size so encrypted data can be longer then original data. Client should store the original data size after encryption and use it afterdecryption to retrieve the original data from decrypted data.
     def encryption_box_decrypt(payload, &block)
     # INPUT: ParamsOfEncryptionBoxDecrypt
     # encryption_box: EncryptionBoxHandle -     #     # Encryption box handle
     # data: String -     #     # Data to be decrypted, encoded in Base64
 
     # RESPONSE: ResultOfEncryptionBoxDecrypt
-    # data: String -     #     # Decrypted data, encoded in Base64
+    # data: String -     #     # Decrypted data, encoded in Base64.
+```
+```ruby
+    # Creates encryption box with specified algorithm
+    def create_encryption_box(payload, &block)
+    # INPUT: ParamsOfCreateEncryptionBox
+    # algorithm: EncryptionAlgorithm -     #     # Encryption algorithm specifier including cipher parameters (key, IV, etc)
+
+    # RESPONSE: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
 ```
 </details>
 
@@ -3447,7 +3508,7 @@ end
     # Transaction executor requires account BOC (bag of cells) as a parameter.
     # To get the account BOC - use `net.query` method to download it from GraphQL API(field `boc` of `account`) or generate it with `abi.encode_account` method.
     # Also it requires message BOC. To get the message BOC - use `abi.encode_message` or `abi.encode_internal_message`.
-    # If you need this emulation to be as precise as possible (for instance - emulate transactionwith particular lt in particular block or use particular blockchain config,in case you want to download it from a particular key block - then specify `ParamsOfRunExecutor` parameter.
+    # If you need this emulation to be as precise as possible (for instance - emulate transactionwith particular lt in particular block or use particular blockchain config,downloaded from a particular key block - then specify `execution_options` parameter.
     # If you need to see the aborted transaction as a result, not as an error, set `skip_transaction_check` to `true`.
     def run_executor(payload, &block)
     # INPUT: ParamsOfRunExecutor
