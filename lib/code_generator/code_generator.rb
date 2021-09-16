@@ -46,7 +46,8 @@ class CodeGenerator
     content = %{
 # Ruby Client for Free TON SDK
 
-[![GEM](https://img.shields.io/badge/ruby-gem-green)]()
+[![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-#{types.version}-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
