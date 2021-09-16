@@ -40,9 +40,9 @@ if file[/VERSION = "(\d+)\.(\d+)\.(\d+)"/]
   puts "make release? Y/N"
   option = gets
   if option.strip.downcase == 'y'
-    system(%{cd #{script_file_path} && git add .})
-    system(%{cd #{script_file_path} && git commit -m 'version #{version}'})
-    system(%{cd #{script_file_path} && bash -lc 'rake release'})
+    system(%{cd #{GEM_DIR} && git add .})
+    system(%{cd #{GEM_DIR} && git commit -m 'version #{version}'})
+    system(%{cd #{GEM_DIR} && bash -lc 'rake release'})
   end
 end
 
