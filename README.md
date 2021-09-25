@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.21.5-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.22.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -3363,7 +3363,7 @@ end
     # boc_ref: String&lt;Optional&gt; -     #     # Reference to the cached BOC.    #     # If it is provided then only referenced BOC is unpinned
 ```
 ```ruby
-    # Encodes BOC from builder operations.
+    # Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type
     def encode_boc(payload, &block)
     # INPUT: ParamsOfEncodeBoc
     # builder: Array -     #     # Cell builder operations.
