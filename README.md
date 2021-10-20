@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.22.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.23.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -973,6 +973,8 @@ end
 
   - case InvalidData = 313
 
+  - case EncodeInitialDataFailed = 314
+
 
 - #### Abi
   - case Contract = Contract
@@ -1404,6 +1406,47 @@ end
   - data: Value
 
 
+- #### ParamsOfUpdateInitialData
+   Contract ABI
+  - abi: Value&lt;Optional&gt;
+
+   Data BOC or BOC handle
+  - data: String
+
+   List of initial values for contract's static variables.
+   `abi` parameter should be provided to set initial data
+  - initial_data: Value
+
+   Initial account owner's public key to set into account data
+  - initial_pubkey: String&lt;Optional&gt;
+
+   Cache type to put the result. The BOC itself returned if no cache type provided.
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfUpdateInitialData
+   Updated data BOC or BOC handle
+  - data: String
+
+
+- #### ParamsOfDecodeInitialData
+   Contract ABI.
+   Initial data is decoded if this parameter is provided
+  - abi: Value&lt;Optional&gt;
+
+   Data BOC or BOC handle
+  - data: String
+
+
+- #### ResultOfDecodeInitialData
+   List of initial values of contract's public variables.
+   Initial data is decoded if `abi` input parameter is provided
+  - initial_data: Value&lt;Optional&gt;
+
+   Initial account owner's public key
+  - initial_pubkey: String
+
+
 - #### BocCacheType
   - case Pinned = Pinned
 
@@ -1484,7 +1527,7 @@ end
 
 
 - #### ParamsOfGetCodeFromTvc
-   Contract TVC image encoded as base64
+   Contract TVC image or image BOC handle
   - tvc: String
 
 
@@ -1555,6 +1598,108 @@ end
 - #### ResultOfEncodeBoc
    Encoded cell BOC or BOC cache key.
   - boc: String
+
+
+- #### ParamsOfGetCodeSalt
+   Contract code BOC encoded as base64 or code BOC handle
+  - code: String
+
+   Cache type to put the result. The BOC itself returned if no cache type provided.
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfGetCodeSalt
+   Contract code salt if present.
+   BOC encoded as base64 or BOC handle
+  - salt: String&lt;Optional&gt;
+
+
+- #### ParamsOfSetCodeSalt
+   Contract code BOC encoded as base64 or code BOC handle
+  - code: String
+
+   Code salt to set.
+   BOC encoded as base64 or BOC handle
+  - salt: String
+
+   Cache type to put the result. The BOC itself returned if no cache type provided.
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfSetCodeSalt
+   Contract code with salt set.
+   BOC encoded as base64 or BOC handle
+  - code: String
+
+
+- #### ParamsOfDecodeTvc
+   Contract TVC image BOC encoded as base64 or BOC handle
+  - tvc: String
+
+   Cache type to put the result. The BOC itself returned if no cache type provided.
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfDecodeTvc
+   Contract code BOC encoded as base64 or BOC handle
+  - code: String&lt;Optional&gt;
+
+   Contract data BOC encoded as base64 or BOC handle
+  - data: String&lt;Optional&gt;
+
+   Contract library BOC encoded as base64 or BOC handle
+  - library: String&lt;Optional&gt;
+
+   `special.tick` field.
+   Specifies the contract ability to handle tick transactions
+  - tick: Boolean&lt;Optional&gt;
+
+   `special.tock` field.
+   Specifies the contract ability to handle tock transactions
+  - tock: Boolean&lt;Optional&gt;
+
+   Is present and non-zero only in instances of large smart contracts
+  - split_depth: Number&lt;Optional&gt;
+
+
+- #### ParamsOfEncodeTvc
+   Contract code BOC encoded as base64 or BOC handle
+  - code: String&lt;Optional&gt;
+
+   Contract data BOC encoded as base64 or BOC handle
+  - data: String&lt;Optional&gt;
+
+   Contract library BOC encoded as base64 or BOC handle
+  - library: String&lt;Optional&gt;
+
+   `special.tick` field.
+   Specifies the contract ability to handle tick transactions
+  - tick: Boolean&lt;Optional&gt;
+
+   `special.tock` field.
+   Specifies the contract ability to handle tock transactions
+  - tock: Boolean&lt;Optional&gt;
+
+   Is present and non-zero only in instances of large smart contracts
+  - split_depth: Number&lt;Optional&gt;
+
+   Cache type to put the result. The BOC itself returned if no cache type provided.
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfEncodeTvc
+   Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+  - tvc: String
+
+
+- #### ParamsOfGetCompilerVersion
+   Contract code BOC encoded as base64 or code BOC handle
+  - code: String
+
+
+- #### ResultOfGetCompilerVersion
+   Compiler version, for example 'sol 0.49.0'
+  - version: String&lt;Optional&gt;
 
 
 - #### ProcessingErrorCode
@@ -3257,6 +3402,30 @@ end
     # RESPONSE: ResultOfDecodeData
     # data: Value -     #     # Decoded data as a JSON structure.
 ```
+```ruby
+    # Updates initial account data with initial values for the contract's static variables and owner's public key. This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    def update_initial_data(payload, &block)
+    # INPUT: ParamsOfUpdateInitialData
+    # abi: Value&lt;Optional&gt; -     #     # Contract ABI
+    # data: String -     #     # Data BOC or BOC handle
+    # initial_data: Value -     #     # List of initial values for contract's static variables.    #     # `abi` parameter should be provided to set initial data
+    # initial_pubkey: String&lt;Optional&gt; -     #     # Initial account owner's public key to set into account data
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+
+    # RESPONSE: ResultOfUpdateInitialData
+    # data: String -     #     # Updated data BOC or BOC handle
+```
+```ruby
+    # Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    def decode_initial_data(payload, &block)
+    # INPUT: ParamsOfDecodeInitialData
+    # abi: Value&lt;Optional&gt; -     #     # Contract ABI.    #     # Initial data is decoded if this parameter is provided
+    # data: String -     #     # Data BOC or BOC handle
+
+    # RESPONSE: ResultOfDecodeInitialData
+    # initial_data: Value&lt;Optional&gt; -     #     # List of initial values of contract's public variables.    #     # Initial data is decoded if `abi` input parameter is provided
+    # initial_pubkey: String -     #     # Initial account owner's public key
+```
 </details>
 
 <details>
@@ -3331,7 +3500,7 @@ end
     # Extracts code from TVC contract image
     def get_code_from_tvc(payload, &block)
     # INPUT: ParamsOfGetCodeFromTvc
-    # tvc: String -     #     # Contract TVC image encoded as base64
+    # tvc: String -     #     # Contract TVC image or image BOC handle
 
     # RESPONSE: ResultOfGetCodeFromTvc
     # code: String -     #     # Contract code encoded as base64
@@ -3371,6 +3540,66 @@ end
 
     # RESPONSE: ResultOfEncodeBoc
     # boc: String -     #     # Encoded cell BOC or BOC cache key.
+```
+```ruby
+    # Returns the contract code's salt if it is present.
+    def get_code_salt(payload, &block)
+    # INPUT: ParamsOfGetCodeSalt
+    # code: String -     #     # Contract code BOC encoded as base64 or code BOC handle
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+
+    # RESPONSE: ResultOfGetCodeSalt
+    # salt: String&lt;Optional&gt; -     #     # Contract code salt if present.    #     # BOC encoded as base64 or BOC handle
+```
+```ruby
+    # Sets new salt to contract code.    # Returns the new contract code with salt.
+    def set_code_salt(payload, &block)
+    # INPUT: ParamsOfSetCodeSalt
+    # code: String -     #     # Contract code BOC encoded as base64 or code BOC handle
+    # salt: String -     #     # Code salt to set.    #     # BOC encoded as base64 or BOC handle
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+
+    # RESPONSE: ResultOfSetCodeSalt
+    # code: String -     #     # Contract code with salt set.    #     # BOC encoded as base64 or BOC handle
+```
+```ruby
+    # Decodes tvc into code, data, libraries and special options.
+    def decode_tvc(payload, &block)
+    # INPUT: ParamsOfDecodeTvc
+    # tvc: String -     #     # Contract TVC image BOC encoded as base64 or BOC handle
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+
+    # RESPONSE: ResultOfDecodeTvc
+    # code: String&lt;Optional&gt; -     #     # Contract code BOC encoded as base64 or BOC handle
+    # data: String&lt;Optional&gt; -     #     # Contract data BOC encoded as base64 or BOC handle
+    # library: String&lt;Optional&gt; -     #     # Contract library BOC encoded as base64 or BOC handle
+    # tick: Boolean&lt;Optional&gt; -     #     # `special.tick` field.    #     # Specifies the contract ability to handle tick transactions
+    # tock: Boolean&lt;Optional&gt; -     #     # `special.tock` field.    #     # Specifies the contract ability to handle tock transactions
+    # split_depth: Number&lt;Optional&gt; -     #     # Is present and non-zero only in instances of large smart contracts
+```
+```ruby
+    # Encodes tvc from code, data, libraries ans special options (see input params)
+    def encode_tvc(payload, &block)
+    # INPUT: ParamsOfEncodeTvc
+    # code: String&lt;Optional&gt; -     #     # Contract code BOC encoded as base64 or BOC handle
+    # data: String&lt;Optional&gt; -     #     # Contract data BOC encoded as base64 or BOC handle
+    # library: String&lt;Optional&gt; -     #     # Contract library BOC encoded as base64 or BOC handle
+    # tick: Boolean&lt;Optional&gt; -     #     # `special.tick` field.    #     # Specifies the contract ability to handle tick transactions
+    # tock: Boolean&lt;Optional&gt; -     #     # `special.tock` field.    #     # Specifies the contract ability to handle tock transactions
+    # split_depth: Number&lt;Optional&gt; -     #     # Is present and non-zero only in instances of large smart contracts
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+
+    # RESPONSE: ResultOfEncodeTvc
+    # tvc: String -     #     # Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+```
+```ruby
+    # Returns the compiler version used to compile the code.
+    def get_compiler_version(payload, &block)
+    # INPUT: ParamsOfGetCompilerVersion
+    # code: String -     #     # Contract code BOC encoded as base64 or code BOC handle
+
+    # RESPONSE: ResultOfGetCompilerVersion
+    # version: String&lt;Optional&gt; -     #     # Compiler version, for example 'sol 0.49.0'
 ```
 </details>
 
@@ -3711,13 +3940,24 @@ end
     # result: Array -     #     # Objects that match the provided criteria
 ```
 ```ruby
-    # Returns transactions tree for specific message.    # Performs recursive retrieval of the transactions tree produced by the specific message:
+    # Returns a tree of transactions triggered by a specific message.    # Performs recursive retrieval of a transactions tree produced by a specific message:
     # in_msg -> dst_transaction -> out_messages -> dst_transaction -> ...
-    # All retrieved messages and transactions will be includedinto `result.messages` and `result.transactions` respectively.
-    # The retrieval process will stop when the retrieved transaction count is more than 50.
-    # It is guaranteed that each message in `result.messages` has the corresponding transactionin the `result.transactions`.
-    # But there are no guaranties that all messages from transactions `out_msgs` arepresented in `result.messages`.
-    # So the application have to continue retrieval for missing messages if it requires.
+    # If the chain of transactions execution is in progress while the function is running,it will wait for the next transactions to appear until the full tree or more than 50 transactionsare received.
+    # All the retrieved messages and transactions are includedinto `result.messages` and `result.transactions` respectively.
+    # Function reads transactions layer by layer, by pages of 20 transactions.
+    # The retrieval prosess goes like this:
+    # Let's assume we have an infinite chain of transactions and each transaction generates 5 messages.
+    # 1. Retrieve 1st message (input parameter) and corresponding transaction - put it into result.
+    # It is the first level of the tree of transactions - its root.
+    # Retrieve 5 out message ids from the transaction for next steps.
+    # 2. Retrieve 5 messages and corresponding transactions on the 2nd layer. Put them into result.
+    # Retrieve 5*5 out message ids from these transactions for next steps3. Retrieve 20 (size of the page) messages and transactions (3rd layer) and 20*5=100 message ids (4th layer).
+    # 4. Retrieve the last 5 messages and 5 transactions on the 3rd layer + 15 messages and transactions (of 100) from the 4th layer+ 25 message ids of the 4th layer + 75 message ids of the 5th layer.
+    # 5. Retrieve 20 more messages and 20 more transactions of the 4th layer + 100 more message ids of the 5th layer.
+    # 6. Now we have 1+5+20+20+20 = 66 transactions, which is more than 50. Function exits with the tree of1m->1t->5m->5t->25m->25t->35m->35t. If we see any message ids in the last transactions out_msgs, which don't havecorresponding messages in the function result, it means that the full tree was not received and we need to continue iteration.
+    # To summarize, it is guaranteed that each message in `result.messages` has the corresponding transactionin the `result.transactions`.
+    # But there is no guarantee that all messages from transactions `out_msgs` arepresented in `result.messages`.
+    # So the application has to continue retrieval for missing messages if it requires.
     def query_transaction_tree(payload, &block)
     # INPUT: ParamsOfQueryTransactionTree
     # in_msg: String -     #     # Input message id.

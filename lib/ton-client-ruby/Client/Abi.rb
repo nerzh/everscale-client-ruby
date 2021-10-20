@@ -138,6 +138,28 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfUpdateInitialData
+    # abi: Value<Optional> -     #     # Contract ABI
+    # data: String -     #     # Data BOC or BOC handle
+    # initial_data: Value -     #     # List of initial values for contract's static variables.    #     # `abi` parameter should be provided to set initial data
+    # initial_pubkey: String<Optional> -     #     # Initial account owner's public key to set into account data
+    # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+    # RESPONSE: ResultOfUpdateInitialData
+    # data: String -     #     # Updated data BOC or BOC handle
+    def update_initial_data(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfDecodeInitialData
+    # abi: Value<Optional> -     #     # Contract ABI.    #     # Initial data is decoded if this parameter is provided
+    # data: String -     #     # Data BOC or BOC handle
+    # RESPONSE: ResultOfDecodeInitialData
+    # initial_data: Value<Optional> -     #     # List of initial values of contract's public variables.    #     # Initial data is decoded if `abi` input parameter is provided
+    # initial_pubkey: String -     #     # Initial account owner's public key
+    def decode_initial_data(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
   end
 end
 
