@@ -16,6 +16,7 @@ require 'ton-client-ruby/Client/Net.rb'
 require 'ton-client-ruby/Client/Processing.rb'
 require 'ton-client-ruby/Client/Tvm.rb'
 require 'ton-client-ruby/Client/Utils.rb'
+require 'ton-client-ruby/Client/Debot.rb'
 require 'ton-client-ruby/version'
 
 module TonClient
