@@ -175,6 +175,13 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 ```\n\n
 ```\n
 ton-client-ruby update ./api.json\n
+```\n
+or\n\n 
+```\n
+cd ton-client-ruby\n
+```\n\n
+```\n
+./bin/ton-client-ruby update\n
 ```\n 
 }
     content = checkContent(content)    
