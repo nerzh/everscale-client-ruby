@@ -276,12 +276,13 @@ ton-client-ruby update ./api.json\n
   private def gen_function(function, types)
     content = getFunctionComment(function, types)
     content << "#{TAB}#{TAB}def #{function.name}"
+    sdk_method_name = function.name == 'init' ? 'initialize' : '__method__.to_s'
     if function.arguments.empty?
       content << "(&block)\n"
-      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)\n"
+      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, #{sdk_method_name}), payload: {}, &block)\n"
     else
       content << "(payload, &block)\n"
-      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)\n"
+      content << "#{TAB}#{TAB}#{TAB}core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, '#{sdk_method_name}'), payload: payload, &block)\n"
     end
     content << "#{TAB}#{TAB}end\n\n"
 
