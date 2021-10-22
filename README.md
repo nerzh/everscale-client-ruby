@@ -4207,4 +4207,20 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 ton-client-ruby update ./api.json
 
 ```
+
+or
+
+ 
+```
+
+cd ton-client-ruby
+
+```
+
+
+```
+
+./bin/ton-client-ruby update
+
+```
  
