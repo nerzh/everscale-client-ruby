@@ -18,7 +18,7 @@ module TonClient
     # debot_abi: String -     #     # Debot abi as json string.
     # info: DebotInfo -     #     # Debot metadata.
     def init(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, 'initialize'), payload: payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfStart
