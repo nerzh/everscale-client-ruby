@@ -19,10 +19,10 @@ module TonClient
     queue = Queue.new
     method.call(*args) do |response|
       responses << response
+      yield(responses) if block_given?
       queue.push 1 if response.finished == true
     end
     queue.pop
-    yield(responses) if block_given?
   end
 end
 

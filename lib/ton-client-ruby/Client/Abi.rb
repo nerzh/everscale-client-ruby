@@ -132,7 +132,7 @@ module TonClient
     # INPUT: ParamsOfDecodeAccountData
     # abi: Value -     #     # Contract ABI
     # data: String -     #     # Data BOC or BOC handle
-    # RESPONSE: ResultOfDecodeData
+    # RESPONSE: ResultOfDecodeAccountData
     # data: Value -     #     # Decoded data as a JSON structure.
     def decode_account_data(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
@@ -157,6 +157,16 @@ module TonClient
     # initial_data: Value<Optional> -     #     # List of initial values of contract's public variables.    #     # Initial data is decoded if `abi` input parameter is provided
     # initial_pubkey: String -     #     # Initial account owner's public key
     def decode_initial_data(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfDecodeBoc
+    # params: Array -     #     # Parameters to decode from BOC
+    # boc: String -     #     # Data BOC or BOC handle
+    # allow_partial: Boolean - 
+    # RESPONSE: ResultOfDecodeBoc
+    # data: Value -     #     # Decoded data as a JSON structure.
+    def decode_boc(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 

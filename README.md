@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.23.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.25.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -133,6 +133,8 @@ end
 
   - case InvalidHandle = 34
 
+  - case LocalStorageError = 35
+
 
 - #### AppRequestResult
   - case Error = Error
@@ -156,6 +158,11 @@ end
   - abi: Value
 
   - boc: BocConfig&lt;Optional&gt;
+
+  - proofs: ProofsConfig&lt;Optional&gt;
+
+   For file based storage is a folder name where SDK will store its data. For browser based is a browser async storage key prefix. Default (recommended) value is "~/.tonclient" for native environments and ".tonclient" for web-browser.
+  - local_storage_path: String&lt;Optional&gt;
 
 
 - #### NetworkConfig
@@ -204,7 +211,7 @@ end
    Must be specified in milliseconds. Default is 60000 (1 min).
   - latency_detection_interval: Number&lt;Optional&gt;
 
-   Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data syncronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
+   Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data synchronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
    Must be specified in milliseconds. Default is 60000 (1 min).
   - max_latency: Number&lt;Optional&gt;
 
@@ -244,6 +251,12 @@ end
    Maximum BOC cache size in kilobytes.
    Default is 10 MB
   - cache_max_size: Number&lt;Optional&gt;
+
+
+- #### ProofsConfig
+   Cache proofs in the local storage.
+   Default is `true`. If this value is set to `true`, downloaded proofs and master-chain BOCs are saved into thepersistent local storage (e.g. file system for native environments or browser's IndexedDBfor the web); otherwise all the data is cached only in memory in current client's contextand will be lost after destruction of the client.
+  - cache_in_local_storage: Boolean&lt;Optional&gt;
 
 
 - #### BuildInfoDependency
@@ -1401,7 +1414,7 @@ end
   - data: String
 
 
-- #### ResultOfDecodeData
+- #### ResultOfDecodeAccountData
    Decoded data as a JSON structure.
   - data: Value
 
@@ -1445,6 +1458,21 @@ end
 
    Initial account owner's public key
   - initial_pubkey: String
+
+
+- #### ParamsOfDecodeBoc
+   Parameters to decode from BOC
+  - params: Array
+
+   Data BOC or BOC handle
+  - boc: String
+
+  - allow_partial: Boolean
+
+
+- #### ResultOfDecodeBoc
+   Decoded data as a JSON structure.
+  - data: Value
 
 
 - #### BocCacheType
@@ -1517,13 +1545,23 @@ end
 
 
 - #### ParamsOfGetBocHash
-   BOC encoded as base64
+   BOC encoded as base64 or BOC handle
   - boc: String
 
 
 - #### ResultOfGetBocHash
    BOC root hash encoded with hex
   - hash: String
+
+
+- #### ParamsOfGetBocDepth
+   BOC encoded as base64 or BOC handle
+  - boc: String
+
+
+- #### ResultOfGetBocDepth
+   BOC root cell depth
+  - depth: Number
 
 
 - #### ParamsOfGetCodeFromTvc
@@ -1644,8 +1682,20 @@ end
    Contract code BOC encoded as base64 or BOC handle
   - code: String&lt;Optional&gt;
 
+   Contract code hash
+  - code_hash: String&lt;Optional&gt;
+
+   Contract code depth
+  - code_depth: Number&lt;Optional&gt;
+
    Contract data BOC encoded as base64 or BOC handle
   - data: String&lt;Optional&gt;
+
+   Contract data hash
+  - data_hash: String&lt;Optional&gt;
+
+   Contract data depth
+  - data_depth: Number&lt;Optional&gt;
 
    Contract library BOC encoded as base64 or BOC handle
   - library: String&lt;Optional&gt;
@@ -1660,6 +1710,9 @@ end
 
    Is present and non-zero only in instances of large smart contracts
   - split_depth: Number&lt;Optional&gt;
+
+   Compiler version, for example 'sol 0.49.0'
+  - compiler_version: String&lt;Optional&gt;
 
 
 - #### ParamsOfEncodeTvc
@@ -2762,6 +2815,26 @@ end
    Debot handle which references an instance of debot engine.
   - debot_handle: DebotHandle
 
+
+- #### ProofsErrorCode
+  - case InvalidData = 901
+
+  - case ProofCheckFailed = 902
+
+  - case InternalError = 903
+
+  - case DataDiffersFromProven = 904
+
+
+- #### ParamsOfProofBlockData
+   Single block's data, retrieved from TONOS API, that needs proof. Required fields are `id` and/or top-level `boc` (for block identification), others are optional.
+  - block: Value
+
+
+- #### ParamsOfProofTransactionData
+   Single transaction's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide `block_id` and `boc` of transaction.
+  - transaction: Value
+
 </details>
 
 <details>
@@ -3399,7 +3472,7 @@ end
     # abi: Value -     #     # Contract ABI
     # data: String -     #     # Data BOC or BOC handle
 
-    # RESPONSE: ResultOfDecodeData
+    # RESPONSE: ResultOfDecodeAccountData
     # data: Value -     #     # Decoded data as a JSON structure.
 ```
 ```ruby
@@ -3425,6 +3498,21 @@ end
     # RESPONSE: ResultOfDecodeInitialData
     # initial_data: Value&lt;Optional&gt; -     #     # List of initial values of contract's public variables.    #     # Initial data is decoded if `abi` input parameter is provided
     # initial_pubkey: String -     #     # Initial account owner's public key
+```
+```ruby
+    # Decodes BOC into JSON as a set of provided parameters.    # Solidity functions use ABI types for [builder encoding](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
+    # The simplest way to decode such a BOC is to use ABI decoding.
+    # ABI has it own rules for fields layout in cells so manually encodedBOC can not be described in terms of ABI rules.
+    # To solve this problem we introduce a new ABI type `Ref(<ParamType>)`which allows to store `ParamType` ABI parameter in cell reference and, thus,decode manually encoded BOCs. This type is available only in `decode_boc` functionand will not be available in ABI messages encoding until it is included into some ABI revision.
+    # Such BOC descriptions covers most users needs. If someone wants to decode some BOC whichcan not be described by these rules (i.e. BOC with TLB containing constructors of flagsdefining some parsing conditions) then they can decode the fields up to fork condition,check the parsed data manually, expand the parsing schema and then decode the whole BOCwith the full schema.
+    def decode_boc(payload, &block)
+    # INPUT: ParamsOfDecodeBoc
+    # params: Array -     #     # Parameters to decode from BOC
+    # boc: String -     #     # Data BOC or BOC handle
+    # allow_partial: Boolean - 
+
+    # RESPONSE: ResultOfDecodeBoc
+    # data: Value -     #     # Decoded data as a JSON structure.
 ```
 </details>
 
@@ -3491,10 +3579,19 @@ end
     # Calculates BOC root hash
     def get_boc_hash(payload, &block)
     # INPUT: ParamsOfGetBocHash
-    # boc: String -     #     # BOC encoded as base64
+    # boc: String -     #     # BOC encoded as base64 or BOC handle
 
     # RESPONSE: ResultOfGetBocHash
     # hash: String -     #     # BOC root hash encoded with hex
+```
+```ruby
+    # Calculates BOC depth
+    def get_boc_depth(payload, &block)
+    # INPUT: ParamsOfGetBocDepth
+    # boc: String -     #     # BOC encoded as base64 or BOC handle
+
+    # RESPONSE: ResultOfGetBocDepth
+    # depth: Number -     #     # BOC root cell depth
 ```
 ```ruby
     # Extracts code from TVC contract image
@@ -3571,11 +3668,16 @@ end
 
     # RESPONSE: ResultOfDecodeTvc
     # code: String&lt;Optional&gt; -     #     # Contract code BOC encoded as base64 or BOC handle
+    # code_hash: String&lt;Optional&gt; -     #     # Contract code hash
+    # code_depth: Number&lt;Optional&gt; -     #     # Contract code depth
     # data: String&lt;Optional&gt; -     #     # Contract data BOC encoded as base64 or BOC handle
+    # data_hash: String&lt;Optional&gt; -     #     # Contract data hash
+    # data_depth: Number&lt;Optional&gt; -     #     # Contract data depth
     # library: String&lt;Optional&gt; -     #     # Contract library BOC encoded as base64 or BOC handle
     # tick: Boolean&lt;Optional&gt; -     #     # `special.tick` field.    #     # Specifies the contract ability to handle tick transactions
     # tock: Boolean&lt;Optional&gt; -     #     # `special.tock` field.    #     # Specifies the contract ability to handle tock transactions
     # split_depth: Number&lt;Optional&gt; -     #     # Is present and non-zero only in instances of large smart contracts
+    # compiler_version: String&lt;Optional&gt; -     #     # Compiler version, for example 'sol 0.49.0'
 ```
 ```ruby
     # Encodes tvc from code, data, libraries ans special options (see input params)
@@ -4152,6 +4254,43 @@ end
     def remove(payload, &block)
     # INPUT: ParamsOfRemove
     # debot_handle: DebotHandle -     #     # Debot handle which references an instance of debot engine.
+```
+</details>
+
+<details>
+  <summary>PROOFS</summary>
+
+```ruby
+    # Proves that a given block's data, which is queried from TONOS API, can be trusted.    # This function checks block proofs and compares given data with the proven.
+    # If the given data differs from the proven, the exception will be thrown.
+    # The input param is a single block's JSON object, which was queried from DApp server usingfunctions such as `net.query`, `net.query_collection` or `net.wait_for_collection`.
+    # If block's BOC is not provided in the JSON, it will be queried from DApp server(in this case it is required to provide at least `id` of block).
+    # Please note, that joins (like `signatures` in `Block`) are separated entities and not supported,so function will throw an exception in a case if JSON being checked has such entities in it.
+    # If `cache_in_local_storage` in config is set to `true` (default), downloaded proofs andmaster-chain BOCs are saved into the persistent local storage (e.g. file system for nativeenvironments or browser's IndexedDB for the web); otherwise all the data is cached only inmemory in current client's context and will be lost after destruction of the client.
+    # **Why Proofs are needed**Proofs are needed to ensure that the data downloaded from a DApp server is real blockchaindata. Checking proofs can protect from the malicious DApp server which can potentially providefake data, or also from "Man in the Middle" attacks class.
+    # **What Proofs are**Simply, proof is a list of signatures of validators', which have signed this particular master-block.
+    # The very first validator set's public keys are included in the zero-state. Whe know a root hashof the zero-state, because it is stored in the network configuration file, it is our authorityroot. For proving zero-state it is enough to calculate and compare its root hash.
+    # In each new validator cycle the validator set is changed. The new one is stored in a key-block,which is signed by the validator set, which we already trust, the next validator set will bestored to the new key-block and signed by the current validator set, and so on.
+    # In order to prove any block in the master-chain we need to check, that it has been signed bya trusted validator set. So we need to check all key-blocks' proofs, started from the zero-stateand until the block, which we want to prove. But it can take a lot of time and traffic todownload and prove all key-blocks on a client. For solving this, special trusted blocks are usedin TON-SDK.
+    # The trusted block is the authority root, as well, as the zero-state. Each trusted block is the`id` (e.g. `root_hash`) of the already proven key-block. There can be plenty of trustedblocks, so there can be a lot of authority roots. The hashes of trusted blocks for MainNetand DevNet are hardcoded in SDK in a separated binary file (trusted_key_blocks.bin) and canbe updated for each release.
+    # In future SDK releases, one will also be able to provide their hashes of trusted blocks forother networks, besides for MainNet and DevNet.
+    # By using trusted key-blocks, in order to prove any block, we can prove chain of key-blocks tothe closest previous trusted key-block, not only to the zero-state.
+    # But shard-blocks don't have proofs on DApp server. In this case, in order to prove any shard-block data, we search for a corresponding master-block, which contains the root hash of thisshard-block, or some shard block which is linked to that block in shard-chain. After provingthis master-block, we traverse through each link and calculate and compare hashes with links,one-by-one. After that we can ensure that this shard-block has also been proven.
+    def proof_block_data(payload, &block)
+    # INPUT: ParamsOfProofBlockData
+    # block: Value -     #     # Single block's data, retrieved from TONOS API, that needs proof. Required fields are `id` and/or top-level `boc` (for block identification), others are optional.
+```
+```ruby
+    # Proves that a given transaction's data, which is queried from TONOS API, can be trusted.    # This function requests the corresponding block, checks block proofs, ensures that given transactionexists in the proven block and compares given data with the proven.
+    # If the given data differs from the proven, the exception will be thrown.
+    # The input parameter is a single transaction's JSON object (see params description),which was queried from TONOS API using functions such as `net.query`, `net.query_collection`or `net.wait_for_collection`.
+    # If transaction's BOC and/or `block_id` are not provided in the JSON, they will be queried fromTONOS API (in this case it is required to provide at least `id` of transaction).
+    # Please note, that joins (like `account`, `in_message`, `out_messages`, etc. in `Transaction`entity) are separated entities and not supported, so function will throw an exception in a caseif JSON being checked has such entities in it.
+    # If `cache_in_local_storage` in config is set to `true` (default), downloaded proofs andmaster-chain BOCs are saved into the persistent local storage (e.g. file system for nativeenvironments or browser's IndexedDB for the web); otherwise all the data is cached only inmemory in current client's context and will be lost after destruction of the client.
+    # For more information about proofs checking, see description of `proof_block_data` function.
+    def proof_transaction_data(payload, &block)
+    # INPUT: ParamsOfProofTransactionData
+    # transaction: Value -     #     # Single transaction's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide `block_id` and `boc` of transaction.
 ```
 </details>
 

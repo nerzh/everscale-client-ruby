@@ -4,7 +4,7 @@ module TonClient
     include CommonInstanceHelpers
 
     attr_reader :core, :context
-    private_accessor :_crypto, :_abi, :_boc, :_processing, :_utils, :_tvm, :_net, :_debot
+    private_accessor :_crypto, :_abi, :_boc, :_processing, :_utils, :_tvm, :_net, :_debot, :_proofs
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
     def initialize(context: Context.new, core: TonClient::TonBinding)
@@ -46,6 +46,10 @@ module TonClient
 
     def debot
       _debot ||= Debot.new(context: context)
+    end
+
+    def proofs
+      _proofs ||= Proofs.new(context: context)
     end
 
     # RESPONSE: ResultOfGetApiReference

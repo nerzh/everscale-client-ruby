@@ -62,10 +62,18 @@ module TonClient
     end
 
     # INPUT: ParamsOfGetBocHash
-    # boc: String -     #     # BOC encoded as base64
+    # boc: String -     #     # BOC encoded as base64 or BOC handle
     # RESPONSE: ResultOfGetBocHash
     # hash: String -     #     # BOC root hash encoded with hex
     def get_boc_hash(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfGetBocDepth
+    # boc: String -     #     # BOC encoded as base64 or BOC handle
+    # RESPONSE: ResultOfGetBocDepth
+    # depth: Number -     #     # BOC root cell depth
+    def get_boc_depth(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
@@ -134,11 +142,16 @@ module TonClient
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
     # RESPONSE: ResultOfDecodeTvc
     # code: String<Optional> -     #     # Contract code BOC encoded as base64 or BOC handle
+    # code_hash: String<Optional> -     #     # Contract code hash
+    # code_depth: Number<Optional> -     #     # Contract code depth
     # data: String<Optional> -     #     # Contract data BOC encoded as base64 or BOC handle
+    # data_hash: String<Optional> -     #     # Contract data hash
+    # data_depth: Number<Optional> -     #     # Contract data depth
     # library: String<Optional> -     #     # Contract library BOC encoded as base64 or BOC handle
     # tick: Boolean<Optional> -     #     # `special.tick` field.    #     # Specifies the contract ability to handle tick transactions
     # tock: Boolean<Optional> -     #     # `special.tock` field.    #     # Specifies the contract ability to handle tock transactions
     # split_depth: Number<Optional> -     #     # Is present and non-zero only in instances of large smart contracts
+    # compiler_version: String<Optional> -     #     # Compiler version, for example 'sol 0.49.0'
     def decode_tvc(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
