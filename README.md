@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.25.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.26.1-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -1442,6 +1442,26 @@ end
   - data: String
 
 
+- #### ParamsOfEncodeInitialData
+   Contract ABI
+  - abi: Value&lt;Optional&gt;
+
+   List of initial values for contract's static variables.
+   `abi` parameter should be provided to set initial data
+  - initial_data: Value
+
+   Initial account owner's public key to set into account data
+  - initial_pubkey: String&lt;Optional&gt;
+
+   Cache type to put the result. The BOC itself returned if no cache type provided.
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfEncodeInitialData
+   Updated data BOC or BOC handle
+  - data: String
+
+
 - #### ParamsOfDecodeInitialData
    Contract ABI.
    Initial data is decoded if this parameter is provided
@@ -2597,6 +2617,8 @@ end
 
   - case DebotOperationRejected = 812
 
+  - case DebotNoCode = 813
+
 
 - #### DebotActivity
   - case Transaction = Transaction
@@ -2689,6 +2711,9 @@ end
 
    Vector with IDs of DInterfaces used by DeBot.
   - interfaces: Array
+
+   ABI version ("x.y") supported by DeBot
+  - dabiVersion: String
 
 # [UNSTABLE](UNSTABLE.md) Describes the operation that the DeBot wants to perform.
 - #### DebotActivity
@@ -2834,6 +2859,11 @@ end
 - #### ParamsOfProofTransactionData
    Single transaction's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide `block_id` and `boc` of transaction.
   - transaction: Value
+
+
+- #### ParamsOfProofMessageData
+   Single message's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide at least `boc` of message and non-null `src_transaction.id` or `dst_transaction.id`.
+  - message: Value
 
 </details>
 
@@ -3486,6 +3516,18 @@ end
     # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
 
     # RESPONSE: ResultOfUpdateInitialData
+    # data: String -     #     # Updated data BOC or BOC handle
+```
+```ruby
+    # Encodes initial account data with initial values for the contract's static variables and owner's public key into a data BOC that can be passed to `encode_tvc` function afterwards.    # This function is analogue of `tvm.buildDataInit` function in Solidity.
+    def encode_initial_data(payload, &block)
+    # INPUT: ParamsOfEncodeInitialData
+    # abi: Value&lt;Optional&gt; -     #     # Contract ABI
+    # initial_data: Value -     #     # List of initial values for contract's static variables.    #     # `abi` parameter should be provided to set initial data
+    # initial_pubkey: String&lt;Optional&gt; -     #     # Initial account owner's public key to set into account data
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
+
+    # RESPONSE: ResultOfEncodeInitialData
     # data: String -     #     # Updated data BOC or BOC handle
 ```
 ```ruby
@@ -4281,16 +4323,26 @@ end
     # block: Value -     #     # Single block's data, retrieved from TONOS API, that needs proof. Required fields are `id` and/or top-level `boc` (for block identification), others are optional.
 ```
 ```ruby
-    # Proves that a given transaction's data, which is queried from TONOS API, can be trusted.    # This function requests the corresponding block, checks block proofs, ensures that given transactionexists in the proven block and compares given data with the proven.
+    # Proves that a given transaction's data, which is queried from TONOS API, can be trusted.    # This function requests the corresponding block, checks block proofs, ensures that giventransaction exists in the proven block and compares given data with the proven.
     # If the given data differs from the proven, the exception will be thrown.
     # The input parameter is a single transaction's JSON object (see params description),which was queried from TONOS API using functions such as `net.query`, `net.query_collection`or `net.wait_for_collection`.
-    # If transaction's BOC and/or `block_id` are not provided in the JSON, they will be queried fromTONOS API (in this case it is required to provide at least `id` of transaction).
+    # If transaction's BOC and/or `block_id` are not provided in the JSON, they will be queried fromTONOS API.
     # Please note, that joins (like `account`, `in_message`, `out_messages`, etc. in `Transaction`entity) are separated entities and not supported, so function will throw an exception in a caseif JSON being checked has such entities in it.
-    # If `cache_in_local_storage` in config is set to `true` (default), downloaded proofs andmaster-chain BOCs are saved into the persistent local storage (e.g. file system for nativeenvironments or browser's IndexedDB for the web); otherwise all the data is cached only inmemory in current client's context and will be lost after destruction of the client.
     # For more information about proofs checking, see description of `proof_block_data` function.
     def proof_transaction_data(payload, &block)
     # INPUT: ParamsOfProofTransactionData
     # transaction: Value -     #     # Single transaction's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide `block_id` and `boc` of transaction.
+```
+```ruby
+    # Proves that a given message's data, which is queried from TONOS API, can be trusted.    # This function first proves the corresponding transaction, ensures that the proven transactionrefers to the given message and compares given data with the proven.
+    # If the given data differs from the proven, the exception will be thrown.
+    # The input parameter is a single message's JSON object (see params description),which was queried from TONOS API using functions such as `net.query`, `net.query_collection`or `net.wait_for_collection`.
+    # If message's BOC and/or non-null `src_transaction.id` or `dst_transaction.id` are not providedin the JSON, they will be queried from TONOS API.
+    # Please note, that joins (like `block`, `dst_account`, `dst_transaction`, `src_account`,`src_transaction`, etc. in `Message` entity) are separated entities and not supported,so function will throw an exception in a case if JSON being checked has such entities in it.
+    # For more information about proofs checking, see description of `proof_block_data` function.
+    def proof_message_data(payload, &block)
+    # INPUT: ParamsOfProofMessageData
+    # message: Value -     #     # Single message's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide at least `boc` of message and non-null `src_transaction.id` or `dst_transaction.id`.
 ```
 </details>
 
