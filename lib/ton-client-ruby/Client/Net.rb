@@ -78,6 +78,15 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfSubscribe
+    # subscription: String -     #     # GraphQL subscription text.
+    # variables: Value -     #     # Variables used in subscription.    #     # Must be a map with named values that can be used in query.
+    # RESPONSE: ResultOfSubscribeCollection
+    # handle: Number -     #     # Subscription handle.    #     # Must be closed with `unsubscribe`
+    def subscribe(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
     def suspend(&block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end

@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.28.1-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.30.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -1495,6 +1495,23 @@ end
   - data: Value
 
 
+- #### ParamsOfAbiEncodeBoc
+   Parameters to encode into BOC
+  - params: Array
+
+   Parameters and values as a JSON structure
+  - data: Value
+
+   Cache type to put the result.
+   The BOC itself returned if no cache type provided
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfAbiEncodeBoc
+   BOC encoded as base64
+  - boc: String
+
+
 - #### BocCacheType
   - case Pinned = Pinned
 
@@ -1525,6 +1542,8 @@ end
   - case Cell = Cell
 
   - case CellBoc = CellBoc
+
+  - case Address = Address
 
 
 - #### BocCacheType
@@ -1638,11 +1657,14 @@ end
      e.g `0x123`, `0X123`, `-0x123`.
   - value: Value
 
-   Nested cell builder
+   Nested cell builder.
   - builder: Array
 
    Nested cell BOC encoded with `base64` or BOC cache key.
   - boc: String
+
+   Address in a common `workchain:account` or base64 format.
+  - address: String
 
 
 - #### ParamsOfEncodeBoc
@@ -1763,6 +1785,32 @@ end
 - #### ResultOfEncodeTvc
    Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
   - tvc: String
+
+
+- #### ParamsOfEncodeExternalInMessage
+   Source address.
+  - src: String&lt;Optional&gt;
+
+   Destination address.
+  - dst: String
+
+   Bag of cells with state init (used in deploy messages).
+  - init: String&lt;Optional&gt;
+
+   Bag of cells with the message body encoded as base64.
+  - body: String&lt;Optional&gt;
+
+   Cache type to put the result.
+   The BOC itself returned if no cache type provided
+  - boc_cache: BocCacheType&lt;Optional&gt;
+
+
+- #### ResultOfEncodeExternalInMessage
+   Message BOC encoded with `base64`.
+  - message: String
+
+   Message id.
+  - message_id: String
 
 
 - #### ParamsOfGetCompilerVersion
@@ -2413,6 +2461,15 @@ end
 
    Projection (result) string
   - result: String
+
+
+- #### ParamsOfSubscribe
+   GraphQL subscription text.
+  - subscription: String
+
+   Variables used in subscription.
+   Must be a map with named values that can be used in query.
+  - variables: Value
 
 
 - #### ParamsOfFindLastShardBlock
@@ -3556,6 +3613,17 @@ end
     # RESPONSE: ResultOfDecodeBoc
     # data: Value -     #     # Decoded data as a JSON structure.
 ```
+```ruby
+    # Encodes given parameters in JSON into a BOC using param types from ABI.
+    def encode_boc(payload, &block)
+    # INPUT: ParamsOfAbiEncodeBoc
+    # params: Array -     #     # Parameters to encode into BOC
+    # data: Value -     #     # Parameters and values as a JSON structure
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
+
+    # RESPONSE: ResultOfAbiEncodeBoc
+    # boc: String -     #     # BOC encoded as base64
+```
 </details>
 
 <details>
@@ -3671,7 +3739,7 @@ end
     # boc_ref: String&lt;Optional&gt; -     #     # Reference to the cached BOC.    #     # If it is provided then only referenced BOC is unpinned
 ```
 ```ruby
-    # Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type
+    # Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type.
     def encode_boc(payload, &block)
     # INPUT: ParamsOfEncodeBoc
     # builder: Array -     #     # Cell builder operations.
@@ -3735,6 +3803,20 @@ end
 
     # RESPONSE: ResultOfEncodeTvc
     # tvc: String -     #     # Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+```
+```ruby
+    # Encodes a message    # Allows to encode any external inbound message.
+    def encode_external_in_message(payload, &block)
+    # INPUT: ParamsOfEncodeExternalInMessage
+    # src: String&lt;Optional&gt; -     #     # Source address.
+    # dst: String -     #     # Destination address.
+    # init: String&lt;Optional&gt; -     #     # Bag of cells with state init (used in deploy messages).
+    # body: String&lt;Optional&gt; -     #     # Bag of cells with the message body encoded as base64.
+    # boc_cache: BocCacheType&lt;Optional&gt; -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
+
+    # RESPONSE: ResultOfEncodeExternalInMessage
+    # message: String -     #     # Message BOC encoded with `base64`.
+    # message_id: String -     #     # Message id.
 ```
 ```ruby
     # Returns the compiler version used to compile the code.
@@ -4007,7 +4089,7 @@ end
     # handle: Number -     #     # Subscription handle.    #     # Must be closed with `unsubscribe`
 ```
 ```ruby
-    # Creates a subscription    # Triggers for each insert/update of data that satisfiesthe `filter` conditions.
+    # Creates a collection subscription    # Triggers for each insert/update of data that satisfiesthe `filter` conditions.
     # The projection fields are limited to `result` fields.
     # The subscription is a persistent communication channel betweenclient and Free TON Network.
     # All changes in the blockchain will be reflected in realtime.
@@ -4029,6 +4111,28 @@ end
     # collection: String -     #     # Collection name (accounts, blocks, transactions, messages, block_signatures)
     # filter: Value -     #     # Collection filter
     # result: String -     #     # Projection (result) string
+
+    # RESPONSE: ResultOfSubscribeCollection
+    # handle: Number -     #     # Subscription handle.    #     # Must be closed with `unsubscribe`
+```
+```ruby
+    # Creates a subscription    # The subscription is a persistent communication channel betweenclient and Everscale Network.
+    # ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network brakes down.
+    # In this situation the library attempts to reconnect to the network.
+    # This reconnection sequence can take significant time.
+    # All of this time the client is disconnected from the network.
+    # Bad news is that all changes that happened whilethe client was disconnected are lost.
+    # Good news is that the client report errors to the callback whenit loses and resumes connection.
+    # So, if the lost changes are important to the application thenthe application must handle these error reports.
+    # Library reports errors with `responseType` == 101and the error object passed via `params`.
+    # When the library has successfully reconnectedthe application receives callback with`responseType` == 101 and `params.code` == 614 (NetworkModuleResumed).
+    # Application can use several ways to handle this situation:
+    # - If application monitors changes for the singleobject (for example specific account):  applicationcan perform a query for this object and handle actual data as aregular data from the subscription.
+    # - If application monitors sequence of some objects(for example transactions of the specific account): application mustrefresh all cached (or visible to user) lists where this sequences presents.
+    def subscribe(payload, &block)
+    # INPUT: ParamsOfSubscribe
+    # subscription: String -     #     # GraphQL subscription text.
+    # variables: Value -     #     # Variables used in subscription.    #     # Must be a map with named values that can be used in query.
 
     # RESPONSE: ResultOfSubscribeCollection
     # handle: Number -     #     # Subscription handle.    #     # Must be closed with `unsubscribe`

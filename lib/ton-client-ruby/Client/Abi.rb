@@ -181,6 +181,16 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfAbiEncodeBoc
+    # params: Array -     #     # Parameters to encode into BOC
+    # data: Value -     #     # Parameters and values as a JSON structure
+    # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
+    # RESPONSE: ResultOfAbiEncodeBoc
+    # boc: String -     #     # BOC encoded as base64
+    def encode_boc(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
   end
 end
 

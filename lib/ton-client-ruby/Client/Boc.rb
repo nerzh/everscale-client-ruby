@@ -170,6 +170,19 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfEncodeExternalInMessage
+    # src: String<Optional> -     #     # Source address.
+    # dst: String -     #     # Destination address.
+    # init: String<Optional> -     #     # Bag of cells with state init (used in deploy messages).
+    # body: String<Optional> -     #     # Bag of cells with the message body encoded as base64.
+    # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result.    #     # The BOC itself returned if no cache type provided
+    # RESPONSE: ResultOfEncodeExternalInMessage
+    # message: String -     #     # Message BOC encoded with `base64`.
+    # message_id: String -     #     # Message id.
+    def encode_external_in_message(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
     # INPUT: ParamsOfGetCompilerVersion
     # code: String -     #     # Contract code BOC encoded as base64 or code BOC handle
     # RESPONSE: ResultOfGetCompilerVersion
