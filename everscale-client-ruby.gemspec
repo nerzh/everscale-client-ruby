@@ -1,17 +1,17 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "ton-client-ruby/version"
+require "everscale-client-ruby/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "ton-client-ruby"
+  spec.name          = "everscale-client-ruby"
   spec.version       = TonClient::VERSION
   spec.authors       = ["nerzh"]
   spec.email         = ["emptystamp@gmail.com"]
 
-  spec.summary       = 'This is gem ton-client-ruby'
+  spec.summary       = 'This is gem everscale-client-ruby'
   spec.description   = 'Gem Ton Client Ruby for all ruby projects'
-  spec.homepage      = 'https://github.com/nerzh/ton-client-ruby'
+  spec.homepage      = 'https://github.com/bytehubio/everscale-client-ruby'
   spec.license       = 'MIT'
 
   spec.files         = Dir['lib/**/*']
