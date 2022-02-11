@@ -1,3 +1,16 @@
+# moved to [https://github.com/bytehubio/everscale-client-ruby](https://github.com/bytehubio/everscale-client-ruby)
+
+
+
+
+
+https://github.com/bytehubio/everscale-client-ruby
+
+
+
+
+
+
 
 # Ruby Client for Free TON SDK
 
