@@ -1,8 +1,8 @@
 
 # Ruby Client for Free TON SDK
 
-[![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.30.0-green)](https://github.com/tonlabs/TON-SDK)
+[![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.31.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -367,9 +367,23 @@ end
 
   - case IvRequired = 129
 
+  - case CryptoBoxNotRegistered = 130
+
+  - case InvalidCryptoBoxType = 131
+
+  - case CryptoBoxSecretSerializationError = 132
+
+  - case CryptoBoxSecretDeserializationError = 133
+
 
 - #### EncryptionAlgorithm
   - case AES = AES
+
+  - case ChaCha20 = ChaCha20
+
+  - case NaclBox = NaclBox
+
+  - case NaclSecretBox = NaclSecretBox
 
 
 - #### CipherMode
@@ -382,6 +396,30 @@ end
   - case ECB = 
 
   - case OFB = 
+
+
+- #### CryptoBoxSecret
+  - case RandomSeedPhrase = RandomSeedPhrase
+
+  - case PredefinedSeedPhrase = PredefinedSeedPhrase
+
+  - case EncryptedSecret = EncryptedSecret
+
+
+- #### BoxEncryptionAlgorithm
+  - case ChaCha20 = ChaCha20
+
+  - case NaclBox = NaclBox
+
+  - case NaclSecretBox = NaclSecretBox
+
+
+- #### ParamsOfAppPasswordProvider
+  - case GetPassword = GetPassword
+
+
+- #### ResultOfAppPasswordProvider
+  - case GetPassword = GetPassword
 
 
 - #### ParamsOfAppSigningBox
@@ -430,7 +468,7 @@ end
   - type: EncryptionAlgorithm
 
 
-- #### AesParams
+- #### AesParamsEB
   - mode: CipherMode
 
   - key: String
@@ -442,6 +480,76 @@ end
   - mode: CipherMode
 
   - iv: String&lt;Optional&gt;
+
+
+- #### ChaCha20ParamsEB
+   256-bit key.
+   Must be encoded with `hex`.
+  - key: String
+
+   96-bit nonce.
+   Must be encoded with `hex`.
+  - nonce: String
+
+
+- #### NaclBoxParamsEB
+   256-bit key.
+   Must be encoded with `hex`.
+  - their_public: String
+
+   256-bit key.
+   Must be encoded with `hex`.
+  - secret: String
+
+   96-bit nonce.
+   Must be encoded with `hex`.
+  - nonce: String
+
+
+- #### NaclSecretBoxParamsEB
+   Secret key - unprefixed 0-padded to 64 symbols hex string
+  - key: String
+
+   Nonce in `hex`
+  - nonce: String
+
+# Crypto Box Secret.
+- #### CryptoBoxSecret
+  - type: CryptoBoxSecret
+
+  - dictionary: MnemonicDictionary
+
+  - wordcount: Number
+
+  - phrase: String
+
+   It is an object, containing encrypted seed phrase or private key (now we support only seed phrase).
+  - encrypted_secret: String
+
+
+- #### BoxEncryptionAlgorithm
+  - type: BoxEncryptionAlgorithm
+
+
+- #### ChaCha20ParamsCB
+   96-bit nonce.
+   Must be encoded with `hex`.
+  - nonce: String
+
+
+- #### NaclBoxParamsCB
+   256-bit key.
+   Must be encoded with `hex`.
+  - their_public: String
+
+   96-bit nonce.
+   Must be encoded with `hex`.
+  - nonce: String
+
+
+- #### NaclSecretBoxParamsCB
+   Nonce in `hex`
+  - nonce: String
 
 
 - #### ParamsOfFactorize
@@ -660,6 +768,7 @@ end
    Encoded with `base64`.
   - encrypted: String
 
+   Nonce
   - nonce: String
 
    Sender's public key - unprefixed 0-padded to 64 symbols hex string
@@ -694,7 +803,7 @@ end
    Nonce in `hex`
   - nonce: String
 
-   Public key - unprefixed 0-padded to 64 symbols hex string
+   Secret key - unprefixed 0-padded to 64 symbols hex string
   - key: String
 
 
@@ -853,9 +962,85 @@ end
   - data: String
 
 
+- #### ParamsOfCreateCryptoBox
+   Salt used for secret encryption. For example, a mobile device can use device ID as salt.
+  - secret_encryption_salt: String
+
+   Cryptobox secret
+  - secret: CryptoBoxSecret
+
+
+- #### RegisteredCryptoBox
+  - handle: CryptoBoxHandle
+
+# Interface that provides a callback that returns an encrypted password, used for cryptobox secret encryption# To secure the password while passing it from application to the library,the library generates a temporary key pair, passes the pubkeyto the passwordProvider, decrypts the received password with private key,and deletes the key pair right away.
+# Application should generate a temporary nacl_box_keypairand encrypt the password with naclbox function using nacl_box_keypair.secretand encryption_public_key keys + nonce = 24-byte prefix of encryption_public_key.
+- #### ParamsOfAppPasswordProvider
+  - type: ParamsOfAppPasswordProvider
+
+   Temporary library pubkey, that is used on application side for password encryption, along with application temporary private key and nonce. Used for password decryption on library side.
+  - encryption_public_key: String
+
+
+- #### ResultOfAppPasswordProvider
+  - type: ResultOfAppPasswordProvider
+
+   Password, encrypted and encoded to base64. Crypto box uses this password to decrypt its secret (seed phrase).
+  - encrypted_password: String
+
+   Hex encoded public key of a temporary key pair, used for password encryption on application side.
+   Used together with `encryption_public_key` to decode `encrypted_password`.
+  - app_encryption_pubkey: String
+
+
+- #### ResultOfGetCryptoBoxInfo
+   Secret (seed phrase) encrypted with salt and password.
+  - encrypted_secret: String
+
+
+- #### ResultOfGetCryptoBoxSeedPhrase
+  - phrase: String
+
+  - dictionary: MnemonicDictionary
+
+  - wordcount: Number
+
+
+- #### ParamsOfGetSigningBoxFromCryptoBox
+   Crypto Box Handle.
+  - handle: Number
+
+   HD key derivation path.
+   By default, Everscale HD path is used.
+  - hdpath: String&lt;Optional&gt;
+
+   Store derived secret for this lifetime (in ms). The timer starts after each signing box operation. Secrets will be deleted immediately after each signing box operation, if this value is not set.
+  - secret_lifetime: Number&lt;Optional&gt;
+
+
 - #### RegisteredSigningBox
    Handle of the signing box.
   - handle: SigningBoxHandle
+
+
+- #### ParamsOfGetEncryptionBoxFromCryptoBox
+   Crypto Box Handle.
+  - handle: Number
+
+   HD key derivation path.
+   By default, Everscale HD path is used.
+  - hdpath: String&lt;Optional&gt;
+
+   Encryption algorithm.
+  - algorithm: BoxEncryptionAlgorithm
+
+   Store derived secret for encryption algorithm for this lifetime (in ms). The timer starts after each encryption box operation. Secrets will be deleted (overwritten with zeroes) after each encryption operation, if this value is not set.
+  - secret_lifetime: Number&lt;Optional&gt;
+
+
+- #### RegisteredEncryptionBox
+   Handle of the encryption box.
+  - handle: EncryptionBoxHandle
 
 # Signing box callbacks.
 - #### ParamsOfAppSigningBox
@@ -895,12 +1080,7 @@ end
    Encoded with `hex`.
   - signature: String
 
-
-- #### RegisteredEncryptionBox
-   Handle of the encryption box
-  - handle: EncryptionBoxHandle
-
-# Encryption box callbacks.
+# Interface for data encryption/decryption
 - #### ParamsOfAppEncryptionBox
   - type: ParamsOfAppEncryptionBox
 
@@ -3161,7 +3341,7 @@ end
     def nacl_box_open(payload, &block)
     # INPUT: ParamsOfNaclBoxOpen
     # encrypted: String -     #     # Data that must be decrypted.    #     # Encoded with `base64`.
-    # nonce: String - 
+    # nonce: String -     #     # Nonce
     # their_public: String -     #     # Sender's public key - unprefixed 0-padded to 64 symbols hex string
     # secret: String -     #     # Receiver's private key - unprefixed 0-padded to 64 symbols hex string
 
@@ -3185,7 +3365,7 @@ end
     # INPUT: ParamsOfNaclSecretBoxOpen
     # encrypted: String -     #     # Data that must be decrypted.    #     # Encoded with `base64`.
     # nonce: String -     #     # Nonce in `hex`
-    # key: String -     #     # Public key - unprefixed 0-padded to 64 symbols hex string
+    # key: String -     #     # Secret key - unprefixed 0-padded to 64 symbols hex string
 
     # RESPONSE: ResultOfNaclBoxOpen
     # decrypted: String -     #     # Decrypted data encoded in `base64`.
@@ -3306,6 +3486,75 @@ end
     # data: String -     #     # Encrypted/decrypted data.    #     # Encoded with `base64`.
 ```
 ```ruby
+    # Creates a Crypto Box instance.    # Crypto Box is a root crypto object, that encapsulates some secret (seed phrase usually)in encrypted form and acts as a factory for all crypto primitives used in SDK:
+    # keys for signing and encryption, derived from this secret.
+    # Crypto Box encrypts original Seed Phrase with salt and password that is retrievedfrom `password_provider` callback, implemented on Application side.
+    # When used, decrypted secret shows up in core library's memory for a very short periodof time and then is immediately overwritten with zeroes.
+    def create_crypto_box(payload, &block)
+    # INPUT: ParamsOfCreateCryptoBox
+    # secret_encryption_salt: String -     #     # Salt used for secret encryption. For example, a mobile device can use device ID as salt.
+    # secret: CryptoBoxSecret -     #     # Cryptobox secret
+
+    # RESPONSE: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+```
+```ruby
+    # Removes Crypto Box. Clears all secret data.
+    def remove_crypto_box(payload, &block)
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+```
+```ruby
+    # Get Crypto Box Info. Used to get `encrypted_secret` that should be used for all the cryptobox initializations except the first one.
+    def get_crypto_box_info(payload, &block)
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+
+    # RESPONSE: ResultOfGetCryptoBoxInfo
+    # encrypted_secret: String -     #     # Secret (seed phrase) encrypted with salt and password.
+```
+```ruby
+    # Get Crypto Box Seed Phrase.    # Attention! Store this data in your application for a very short period of time and overwrite it with zeroes ASAP.
+    def get_crypto_box_seed_phrase(payload, &block)
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+
+    # RESPONSE: ResultOfGetCryptoBoxSeedPhrase
+    # phrase: String - 
+    # dictionary: MnemonicDictionary - 
+    # wordcount: Number - 
+```
+```ruby
+    # Get handle of Signing Box derived from Crypto Box.
+    def get_signing_box_from_crypto_box(payload, &block)
+    # INPUT: ParamsOfGetSigningBoxFromCryptoBox
+    # handle: Number -     #     # Crypto Box Handle.
+    # hdpath: String&lt;Optional&gt; -     #     # HD key derivation path.    #     # By default, Everscale HD path is used.
+    # secret_lifetime: Number&lt;Optional&gt; -     #     # Store derived secret for this lifetime (in ms). The timer starts after each signing box operation. Secrets will be deleted immediately after each signing box operation, if this value is not set.
+
+    # RESPONSE: RegisteredSigningBox
+    # handle: SigningBoxHandle -     #     # Handle of the signing box.
+```
+```ruby
+    # Gets Encryption Box from Crypto Box.    # Derives encryption keypair from cryptobox secret and hdpath andstores it in cache for `secret_lifetime`or until explicitly cleared by `clear_crypto_box_secret_cache` method.
+    # If `secret_lifetime` is not specified - overwrites encryption secret with zeroes immediately afterencryption operation.
+    def get_encryption_box_from_crypto_box(payload, &block)
+    # INPUT: ParamsOfGetEncryptionBoxFromCryptoBox
+    # handle: Number -     #     # Crypto Box Handle.
+    # hdpath: String&lt;Optional&gt; -     #     # HD key derivation path.    #     # By default, Everscale HD path is used.
+    # algorithm: BoxEncryptionAlgorithm -     #     # Encryption algorithm.
+    # secret_lifetime: Number&lt;Optional&gt; -     #     # Store derived secret for encryption algorithm for this lifetime (in ms). The timer starts after each encryption box operation. Secrets will be deleted (overwritten with zeroes) after each encryption operation, if this value is not set.
+
+    # RESPONSE: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
+```
+```ruby
+    # Removes cached secrets (overwrites with zeroes) from all signing and encryption boxes, derived from crypto box.
+    def clear_crypto_box_secret_cache(payload, &block)
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+```
+```ruby
     # Register an application implemented signing box.
     def register_signing_box(&block)
 
@@ -3352,13 +3601,13 @@ end
     def register_encryption_box(&block)
 
     # RESPONSE: RegisteredEncryptionBox
-    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
 ```
 ```ruby
     # Removes encryption box from SDK
     def remove_encryption_box(payload, &block)
     # INPUT: RegisteredEncryptionBox
-    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
 ```
 ```ruby
     # Queries info from the given encryption box
@@ -3396,7 +3645,7 @@ end
     # algorithm: EncryptionAlgorithm -     #     # Encryption algorithm specifier including cipher parameters (key, IV, etc)
 
     # RESPONSE: RegisteredEncryptionBox
-    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
 ```
 </details>
 
@@ -4418,7 +4667,8 @@ end
     # The very first validator set's public keys are included in the zero-state. Whe know a root hashof the zero-state, because it is stored in the network configuration file, it is our authorityroot. For proving zero-state it is enough to calculate and compare its root hash.
     # In each new validator cycle the validator set is changed. The new one is stored in a key-block,which is signed by the validator set, which we already trust, the next validator set will bestored to the new key-block and signed by the current validator set, and so on.
     # In order to prove any block in the master-chain we need to check, that it has been signed bya trusted validator set. So we need to check all key-blocks' proofs, started from the zero-stateand until the block, which we want to prove. But it can take a lot of time and traffic todownload and prove all key-blocks on a client. For solving this, special trusted blocks are usedin TON-SDK.
-    # The trusted block is the authority root, as well, as the zero-state. Each trusted block is the`id` (e.g. `root_hash`) of the already proven key-block. There can be plenty of trustedblocks, so there can be a lot of authority roots. The hashes of trusted blocks for MainNetand DevNet are hardcoded in SDK in a separated binary file (trusted_key_blocks.bin) and canbe updated for each release.
+    # The trusted block is the authority root, as well, as the zero-state. Each trusted block is the`id` (e.g. `root_hash`) of the already proven key-block. There can be plenty of trustedblocks, so there can be a lot of authority roots. The hashes of trusted blocks for MainNetand DevNet are hardcoded in SDK in a separated binary file (trusted_key_blocks.bin) and isbeing updated for each release by using `update_trusted_blocks` utility.
+    # See [update_trusted_blocks](../../../tools/update_trusted_blocks) directory for more info.
     # In future SDK releases, one will also be able to provide their hashes of trusted blocks forother networks, besides for MainNet and DevNet.
     # By using trusted key-blocks, in order to prove any block, we can prove chain of key-blocks tothe closest previous trusted key-block, not only to the zero-state.
     # But shard-blocks don't have proofs on DApp server. In this case, in order to prove any shard-block data, we search for a corresponding master-block, which contains the root hash of thisshard-block, or some shard block which is linked to that block in shard-chain. After provingthis master-block, we traverse through each link and calculate and compare hashes with links,one-by-one. After that we can ensure that this shard-block has also been proven.

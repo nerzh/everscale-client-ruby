@@ -21,7 +21,7 @@ types = converter.convert
 generator = CodeGenerator.new(types, GEM_DIR)
 generator.generate_self_code
 
-version_file = "#{script_file_path}/../ton-client-ruby/version.rb"
+version_file = "#{script_file_path}/../everscale-client-ruby/version.rb"
 file = File.read(version_file)
 
 p 'check version'

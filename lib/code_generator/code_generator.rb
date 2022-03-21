@@ -24,7 +24,7 @@ class CodeGenerator
 
   def generateModules(types)
     types.modules.each do |mod|
-      modulesFolder = root_dir + "/lib/ton-client-ruby/Client"
+      modulesFolder = root_dir + "/lib/everscale-client-ruby/Client"
       moduleFilePath = "#{modulesFolder}/#{mod.name.capitalize}.rb"
       newModuleContent = ""
       if mod.name == "client"
@@ -46,7 +46,7 @@ class CodeGenerator
     content = %{
 # Ruby Client for Free TON SDK
 
-[![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/ton-client-ruby)
+[![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
 [![SPM](https://img.shields.io/badge/SDK%20VERSION-#{types.version}-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install

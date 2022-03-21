@@ -183,7 +183,7 @@ module TonClient
 
     # INPUT: ParamsOfNaclBoxOpen
     # encrypted: String -     #     # Data that must be decrypted.    #     # Encoded with `base64`.
-    # nonce: String - 
+    # nonce: String -     #     # Nonce
     # their_public: String -     #     # Sender's public key - unprefixed 0-padded to 64 symbols hex string
     # secret: String -     #     # Receiver's private key - unprefixed 0-padded to 64 symbols hex string
     # RESPONSE: ResultOfNaclBoxOpen
@@ -205,7 +205,7 @@ module TonClient
     # INPUT: ParamsOfNaclSecretBoxOpen
     # encrypted: String -     #     # Data that must be decrypted.    #     # Encoded with `base64`.
     # nonce: String -     #     # Nonce in `hex`
-    # key: String -     #     # Public key - unprefixed 0-padded to 64 symbols hex string
+    # key: String -     #     # Secret key - unprefixed 0-padded to 64 symbols hex string
     # RESPONSE: ResultOfNaclBoxOpen
     # decrypted: String -     #     # Decrypted data encoded in `base64`.
     def nacl_secret_box_open(payload, &block)
@@ -316,6 +316,66 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # INPUT: ParamsOfCreateCryptoBox
+    # secret_encryption_salt: String -     #     # Salt used for secret encryption. For example, a mobile device can use device ID as salt.
+    # secret: CryptoBoxSecret -     #     # Cryptobox secret
+    # RESPONSE: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+    def create_crypto_box(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+    def remove_crypto_box(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+    # RESPONSE: ResultOfGetCryptoBoxInfo
+    # encrypted_secret: String -     #     # Secret (seed phrase) encrypted with salt and password.
+    def get_crypto_box_info(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+    # RESPONSE: ResultOfGetCryptoBoxSeedPhrase
+    # phrase: String - 
+    # dictionary: MnemonicDictionary - 
+    # wordcount: Number - 
+    def get_crypto_box_seed_phrase(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfGetSigningBoxFromCryptoBox
+    # handle: Number -     #     # Crypto Box Handle.
+    # hdpath: String<Optional> -     #     # HD key derivation path.    #     # By default, Everscale HD path is used.
+    # secret_lifetime: Number<Optional> -     #     # Store derived secret for this lifetime (in ms). The timer starts after each signing box operation. Secrets will be deleted immediately after each signing box operation, if this value is not set.
+    # RESPONSE: RegisteredSigningBox
+    # handle: SigningBoxHandle -     #     # Handle of the signing box.
+    def get_signing_box_from_crypto_box(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfGetEncryptionBoxFromCryptoBox
+    # handle: Number -     #     # Crypto Box Handle.
+    # hdpath: String<Optional> -     #     # HD key derivation path.    #     # By default, Everscale HD path is used.
+    # algorithm: BoxEncryptionAlgorithm -     #     # Encryption algorithm.
+    # secret_lifetime: Number<Optional> -     #     # Store derived secret for encryption algorithm for this lifetime (in ms). The timer starts after each encryption box operation. Secrets will be deleted (overwritten with zeroes) after each encryption operation, if this value is not set.
+    # RESPONSE: RegisteredEncryptionBox
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
+    def get_encryption_box_from_crypto_box(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: RegisteredCryptoBox
+    # handle: CryptoBoxHandle - 
+    def clear_crypto_box_secret_cache(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
     # RESPONSE: RegisteredSigningBox
     # handle: SigningBoxHandle -     #     # Handle of the signing box.
     def register_signing_box(&block)
@@ -355,13 +415,13 @@ module TonClient
     end
 
     # RESPONSE: RegisteredEncryptionBox
-    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
     def register_encryption_box(&block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # INPUT: RegisteredEncryptionBox
-    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
     def remove_encryption_box(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
@@ -395,7 +455,7 @@ module TonClient
     # INPUT: ParamsOfCreateEncryptionBox
     # algorithm: EncryptionAlgorithm -     #     # Encryption algorithm specifier including cipher parameters (key, IV, etc)
     # RESPONSE: RegisteredEncryptionBox
-    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box
+    # handle: EncryptionBoxHandle -     #     # Handle of the encryption box.
     def create_encryption_box(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
