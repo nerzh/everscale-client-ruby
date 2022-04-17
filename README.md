@@ -1,7 +1,8 @@
+
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.31.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.32.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -134,6 +135,12 @@ end
 
   - case LocalStorageError = 35
 
+# Network protocol used to perform GraphQL queries.
+- #### NetworkQueriesProtocol
+   Each GraphQL query uses separate HTTP request.  - case HTTP = 
+
+   All GraphQL queries will be served using single web socket connection.  - case WS = 
+
 
 - #### AppRequestResult
   - case Error = Error
@@ -218,6 +225,11 @@ end
    Is is used when no timeout specified for the request to limit the answer waiting time. If no answer received during the timeout requests ends witherror.
    Must be specified in milliseconds. Default is 60000 (1 min).
   - query_timeout: Number&lt;Optional&gt;
+
+   Queries protocol.
+   `HTTP` or `WS`.
+    Default is `HTTP`.
+  - queries_protocol: NetworkQueriesProtocol&lt;Optional&gt;
 
    Access key to GraphQL API.
    At the moment is not used in production.
