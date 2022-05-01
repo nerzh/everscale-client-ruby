@@ -172,11 +172,12 @@ end
 
 
 - #### NetworkConfig
-   DApp Server public address. For instance, for `net.ton.dev/graphql` GraphQL endpoint the server address will be net.ton.dev
+   **This field is deprecated, but left for backward-compatibility.** DApp Server public address.
   - server_address: String&lt;Optional&gt;
 
    List of DApp Server addresses.
-   Any correct URL format can be specified, including IP addresses This parameter is prevailing over `server_address`.
+   Any correct URL format can be specified, including IP addresses. This parameter is prevailing over `server_address`.
+   Check the full list of [supported network endpoints](../ton-os-api/networks.md).
   - endpoints: Array&lt;Optional&gt;
 
    Deprecated.
@@ -4436,7 +4437,7 @@ end
     # endpoints: Array -     #     # List of all endpoints used by client
 ```
 ```ruby
-    # Allows to query and paginate through the list of accounts that the specified account has interacted with, sorted by the time of the last internal message between accounts    # *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in TON OS SE (will be supported in SE in future),but is always accessible via [TON OS Devnet/Mainnet Clouds](https://docs.ton.dev/86757ecb2/p/85c869-networks)
+    # Allows to query and paginate through the list of accounts that the specified account has interacted with, sorted by the time of the last internal message between accounts    # *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in Evernode SE (will be supported in SE in future),but is always accessible via [EVER OS Clouds](../ton-os-api/networks.md)
     def query_counterparties(payload, &block)
     # INPUT: ParamsOfQueryCounterparties
     # account: String -     #     # Account address
@@ -4677,7 +4678,7 @@ end
     # **What Proofs are**Simply, proof is a list of signatures of validators', which have signed this particular master-block.
     # The very first validator set's public keys are included in the zero-state. Whe know a root hashof the zero-state, because it is stored in the network configuration file, it is our authorityroot. For proving zero-state it is enough to calculate and compare its root hash.
     # In each new validator cycle the validator set is changed. The new one is stored in a key-block,which is signed by the validator set, which we already trust, the next validator set will bestored to the new key-block and signed by the current validator set, and so on.
-    # In order to prove any block in the master-chain we need to check, that it has been signed bya trusted validator set. So we need to check all key-blocks' proofs, started from the zero-stateand until the block, which we want to prove. But it can take a lot of time and traffic todownload and prove all key-blocks on a client. For solving this, special trusted blocks are usedin TON-SDK.
+    # In order to prove any block in the master-chain we need to check, that it has been signed bya trusted validator set. So we need to check all key-blocks' proofs, started from the zero-stateand until the block, which we want to prove. But it can take a lot of time and traffic todownload and prove all key-blocks on a client. For solving this, special trusted blocks are usedin Ever-SDK.
     # The trusted block is the authority root, as well, as the zero-state. Each trusted block is the`id` (e.g. `root_hash`) of the already proven key-block. There can be plenty of trustedblocks, so there can be a lot of authority roots. The hashes of trusted blocks for MainNetand DevNet are hardcoded in SDK in a separated binary file (trusted_key_blocks.bin) and isbeing updated for each release by using `update_trusted_blocks` utility.
     # See [update_trusted_blocks](../../../tools/update_trusted_blocks) directory for more info.
     # In future SDK releases, one will also be able to provide their hashes of trusted blocks forother networks, besides for MainNet and DevNet.
@@ -4742,7 +4743,7 @@ giver_amount=10000000000
 
 ```
 
-everscale-client-ruby update
+ton-client-ruby update
  
 ```
 
@@ -4760,7 +4761,7 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 
 ```
 
-everscale-client-ruby update ./api.json
+ton-client-ruby update ./api.json
 
 ```
 
@@ -4769,14 +4770,14 @@ or
  
 ```
 
-cd everscale-client-ruby
+cd ton-client-ruby
 
 ```
 
 
 ```
 
-./bin/everscale-client-ruby update
+./bin/ton-client-ruby update
 
 ```
  
