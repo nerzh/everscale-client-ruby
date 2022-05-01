@@ -4742,7 +4742,7 @@ giver_amount=10000000000
 
 ```
 
-ton-client-ruby update
+everscale-client-ruby update
  
 ```
 
@@ -4760,7 +4760,7 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 
 ```
 
-ton-client-ruby update ./api.json
+everscale-client-ruby update ./api.json
 
 ```
 
@@ -4769,14 +4769,14 @@ or
  
 ```
 
-cd ton-client-ruby
+cd everscale-client-ruby
 
 ```
 
 
 ```
 
-./bin/ton-client-ruby update
+./bin/everscale-client-ruby update
 
 ```
  
