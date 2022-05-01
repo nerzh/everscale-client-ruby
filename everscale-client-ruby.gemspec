@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
   spec.bindir        = "bin"
-  spec.executables   = ["ton-client-ruby"]
+  spec.executables   = ["everscale-client-ruby"]
   
   spec.add_runtime_dependency 'ffi', '~> 1.15.0'
   spec.add_runtime_dependency 'dotenv', '~> 2.7.6'
