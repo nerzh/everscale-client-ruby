@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.32.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.32.0-green)](https://github.com/tonlabs/ever-sdk)
 
 ## Install
 
@@ -19,8 +19,8 @@ everscale-client-ruby setup
 
 ### Manual build FreeTON SDK
 0. Install Rust to your OS
-1. git clone https://github.com/tonlabs/TON-SDK
-2. cd ./TON-SDK
+1. git clone https://github.com/tonlabs/ever-sdk
+2. cd ./ever-sdk
 3. cargo update
 4. cargo build --release
 
@@ -28,7 +28,7 @@ everscale-client-ruby setup
 
 ```ruby
 # For MAcOS
-TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.dylib) }
+TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_client.dylib) }
 # For Linux
 # TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.so) }
 
@@ -4743,7 +4743,7 @@ giver_amount=10000000000
 
 ```
 
-ton-client-ruby update
+everscale-client-ruby update
  
 ```
 
@@ -4761,7 +4761,7 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 
 ```
 
-ton-client-ruby update ./api.json
+everscale-client-ruby update ./api.json
 
 ```
 
@@ -4770,14 +4770,14 @@ or
  
 ```
 
-cd ton-client-ruby
+cd everscale-client-ruby
 
 ```
 
 
 ```
 
-./bin/ton-client-ruby update
+./bin/everscale-client-ruby update
 
 ```
  
