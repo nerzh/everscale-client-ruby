@@ -94,6 +94,7 @@ module TonClient
     # INPUT: ParamsOfDecodeMessage
     # abi: Value -     #     # contract ABI
     # message: String -     #     # Message BOC
+    # allow_partial: Boolean<Optional> -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
     # name: String -     #     # Function or event name.
@@ -107,6 +108,7 @@ module TonClient
     # abi: Value -     #     # Contract ABI used to decode.
     # body: String -     #     # Message body BOC encoded in `base64`.
     # is_internal: Boolean -     #     # True if the body belongs to the internal message.
+    # allow_partial: Boolean<Optional> -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
     # name: String -     #     # Function or event name.
@@ -132,6 +134,7 @@ module TonClient
     # INPUT: ParamsOfDecodeAccountData
     # abi: Value -     #     # Contract ABI
     # data: String -     #     # Data BOC or BOC handle
+    # allow_partial: Boolean<Optional> -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     # RESPONSE: ResultOfDecodeAccountData
     # data: Value -     #     # Decoded data as a JSON structure.
     def decode_account_data(payload, &block)
@@ -164,6 +167,7 @@ module TonClient
     # INPUT: ParamsOfDecodeInitialData
     # abi: Value<Optional> -     #     # Contract ABI.    #     # Initial data is decoded if this parameter is provided
     # data: String -     #     # Data BOC or BOC handle
+    # allow_partial: Boolean<Optional> -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     # RESPONSE: ResultOfDecodeInitialData
     # initial_data: Value<Optional> -     #     # List of initial values of contract's public variables.    #     # Initial data is decoded if `abi` input parameter is provided
     # initial_pubkey: String -     #     # Initial account owner's public key

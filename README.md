@@ -2,25 +2,25 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.32.0-green)](https://github.com/tonlabs/ever-sdk)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.33.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
 Install gem
 ```bash
-gem install everscale-client-ruby
+gem install ton-client-ruby
 ```
 
 Install TON-SDK
 ```bash
-everscale-client-ruby setup
-# result - path to dylib file for everscale-client-ruby configuration
+ton-client-ruby setup
+# result - path to dylib file for ton-client-ruby configuration
 ```
 
 ### Manual build FreeTON SDK
 0. Install Rust to your OS
-1. git clone https://github.com/tonlabs/ever-sdk
-2. cd ./ever-sdk
+1. git clone https://github.com/tonlabs/TON-SDK
+2. cd ./TON-SDK
 3. cargo update
 4. cargo build --release
 
@@ -28,7 +28,7 @@ everscale-client-ruby setup
 
 ```ruby
 # For MAcOS
-TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_client.dylib) }
+TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.dylib) }
 # For Linux
 # TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.so) }
 
@@ -209,7 +209,7 @@ end
   - out_of_sync_threshold: Number&lt;Optional&gt;
 
    Maximum number of randomly chosen endpoints the library uses to broadcast a message.
-   Default is 2.
+   Default is 1.
   - sending_endpoint_count: Number&lt;Optional&gt;
 
    Frequency of sync latency detection.
@@ -231,6 +231,16 @@ end
    `HTTP` or `WS`.
     Default is `HTTP`.
   - queries_protocol: NetworkQueriesProtocol&lt;Optional&gt;
+
+   UNSTABLE.
+   First REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+   Must be specified in milliseconds. Default is 1000 (1 sec).
+  - first_remp_status_timeout: Number&lt;Optional&gt;
+
+   UNSTABLE.
+   Subsequent REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+   Must be specified in milliseconds. Default is 5000 (5 sec).
+  - next_remp_status_timeout: Number&lt;Optional&gt;
 
    Access key to GraphQL API.
    At the moment is not used in production.
@@ -386,6 +396,8 @@ end
   - case CryptoBoxSecretSerializationError = 132
 
   - case CryptoBoxSecretDeserializationError = 133
+
+  - case InvalidNonceSize = 134
 
 
 - #### EncryptionAlgorithm
@@ -1546,6 +1558,9 @@ end
    Message BOC
   - message: String
 
+   Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+  - allow_partial: Boolean&lt;Optional&gt;
+
 
 - #### DecodedMessageBody
    Type of the message body content.
@@ -1570,6 +1585,9 @@ end
 
    True if the body belongs to the internal message.
   - is_internal: Boolean
+
+   Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+  - allow_partial: Boolean&lt;Optional&gt;
 
 
 - #### ParamsOfEncodeAccount
@@ -1604,6 +1622,9 @@ end
 
    Data BOC or BOC handle
   - data: String
+
+   Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+  - allow_partial: Boolean&lt;Optional&gt;
 
 
 - #### ResultOfDecodeAccountData
@@ -1661,6 +1682,9 @@ end
 
    Data BOC or BOC handle
   - data: String
+
+   Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+  - allow_partial: Boolean&lt;Optional&gt;
 
 
 - #### ResultOfDecodeInitialData
@@ -2042,6 +2066,12 @@ end
 
   - case ExternalSignerMustNotBeUsed = 513
 
+  - case MessageRejected = 514
+
+  - case InvalidRempStatus = 515
+
+  - case NextRempStatusTimeout = 516
+
 
 - #### ProcessingEvent
   - case WillFetchFirstBlock = WillFetchFirstBlock
@@ -2060,6 +2090,16 @@ end
 
   - case MessageExpired = MessageExpired
 
+  - case RempSentToValidators = RempSentToValidators
+
+  - case RempIncludedIntoBlock = RempIncludedIntoBlock
+
+  - case RempIncludedIntoAcceptedBlock = RempIncludedIntoAcceptedBlock
+
+  - case RempOther = RempOther
+
+  - case RempError = RempError
+
 
 - #### ProcessingEvent
   - type: ProcessingEvent
@@ -2071,6 +2111,10 @@ end
   - message_id: String
 
   - message: String
+
+  - timestamp: BigInt
+
+  - json: Value
 
 
 - #### ResultOfProcessMessage
@@ -3777,6 +3821,7 @@ end
     # INPUT: ParamsOfDecodeMessage
     # abi: Value -     #     # contract ABI
     # message: String -     #     # Message BOC
+    # allow_partial: Boolean&lt;Optional&gt; -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
 
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
@@ -3791,6 +3836,7 @@ end
     # abi: Value -     #     # Contract ABI used to decode.
     # body: String -     #     # Message body BOC encoded in `base64`.
     # is_internal: Boolean -     #     # True if the body belongs to the internal message.
+    # allow_partial: Boolean&lt;Optional&gt; -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
 
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
@@ -3819,6 +3865,7 @@ end
     # INPUT: ParamsOfDecodeAccountData
     # abi: Value -     #     # Contract ABI
     # data: String -     #     # Data BOC or BOC handle
+    # allow_partial: Boolean&lt;Optional&gt; -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
 
     # RESPONSE: ResultOfDecodeAccountData
     # data: Value -     #     # Decoded data as a JSON structure.
@@ -3854,6 +3901,7 @@ end
     # INPUT: ParamsOfDecodeInitialData
     # abi: Value&lt;Optional&gt; -     #     # Contract ABI.    #     # Initial data is decoded if this parameter is provided
     # data: String -     #     # Data BOC or BOC handle
+    # allow_partial: Boolean&lt;Optional&gt; -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
 
     # RESPONSE: ResultOfDecodeInitialData
     # initial_data: Value&lt;Optional&gt; -     #     # List of initial values of contract's public variables.    #     # Initial data is decoded if `abi` input parameter is provided
@@ -4743,7 +4791,7 @@ giver_amount=10000000000
 
 ```
 
-everscale-client-ruby update
+ton-client-ruby update
  
 ```
 
@@ -4761,7 +4809,7 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 
 ```
 
-everscale-client-ruby update ./api.json
+ton-client-ruby update ./api.json
 
 ```
 
@@ -4770,14 +4818,14 @@ or
  
 ```
 
-cd everscale-client-ruby
+cd ton-client-ruby
 
 ```
 
 
 ```
 
-./bin/everscale-client-ruby update
+./bin/ton-client-ruby update
 
 ```
  
