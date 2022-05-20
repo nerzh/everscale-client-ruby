@@ -64,6 +64,17 @@ module TonClient
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
+    # RESPONSE: ClientConfig
+    # network: NetworkConfig<Optional> - 
+    # crypto: CryptoConfig<Optional> - 
+    # abi: Value - 
+    # boc: BocConfig<Optional> - 
+    # proofs: ProofsConfig<Optional> - 
+    # local_storage_path: String<Optional> -     #     # For file based storage is a folder name where SDK will store its data. For browser based is a browser async storage key prefix. Default (recommended) value is "~/.tonclient" for native environments and ".tonclient" for web-browser.
+    def config(&block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+    end
+
     # RESPONSE: ResultOfBuildInfo
     # build_number: Number -     #     # Build number assigned to this build by the CI.
     # dependencies: Array -     #     # Fingerprint of the most important dependencies.

@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.33.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.34.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -2349,17 +2349,36 @@ end
 
 
 - #### TransactionFees
+   Deprecated.
+   Left for backward compatibility. Does not participate in account transaction fees calculation.
   - in_msg_fwd_fee: BigInt
 
+   Fee for account storage
   - storage_fee: BigInt
 
+   Fee for processing
   - gas_fee: BigInt
 
+   Deprecated.
+   Contains the same data as total_fwd_fees field. Deprecated because of its confusing name, that is not the same with GraphQL API Transaction type's field.
   - out_msgs_fwd_fee: BigInt
 
+   Deprecated.
+   This is the field that is named as `total_fees` in GraphQL API Transaction type. `total_account_fees` name is misleading, because it does not mean account fees, instead it meansvalidators total fees received for the transaction execution. It does not include some forward fees that accountactually pays now, but validators will receive later during value delivery to another account (not even in the receivingtransaction).
+   Because of all of this, this field is not interesting for those who wants to understandthe real account fees, this is why it is deprecated and left for backward compatibility.
   - total_account_fees: BigInt
 
+   Deprecated because it means total value sent in the transaction, which does not relate to any fees.
   - total_output: BigInt
+
+   Fee for inbound external message import.
+  - ext_in_msg_fee: BigInt
+
+   Total fees the account pays for message forwarding
+  - total_fwd_fees: BigInt
+
+   Total account fees for the transaction execution. Compounds of storage_fee + gas_fee + ext_in_msg_fee + total_fwd_fees
+  - account_fees: BigInt
 
 
 - #### ParamsOfRunExecutor
@@ -3176,6 +3195,18 @@ end
 
     # RESPONSE: ResultOfVersion
     # version: String -     #     # Core Library version
+```
+```ruby
+    # Returns Core Library API reference
+    def config(&block)
+
+    # RESPONSE: ClientConfig
+    # network: NetworkConfig&lt;Optional&gt; - 
+    # crypto: CryptoConfig&lt;Optional&gt; - 
+    # abi: Value - 
+    # boc: BocConfig&lt;Optional&gt; - 
+    # proofs: ProofsConfig&lt;Optional&gt; - 
+    # local_storage_path: String&lt;Optional&gt; -     #     # For file based storage is a folder name where SDK will store its data. For browser based is a browser async storage key prefix. Default (recommended) value is "~/.tonclient" for native environments and ".tonclient" for web-browser.
 ```
 ```ruby
     # Returns detailed information about this build.
