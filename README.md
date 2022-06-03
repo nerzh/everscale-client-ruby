@@ -14,13 +14,13 @@ gem install ton-client-ruby
 Install TON-SDK
 ```bash
 ton-client-ruby setup
-# result - path to dylib file for ton-client-ruby configuration
+# result - path to dylib file for everscale-client-ruby configuration
 ```
 
 ### Manual build FreeTON SDK
 0. Install Rust to your OS
-1. git clone https://github.com/tonlabs/TON-SDK
-2. cd ./TON-SDK
+1. git clone https://github.com/tonlabs/ever-sdk
+2. cd ./ever-sdk
 3. cargo update
 4. cargo build --release
 
@@ -28,11 +28,11 @@ ton-client-ruby setup
 
 ```ruby
 # For MAcOS
-TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.dylib) }
+TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_client.dylib) }
 # For Linux
-# TonClient.configure { |config| config.ffi_lib(./TON-SDK/target/release/libton_client.so) }
+# TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_client.so) }
 
-client = TonClient.create(config: {network: {server_address: "net.ton.dev"}})
+client = TonClient.create(config: {network: {endpoints: ["https://eri01.net.everos.dev", "https://rbx01.net.everos.dev"]}})
 
 # All methods are asynchronous
 
@@ -4799,7 +4799,7 @@ end
 
 example for NodeSE   
 ```
-spec_ffi=./TON-SDK/target/release/libton_client.dylib
+spec_ffi=./ever-sdk/target/release/libton_client.dylib
 server_address=http://localhost:80
 giver_abi_name=GiverNodeSE
 giver_amount=10000000000
@@ -4822,7 +4822,7 @@ giver_amount=10000000000
 
 ```
 
-ton-client-ruby update
+everscale-client-ruby update
  
 ```
 
@@ -4832,7 +4832,7 @@ or
  
 ```
 
-curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
+curl https://raw.githubusercontent.com/tonlabs/ever-sdk/master/tools/api.json > api.json
 
 
 ```
@@ -4840,7 +4840,7 @@ curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > a
 
 ```
 
-ton-client-ruby update ./api.json
+everscale-client-ruby update ./api.json
 
 ```
 
@@ -4849,14 +4849,14 @@ or
  
 ```
 
-cd ton-client-ruby
+cd everscale-client-ruby
 
 ```
 
 
 ```
 
-./bin/ton-client-ruby update
+./bin/everscale-client-ruby update
 
 ```
  
