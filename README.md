@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.34.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.34.2-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -4822,7 +4822,7 @@ giver_amount=10000000000
 
 ```
 
-everscale-client-ruby update
+ton-client-ruby update
  
 ```
 
@@ -4832,7 +4832,7 @@ or
  
 ```
 
-curl https://raw.githubusercontent.com/tonlabs/ever-sdk/master/tools/api.json > api.json
+curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
 
 
 ```
@@ -4840,7 +4840,7 @@ curl https://raw.githubusercontent.com/tonlabs/ever-sdk/master/tools/api.json > 
 
 ```
 
-everscale-client-ruby update ./api.json
+ton-client-ruby update ./api.json
 
 ```
 
@@ -4849,14 +4849,14 @@ or
  
 ```
 
-cd everscale-client-ruby
+cd ton-client-ruby
 
 ```
 
 
 ```
 
-./bin/everscale-client-ruby update
+./bin/ton-client-ruby update
 
 ```
  
