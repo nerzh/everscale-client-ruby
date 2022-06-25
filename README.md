@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.34.2-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.34.3-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
