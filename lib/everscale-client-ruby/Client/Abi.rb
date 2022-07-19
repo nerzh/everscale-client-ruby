@@ -21,6 +21,7 @@ module TonClient
     # Encoder uses the provided try index to calculate messageexpiration time.
     # Expiration timeouts will grow with every retry.
     # Default value is 0.
+    # address: String<Optional> -     #     # Destination address of the message    #     # Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
     # RESPONSE: ResultOfEncodeMessageBody
     # body: String -     #     # Message body BOC encoded with `base64`.
     # data_to_sign: String<Optional> -     #     # Optional data to sign.    #     # Encoded with `base64`.
@@ -192,6 +193,16 @@ module TonClient
     # RESPONSE: ResultOfAbiEncodeBoc
     # boc: String -     #     # BOC encoded as base64
     def encode_boc(payload, &block)
+      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # INPUT: ParamsOfCalcFunctionId
+    # abi: Value -     #     # Contract ABI.
+    # function_name: String -     #     # Contract function name
+    # output: Boolean<Optional> -     #     # If set to `true` output function ID will be returned which is used in contract response. Default is `false`
+    # RESPONSE: ResultOfCalcFunctionId
+    # function_id: Number -     #     # Contract function ID
+    def calc_function_id(payload, &block)
       core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 

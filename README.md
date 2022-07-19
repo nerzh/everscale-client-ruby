@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.34.3-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.36.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -1192,6 +1192,8 @@ end
 
   - case EncodeInitialDataFailed = 314
 
+  - case InvalidFunctionName = 315
+
 
 - #### Abi
   - case Contract = Contract
@@ -1408,6 +1410,10 @@ end
         Expiration timeouts will grow with every retry.
         Default value is 0.
   - processing_try_index: Number&lt;Optional&gt;
+
+   Destination address of the message
+   Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
+  - address: String&lt;Optional&gt;
 
 
 - #### ResultOfEncodeMessageBody
@@ -1726,6 +1732,22 @@ end
 - #### ResultOfAbiEncodeBoc
    BOC encoded as base64
   - boc: String
+
+
+- #### ParamsOfCalcFunctionId
+   Contract ABI.
+  - abi: Value
+
+   Contract function name
+  - function_name: String
+
+   If set to `true` output function ID will be returned which is used in contract response. Default is `false`
+  - output: Boolean&lt;Optional&gt;
+
+
+- #### ResultOfCalcFunctionId
+   Contract function ID
+  - function_id: Number
 
 
 - #### BocCacheType
@@ -2334,6 +2356,9 @@ end
 
    transaction logical time
   - transaction_lt: BigInt&lt;Optional&gt;
+
+   Overrides standard TVM behaviour. If set to `true` then CHKSIG always will return `true`.
+  - chksig_always_succeed: Boolean&lt;Optional&gt;
 
 
 - #### AccountForExecutor
@@ -3752,6 +3777,7 @@ end
     #   #     # Encoder uses the provided try index to calculate messageexpiration time.
     #   #     # Expiration timeouts will grow with every retry.
     #   #     # Default value is 0.
+    # address: String&lt;Optional&gt; -     #     # Destination address of the message    #     # Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
 
     # RESPONSE: ResultOfEncodeMessageBody
     # body: String -     #     # Message body BOC encoded with `base64`.
@@ -3963,6 +3989,17 @@ end
 
     # RESPONSE: ResultOfAbiEncodeBoc
     # boc: String -     #     # BOC encoded as base64
+```
+```ruby
+    # Calculates contract function ID by contract ABI
+    def calc_function_id(payload, &block)
+    # INPUT: ParamsOfCalcFunctionId
+    # abi: Value -     #     # Contract ABI.
+    # function_name: String -     #     # Contract function name
+    # output: Boolean&lt;Optional&gt; -     #     # If set to `true` output function ID will be returned which is used in contract response. Default is `false`
+
+    # RESPONSE: ResultOfCalcFunctionId
+    # function_id: Number -     #     # Contract function ID
 ```
 </details>
 
