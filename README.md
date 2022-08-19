@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.36.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.37.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -243,7 +243,7 @@ end
   - next_remp_status_timeout: Number&lt;Optional&gt;
 
    Access key to GraphQL API.
-   At the moment is not used in production.
+   You can specify here Evercloud project secret ot serialized JWT.
   - access_key: String&lt;Optional&gt;
 
 
