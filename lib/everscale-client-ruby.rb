@@ -1,7 +1,6 @@
 require 'ffi'
 require "base64"
 require 'json'
-require 'byebug'
 require 'dotenv'
 require 'fileutils'
 require_relative './everscale-client-ruby/Helpers/CommonHelpers.rb'
