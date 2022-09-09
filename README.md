@@ -8,12 +8,12 @@
 
 Install gem
 ```bash
-gem install ton-client-ruby
+gem install everscale-client-ruby
 ```
 
 Install TON-SDK
 ```bash
-ton-client-ruby setup
+everscale-client-ruby setup
 # result - path to dylib file for everscale-client-ruby configuration
 ```
 
