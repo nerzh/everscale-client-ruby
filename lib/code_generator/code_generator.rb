@@ -195,7 +195,7 @@ cd everscale-client-ruby\n
     content.gsub(/<Optional>/i, '&lt;Optional&gt;')
     content.gsub(/(```ruby[\s\S]+?)&lt;Optional&gt;([\s\S]+?)```/, '\1<Optional>\2```')
     content.gsub!(/ +# +# +/, " ")
-    content.gsub!(/ +# +/, '. ')
+    # content.gsub!(/ +# +/, '. ')
   end
 
   def customTypes
