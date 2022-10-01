@@ -7,7 +7,7 @@ module TonClient
     private_accessor :_crypto, :_abi, :_boc, :_processing, :_utils, :_tvm, :_net, :_debot, :_proofs
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
-    def initialize(context: Context.new, core: TonClient::TonBinding)
+    def initialize(context: Context.new, core: TonBinding)
       @context = context
       @core = core
     end

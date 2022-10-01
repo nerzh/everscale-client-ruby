@@ -3,6 +3,7 @@ require "base64"
 require 'json'
 require 'dotenv'
 require 'fileutils'
+require 'concurrent'
 require_relative './everscale-client-ruby/Helpers/CommonHelpers.rb'
 require_relative './everscale-client-ruby/Binding/struct.rb'
 require_relative './everscale-client-ruby/Binding/binding.rb'

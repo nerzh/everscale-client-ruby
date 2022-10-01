@@ -1,4 +1,4 @@
-require 'ton-client-ruby' # and any other gems you need
+require 'everscale-client-ruby' # and any other gems you need
 
 include CommonInstanceHelpers
 

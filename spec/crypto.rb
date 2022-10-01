@@ -197,7 +197,7 @@ describe TonClient::Crypto do
   end
 
   it 'mnemonic_words' do
-    callLibraryMethodSync(@client.crypto.method(:mnemonic_words)) do |response|
+    callLibraryMethodSync(@client.crypto.method(:mnemonic_words), {dictionary: 1}) do |response|
       expect(response.first.result['words'].split(' ').size).to eq(2048)
     end
   end

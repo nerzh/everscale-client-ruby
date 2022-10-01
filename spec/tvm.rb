@@ -132,7 +132,6 @@ describe TonClient::Tvm do
     output = result_of_run_tvm['decoded']['output']
     value = output['subscription'] || output['value0']
     expect(value['pubkey']).to eq("0x2222222222222222222222222222222222222222222222222222222222222222")
-    
   end
 
   it 'run_tvm' do
