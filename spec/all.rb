@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'context'
 require 'client'
 require 'binding'
 require 'crypto'

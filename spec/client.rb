@@ -9,7 +9,7 @@ describe TonClient::Client do
 
   it 'create client' do
     client = TonClient.create(config: {network: {server_address: "net.ton.dev"}})
-    expect(client.context.id).to be_a(0.class)
+    expect(client.context).to be_a(0.class)
   end
 
   it 'destroy context' do

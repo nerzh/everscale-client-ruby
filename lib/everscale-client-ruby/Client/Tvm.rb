@@ -3,12 +3,11 @@ module TonClient
   class Tvm
     include CommonInstanceHelpers
 
-    attr_reader :core, :context
+    attr_reader :context
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
-    def initialize(context: Context.new, core: TonClient::TonBinding)
+    def initialize(context: nil)
       @context = context
-      @core = core
     end
 
     # INPUT: ParamsOfRunExecutor
@@ -26,7 +25,7 @@ module TonClient
     # account: String -     #     # Updated account state BOC.    #     # Encoded as `base64`
     # fees: TransactionFees -     #     # Transaction fees
     def run_executor(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfRunTvm
@@ -41,7 +40,7 @@ module TonClient
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # account: String -     #     # Updated account state BOC.    #     # Encoded as `base64`. Attention! Only `account_state.storage.state.data` part of the BOC is updated.
     def run_tvm(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfRunGet
@@ -54,7 +53,7 @@ module TonClient
     # RESPONSE: ResultOfRunGet
     # output: Value -     #     # Values returned by get-method on stack
     def run_get(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

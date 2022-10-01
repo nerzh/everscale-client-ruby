@@ -105,7 +105,7 @@ end
 
 def get_grams_from_giver_sync(client: nil, account_address: nil, value: 10_000_000_000, &block)
   test_address = "0:9cb911799a34982a27cb577ce694843f60b9e09fcba4f7fd7e040730acd59baa"
-  server_address = client.context.config["network"]["server_address"]
+  server_address = client.context_config[:network][:server_address]
   raise 'Please, set client network for Giver work !' unless server_address
   if (env['use_giver'] || env["giver_abi_name"]) == 'GiverNodeSE'
     get_grams_from_giver_sync_node_se(client, account_address || test_address, value, &block)

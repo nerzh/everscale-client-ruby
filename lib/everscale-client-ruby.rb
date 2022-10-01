@@ -7,7 +7,6 @@ require 'concurrent'
 require_relative './everscale-client-ruby/Helpers/CommonHelpers.rb'
 require_relative './everscale-client-ruby/Binding/struct.rb'
 require_relative './everscale-client-ruby/Binding/binding.rb'
-require_relative './everscale-client-ruby/Client/Context.rb'
 require_relative './everscale-client-ruby/Client/Client.rb'
 require_relative './everscale-client-ruby/Client/Crypto.rb'
 require_relative './everscale-client-ruby/Client/Abi.rb'
@@ -39,6 +38,6 @@ module TonClient
 
   def self.create(config: {})
     check_configuration
-    Client.new(context: Context.new(config: config))
+    Client.new(context_config: config)
   end
 end

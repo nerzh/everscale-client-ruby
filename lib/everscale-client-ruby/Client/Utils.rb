@@ -3,12 +3,11 @@ module TonClient
   class Utils
     include CommonInstanceHelpers
 
-    attr_reader :core, :context
+    attr_reader :context
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
-    def initialize(context: Context.new, core: TonClient::TonBinding)
+    def initialize(context: nil)
       @context = context
-      @core = core
     end
 
     # INPUT: ParamsOfConvertAddress
@@ -17,7 +16,7 @@ module TonClient
     # RESPONSE: ResultOfConvertAddress
     # address: String -     #     # Address in the specified format
     def convert_address(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfGetAddressType
@@ -25,7 +24,7 @@ module TonClient
     # RESPONSE: ResultOfGetAddressType
     # address_type: AccountAddressType -     #     # Account address type.
     def get_address_type(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfCalcStorageFee
@@ -34,7 +33,7 @@ module TonClient
     # RESPONSE: ResultOfCalcStorageFee
     # fee: String - 
     def calc_storage_fee(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfCompressZstd
@@ -43,7 +42,7 @@ module TonClient
     # RESPONSE: ResultOfCompressZstd
     # compressed: String -     #     # Compressed data.    #     # Must be encoded as base64.
     def compress_zstd(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecompressZstd
@@ -51,7 +50,7 @@ module TonClient
     # RESPONSE: ResultOfDecompressZstd
     # decompressed: String -     #     # Decompressed data.    #     # Must be encoded as base64.
     def decompress_zstd(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

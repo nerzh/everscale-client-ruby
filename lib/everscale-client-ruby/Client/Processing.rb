@@ -3,12 +3,11 @@ module TonClient
   class Processing
     include CommonInstanceHelpers
 
-    attr_reader :core, :context
+    attr_reader :context
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
-    def initialize(context: Context.new, core: TonClient::TonBinding)
+    def initialize(context: nil)
       @context = context
-      @core = core
     end
 
     # INPUT: ParamsOfSendMessage
@@ -21,7 +20,7 @@ module TonClient
     # shard_block_id: String -     #     # The last generated shard block of the message destination account before the message was sent.    #     # This block id must be used as a parameter of the`wait_for_transaction`.
     # sending_endpoints: Array -     #     # The list of endpoints to which the message was sent.    #     # This list id must be used as a parameter of the`wait_for_transaction`.
     def send_message(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfWaitForTransaction
@@ -39,7 +38,7 @@ module TonClient
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
     def wait_for_transaction(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfProcessMessage
@@ -51,7 +50,7 @@ module TonClient
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
     def process_message(payload, &block)
-      core.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

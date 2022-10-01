@@ -67,24 +67,24 @@ describe TonClient::TonBinding do
     expect(finished == finished).to be_a(true.class)
   end
 
-  it 'send_request' do
-    queue = Queue.new
-    TonClient::TonBinding.send_request(context: @id, method_name: 'client.version', payload: {}, request_id: 999) do |request_id, data, response_type, finished|
-      queue.push request_id
-      queue.push data
-      queue.push response_type
-      queue.push finished
-    end
-    request_id = queue.pop
-    data = queue.pop
-    response_type = queue.pop
-    finished = queue.pop
+  # it 'send_request' do
+  #   queue = Queue.new
+  #   TonClient::TonBinding.send_request(context: @id, method_name: 'client.version', payload: {}, request_id: 999) do |request_id, data, response_type, finished|
+  #     queue.push request_id
+  #     queue.push data
+  #     queue.push response_type
+  #     queue.push finished
+  #   end
+  #   request_id = queue.pop
+  #   data = queue.pop
+  #   response_type = queue.pop
+  #   finished = queue.pop
     
-    expect(request_id).to eq(999)
-    expect(data).to be_a(TonClient::TonBinding::TcStringDataT)
-    expect(response_type).to be_a(0.class)
-    expect(finished == finished).to be_a(true.class)
-  end
+  #   expect(request_id).to eq(999)
+  #   expect(data).to be_a(TonClient::TonBinding::TcStringDataT)
+  #   expect(response_type).to be_a(0.class)
+  #   expect(finished == finished).to be_a(true.class)
+  # end
 
   it 'async requestLibrary' do
     queue = Queue.new
