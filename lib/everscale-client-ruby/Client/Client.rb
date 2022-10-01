@@ -10,7 +10,12 @@ module TonClient
     def initialize(context: Context.new, core: TonBinding)
       @context = context
       @core = core
+      # ObjectSpace.define_finalizer(self, method(:finalize))
     end
+
+    # def finalize(id)
+    #   destroy_context
+    # end
 
     def destroy_context
       core.tc_destroy_context(context.id)

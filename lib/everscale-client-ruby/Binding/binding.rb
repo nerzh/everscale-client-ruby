@@ -4,7 +4,6 @@ module TonClient
   module TonBinding
     @@request_id = Concurrent::AtomicFixnum.new(1)
     @@requests = Concurrent::Hash.new()
-    # @@requests_mutex = Mutex.new
 
     class Response
       attr_reader :core
@@ -15,39 +14,39 @@ module TonClient
       end
 
       def update(request_id, string_data, response_type, finished)
-        p 'update read'
+        # p 'update read'
         response_hash = core.read_string_to_hash(string_data)
-        p 'update finish read'
+        # p 'update finish read'
         self.finished = finished
         self.request_id = request_id
         self.current_response = response_hash
-        p "update case #{response_type} #{response_type.class}"
+        # p "update case #{response_type} #{response_type.class}"
         case response_type
         when 0
-          p "when 0"
+          # p "when 0"
           # result
           self.result = response_hash
         when 1
-          p "when 1"
+          # p "when 1"
           # error
           self.error = response_hash
         else
-          p "when else"
+          # p "when else"
           # another
           if response_type >= 100
-            p "if 100 #{response_hash}"
+            # p "if 100 #{response_hash}"
             self.custom_responses = response_hash
-            p "after 100"
+            # p "after 100"
           end
         end
-        p 'update finish case'
+        # p 'update finish case'
       end
     end
 
     def self.generate_request_id
-      p 'generate_request_id'
+      # p 'generate_request_id'
       # @@requests_mutex.synchronize do
-        p 'generate_request_id wm'
+        # p 'generate_request_id wm'
         # @@request_id = 0 if @@request_id == 4294967295
         # @@request_id += 1
         @@request_id.increment()
@@ -56,17 +55,17 @@ module TonClient
     end
 
     def self.get_request(id)
-      p 'get_request'
+      # p 'get_request'
       # @@requests_mutex.synchronize do
-        p 'get_request wm'
+        # p 'get_request wm'
         @@requests[id]
       # end
     end
 
     def self.set_request(id, &request_block)
-      p 'set_request'
+      # p 'set_request'
       # @@requests_mutex.synchronize do
-        p 'set_request wm'
+        # p 'set_request wm'
         # @@requests[id] = convert_to_lambda(&request_block)
         @@requests[id] = request_block
       # end
@@ -80,11 +79,11 @@ module TonClient
     #   end
     # end
 
-    def self.convert_to_lambda &block
-      obj = Object.new
-      obj.define_singleton_method(:_, &block)
-      return obj.method(:_).to_proc
-    end
+    # def self.convert_to_lambda &block
+    #   obj = Object.new
+    #   obj.define_singleton_method(:_, &block)
+    #   return obj.method(:_).to_proc
+    # end
   end
 end
 
@@ -94,6 +93,7 @@ module TonClient
   module TonBinding
     extend FFI::Library
     # ffi_lib FFI::Library::LIBC
+    # ffi_lib 'ruby'
     
     # memory allocators
     # attach_function :malloc, [:size_t], :pointer
@@ -141,7 +141,7 @@ module TonClient
       #   tc_string_data_t function_params_json,
       #   uint32_t request_id,
       #   tc_response_handler_t response_handler);
-      attach_function :tc_request, [:uint32, TcStringDataT.by_value, TcStringDataT.by_value, :uint32, :tc_response_handler_t], :void
+      attach_function :tc_request, [:uint32, TcStringDataT.by_value, TcStringDataT.by_value, :uint32, :tc_response_handler_t], :void, :blocking => true
 
       # tc_string_data_t tc_read_string(const tc_string_handle_t* handle);
       # attach_function :tc_read_string, [TcStringHandleT.by_ref], TcStringDataT.by_value
@@ -153,7 +153,7 @@ module TonClient
     end
 
     def self.make_string(string)
-      p 1
+      # p 1
       result = TonBinding::TcStringDataT.new
       bytes_count = string.unpack("C*").size
       ptr1 = FFI::MemoryPointer.new(:char, bytes_count)
@@ -162,7 +162,7 @@ module TonClient
       # result[:content] = FFI::MemoryPointer.from_string(string)
       # result[:len] = string.bytesize
       result[:len] = ptr1.size
-      p 2
+      # p 2
       result
     end
 
@@ -183,35 +183,37 @@ module TonClient
     # end
 
     def self.read_string(tc_string_handle)
-      p "VOOOOOOT #{tc_string_handle}"
-      p 3
+      # p "VOOOOOOT #{tc_string_handle}"
+      # p 3
       is_ref = tc_string_handle.class == FFI::Pointer
       if is_ref
-        p 4
+        # p 4
         string = tc_read_string(tc_string_handle)
       else
-        p 5
+        # p 5
         string = tc_string_handle
       end
 
       if string[:content].address > 1
-        p 6
+        # p 6
         string = string[:content].read_string(string[:len])
-        p tc_string_handle
+        # p tc_string_handle
         if is_ref
-          p tc_string_handle.address
+          # p tc_string_handle.address
           tc_destroy_string(tc_string_handle)
+          # free(tc_string_handle)
+          # p GC.stat
         end
-        p 7
+        # p 7
         return string
       end
       nil
     end
 
     def self.read_string_to_hash(tc_string_handle_t_ref)
-      p 8
+      # p 8
       json_string = read_string(tc_string_handle_t_ref)
-      p 9
+      # p 9
       JSON.parse(json_string, {max_nesting: false}) if json_string
     end
 
@@ -233,13 +235,13 @@ module TonClient
       raise 'context not found' unless context
       raise 'method_name is empty' if method_name.empty?
 
-      p 10
+      # p 10
       if block
-        p 11
+        # p 11
         method_name_string = make_string(method_name)
-        p 12
+        # p 12
         payload_string = make_string(payload.to_json)
-        p 13
+        # p 13
         tc_request(context, method_name_string, payload_string, request_id, &block)
       end
     end
@@ -253,8 +255,8 @@ module TonClient
       raise 'method_name is empty' if method_name.empty?
 
       request_id = generate_request_id
-      p "#{method_name} #{request_id}"
-      p 15
+      # p "#{method_name} #{request_id}"
+      # p 15
       # set_request(request_id, &block)
       # send_request(context: context, method_name: method_name, payload: payload, request_id: request_id) do |request_id, string_data, response_type, finished|
       #   request = get_request(request_id)
@@ -266,34 +268,35 @@ module TonClient
       #     end
       # end
 
-      p 16
+      # p 16
       method_name_string = make_string(method_name)
-      p 17
+      # p 17
       payload_string = make_string(payload.to_json)
       # @@mutex.synchronize do
-      p 18
-      Thread.new(block) do |block|
+      # p 18
+      set_request(request_id, &block)
+      # Thread.new(block) do |block|
         tc_request(context, method_name_string, payload_string, request_id) do |request_id, string_data, response_type, finished|
           # @@mutex.synchronize do
-          p "#{request_id} - response"
-          # request = get_request(request_id)
-          p 19
+          # p "#{request_id} - response"
+          request = get_request(request_id)
+          # p 19
           # if request
-            p 20
+            # p 20
             response = Response.new
-            p 21
+            # p 21
             response.update(request_id, string_data, response_type, finished)
-            p 22
-            # request.call(response)
-            block.call(response)
-            p 23
+            # p 22
+            request.call(response)
+            # block.call(response)
+            # p 23
             # delete_request(request_id) if finished
-            p "delete"
+            # p "delete"
           # end
-          p "#{request_id} - exit"
+          # p "#{request_id} - exit"
         # end
         end
-      end
+      # end.join
       p 181
     end
 
