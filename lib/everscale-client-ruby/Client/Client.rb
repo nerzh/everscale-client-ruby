@@ -61,7 +61,7 @@ module TonClient
     end
 
     # RESPONSE: ResultOfVersion
-    # version: String -     #     # TonBinding Library version
+    # version: String -     #     # Core Library version
     def version(&block)
       TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end

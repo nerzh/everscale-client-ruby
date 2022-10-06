@@ -248,7 +248,7 @@ cd everscale-client-ruby\n
     content << "#{TAB}#{TAB}#{TAB}@context = TonBinding.read_string_to_hash(context_ptr)['result']\n"
     content << "#{TAB}#{TAB}end\n\n"
     content << "#{TAB}#{TAB}def destroy_context\n"
-    content << "#{TAB}#{TAB}#{TAB}TonBinding.tc_destroy_context(context.id)\n#{TAB}#{TAB}end\n\n"
+    content << "#{TAB}#{TAB}#{TAB}TonBinding.tc_destroy_context(context)\n#{TAB}#{TAB}end\n\n"
     modules.each_with_index do |m, i|
       next if m.name.downcase == 'client'
       content << "#{TAB}#{TAB}def #{m.name}\n"
@@ -289,10 +289,10 @@ cd everscale-client-ruby\n
     content << "#{TAB}#{TAB}def #{function.name}"
     if function.arguments.empty?
       content << "(&block)\n"
-      content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)\n"
+      content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)\n"
     else
       content << "(payload, &block)\n"
-      content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context.id, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)\n"
+      content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)\n"
     end
     content << "#{TAB}#{TAB}end\n\n"
 
