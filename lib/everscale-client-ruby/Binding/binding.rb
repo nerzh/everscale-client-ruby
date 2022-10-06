@@ -6,15 +6,15 @@ module TonClient
     @@requests = Concurrent::Hash.new()
 
     class Response
-      attr_reader :core
       attr_accessor :result, :error, :custom_response, :finished, :request_id, :current_response
 
-      def initialize(core: TonBinding)
-        @core = core
+      def initialize(request_id, string_data, response_type, finished)
+        update(request_id, string_data, response_type, finished)
       end
 
+      private
       def update(request_id, string_data, response_type, finished)
-        response_hash = core.read_string_to_hash(string_data)
+        response_hash = TonBinding.read_string_to_hash(string_data)
         self.finished = finished
         self.request_id = request_id
         self.current_response = response_hash
@@ -32,6 +32,8 @@ module TonClient
             self.custom_responses = response_hash
           end
         end
+
+        self
       end
     end
 
@@ -49,7 +51,7 @@ module TonClient
     end
 
     def self.delete_request(id)
-      # @@requests[id] = nil
+      @@requests[id] = nil
     end
   end
 end
@@ -122,13 +124,15 @@ module TonClient
     def self.make_string(string)
       # p 1
       result = TonBinding::TcStringDataT.new
-      # bytes_count = string.unpack("C*").size
-      # ptr1 = FFI::MemoryPointer.new(:char, bytes_count)
-      # ptr1.put_bytes(0, string, 0, bytes_count)
-      # result[:content] = ptr1
-      result[:content] = FFI::MemoryPointer.from_string(string)
-      result[:len] = string.bytesize
-      # result[:len] = ptr1.size
+      bytes_count = string.unpack("C*").size
+      ptr1 = FFI::MemoryPointer.new(:char, bytes_count)
+      ptr1.put_bytes(0, string, 0, bytes_count)
+      # ptr1.autorelease = false
+      # p ptr1.autorelease?
+      result[:content] = ptr1
+      # result[:content] = FFI::MemoryPointer.from_string(string)
+      # result[:len] = string.bytesize
+      result[:len] = ptr1.size
       # p 2
       result
     end
@@ -183,9 +187,7 @@ module TonClient
       tc_request(context, method_name_string, payload_string, request_id) do |request_id, string_data, response_type, finished|
         request = get_request(request_id)
         if request
-          response = Response.new
-          response.update(request_id, string_data, response_type, finished)
-          request.call(response)
+          request.call(Response.new(request_id, string_data, response_type, finished))
           delete_request(request_id) if finished
         end
       end

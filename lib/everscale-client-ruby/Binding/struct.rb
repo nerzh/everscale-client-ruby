@@ -9,13 +9,5 @@ module TonClient
       layout :content, :pointer,
         :len, :uint32
     end
-
-
-    # typedef struct  {
-    # } tc_string_handle_t;
-    class TcStringHandleT < FFI::Struct
-      layout :content, :pointer,
-        :len, :uint32
-    end
   end
 end
