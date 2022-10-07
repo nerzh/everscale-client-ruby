@@ -2,12 +2,13 @@ module TonClient
 
   class Abi
     include CommonInstanceHelpers
+    @@sm = Concurrent::Semaphore.new(1)
 
-    attr_reader :context
+    attr_reader :context, :request_id, :requests
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
-    def initialize(context: nil)
-      @context = context
+    def initialize(context: nil, request_id: nil, requests: nil)
+      @context = context; @request_id = request_id; @requests = requests
     end
 
     # INPUT: ParamsOfEncodeMessageBody
@@ -26,7 +27,7 @@ module TonClient
     # data_to_sign: String<Optional> -     #     # Optional data to sign.    #     # Encoded with `base64`.
     # # Presents when `message` is unsigned. Can be used for externalmessage signing. Is this case you need to sing this data andproduce signed message using `abi.attach_signature`.
     def encode_message_body(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfAttachSignatureToMessageBody
@@ -37,7 +38,7 @@ module TonClient
     # RESPONSE: ResultOfAttachSignatureToMessageBody
     # body: String - 
     def attach_signature_to_message_body(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfEncodeMessage
@@ -58,7 +59,7 @@ module TonClient
     # address: String -     #     # Destination address.
     # message_id: String -     #     # Message id.
     def encode_message(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfEncodeInternalMessage
@@ -76,7 +77,7 @@ module TonClient
     # address: String -     #     # Destination address.
     # message_id: String -     #     # Message id.
     def encode_internal_message(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfAttachSignature
@@ -88,7 +89,7 @@ module TonClient
     # message: String -     #     # Signed message BOC
     # message_id: String -     #     # Message ID
     def attach_signature(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecodeMessage
@@ -101,7 +102,7 @@ module TonClient
     # value: Value<Optional> -     #     # Parameters or result value.
     # header: FunctionHeader<Optional> -     #     # Function header.
     def decode_message(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecodeMessageBody
@@ -115,7 +116,7 @@ module TonClient
     # value: Value<Optional> -     #     # Parameters or result value.
     # header: FunctionHeader<Optional> -     #     # Function header.
     def decode_message_body(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfEncodeAccount
@@ -128,7 +129,7 @@ module TonClient
     # account: String -     #     # Account BOC encoded in `base64`.
     # id: String -     #     # Account ID  encoded in `hex`.
     def encode_account(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecodeAccountData
@@ -138,7 +139,7 @@ module TonClient
     # RESPONSE: ResultOfDecodeAccountData
     # data: Value -     #     # Decoded data as a JSON structure.
     def decode_account_data(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfUpdateInitialData
@@ -150,7 +151,7 @@ module TonClient
     # RESPONSE: ResultOfUpdateInitialData
     # data: String -     #     # Updated data BOC or BOC handle
     def update_initial_data(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfEncodeInitialData
@@ -161,7 +162,7 @@ module TonClient
     # RESPONSE: ResultOfEncodeInitialData
     # data: String -     #     # Updated data BOC or BOC handle
     def encode_initial_data(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecodeInitialData
@@ -172,7 +173,7 @@ module TonClient
     # initial_data: Value<Optional> -     #     # List of initial values of contract's public variables.    #     # Initial data is decoded if `abi` input parameter is provided
     # initial_pubkey: String -     #     # Initial account owner's public key
     def decode_initial_data(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecodeBoc
@@ -182,7 +183,7 @@ module TonClient
     # RESPONSE: ResultOfDecodeBoc
     # data: Value -     #     # Decoded data as a JSON structure.
     def decode_boc(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfAbiEncodeBoc
@@ -192,7 +193,7 @@ module TonClient
     # RESPONSE: ResultOfAbiEncodeBoc
     # boc: String -     #     # BOC encoded as base64
     def encode_boc(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfCalcFunctionId
@@ -202,7 +203,7 @@ module TonClient
     # RESPONSE: ResultOfCalcFunctionId
     # function_id: Number -     #     # Contract function ID
     def calc_function_id(payload, &block)
-      TonBinding.requestLibrary(context: context, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

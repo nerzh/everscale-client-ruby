@@ -12,11 +12,6 @@ describe TonClient::Client do
     expect(client.context).to be_a(0.class)
   end
 
-  it 'destroy context' do
-    client = TonClient.create(config: {network: {server_address: "net.ton.dev"}})
-    expect(client.destroy_context).to be_a(nil.class)
-  end
-
   it 'check version' do
     callLibraryMethodSync(@client.method(:version)) do |response|
       expect(response.first.result['version']).to be_a(String)

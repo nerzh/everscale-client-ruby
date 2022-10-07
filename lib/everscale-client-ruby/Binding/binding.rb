@@ -2,11 +2,8 @@ require 'byebug'
 
 module TonClient
   module TonBinding
-    @@request_id = Concurrent::AtomicFixnum.new(1)
-    @@requests = Concurrent::Hash.new()
-
     class Response
-      attr_accessor :result, :error, :custom_response, :finished, :request_id, :current_response
+      attr_accessor :result, :error, :custom_response, :finished, :request_id, :response_type
 
       def initialize(request_id, string_data, response_type, finished)
         update(request_id, string_data, response_type, finished)
@@ -14,44 +11,35 @@ module TonClient
 
       private
       def update(request_id, string_data, response_type, finished)
+        if response_type == -1
+          @finished = true
+          @request_id = request_id
+          @response_type = response_type
+          @error = string_data || "Client deallocated"
+          return self
+        end
+        
         response_hash = TonBinding.read_string_to_hash(string_data)
-        self.finished = finished
-        self.request_id = request_id
-        self.current_response = response_hash
+        @finished = finished
+        @request_id = request_id
+        @response_type = response_type
         
         case response_type
         when 0
           # result
-          self.result = response_hash
+          @result = response_hash
         when 1
           # error
-          self.error = response_hash
+          @error = response_hash
         else
-          # another
-          if response_type >= 100
-            self.custom_responses = response_hash
-          end
+          # # another
+          # if response_type >= 100
+          @custom_response = response_hash
+          # end
         end
 
         self
       end
-    end
-
-    def self.generate_request_id
-      @@request_id.increment()
-      @@request_id.value
-    end
-
-    def self.get_request(id)
-      @@requests[id]
-    end
-
-    def self.set_request(id, &request_block)
-      @@requests[id] = request_block
-    end
-
-    def self.delete_request(id)
-      @@requests[id] = nil
     end
   end
 end
@@ -146,14 +134,15 @@ module TonClient
       end
 
       if string[:content].address > 1
-        string = string[:content].read_string(string[:len])
+        result = string[:content].read_string(string[:len])
         if is_ref
           tc_destroy_string(tc_string_handle)
           # free(tc_string_handle)
         end
-        return string
+        result
+      else
+        nil
       end
-      nil
     end
 
     def self.read_string_to_hash(tc_string_handle_t_ref)
@@ -176,21 +165,34 @@ module TonClient
     end
 
     # block = { |response| }
-    def self.requestLibrary(context: 1, method_name: '', payload: {}, &block)
+    def self.requestLibrary(context: nil, request_id: nil, requests: nil, sm: nil, method_name: '', payload: {}, &block)
       raise 'context not found' unless context
       raise 'method_name is empty' if method_name.empty?
-
-      request_id = generate_request_id
+      # raise "context: #{context}. request_id not is nil. Client dealloc." unless request_id
+      unless request_id
+        # p "context: #{context}. request_id is nil. Client deallocated."
+        block.call(Response.new(request_id, "Client deallocated", -1, true)) if block
+        return
+      end
       method_name_string = make_string(method_name)
       payload_string = make_string(payload.to_json)
-      set_request(request_id, &block)
+
+      request_id = request_id.increment
+      requests[request_id] = block
+
       tc_request(context, method_name_string, payload_string, request_id) do |request_id, string_data, response_type, finished|
-        request = get_request(request_id)
-        if request
-          request.call(Response.new(request_id, string_data, response_type, finished))
-          delete_request(request_id) if finished
+        begin
+          request = requests[request_id]
+          if request
+              request.call(Response.new(request_id, string_data, response_type, finished))
+            requests.delete(request_id) if finished
+          end
+        rescue => ex
+          block.call(Response.new(request_id, ex.message, -1, true)) if block
         end
       end
+    rescue => ex
+      block.call(Response.new(request_id, ex.message, -1, true)) if block
     end
 
   end

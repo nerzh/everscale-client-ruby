@@ -28,26 +28,26 @@ def make_client
   TonClient.create(config: {network: {server_address: env['server_address'] || "net.ton.dev"}})
 end
 
-def requestLibrarySync(context: 1, method_name: '', payload: {})
-  responses = []
-  queue = Queue.new
-  TonClient::TonBinding.requestLibrary(context: context, method_name: method_name, payload: payload) do |response|
-    responses << response
-    queue.push 1 if response.finished == true
-  end
-  queue.pop
-  yield(responses) if block_given?
-end
+# def requestLibrarySync(context: 1, method_name: '', payload: {})
+#   responses = []
+#   queue = Queue.new
+#   TonClient::TonBinding.requestLibrary(context: context, method_name: method_name, payload: payload) do |response|
+#     responses << response
+#     queue.push 1 if response.finished == true
+#   end
+#   queue.pop
+#   yield(responses) if block_given?
+# end
 
 def callLibraryMethodSync(method, *args)
-  responses = []
+  responses = Concurrent::Array.new
   queue = Queue.new
   method.call(*args) do |response|
     responses << response
     queue.push 1 if response.finished == true
   end
   queue.pop
-  yield(responses) if block_given?
+  yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
 end
 
 def read_abi(name)

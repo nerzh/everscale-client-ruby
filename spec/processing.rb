@@ -30,7 +30,7 @@ describe TonClient::Processing do
     callLibraryMethodSync(@client.processing.method(:send_message), params_of_send_message) do |response|
       result_of_send_message = response.first.result
     end
-
+    
     params_of_wait_for_transaction = {abi: abi, message: encoded_message['message'], shard_block_id: result_of_send_message['shard_block_id'], send_events: true}
     callLibraryMethodSync(@client.processing.method(:wait_for_transaction), params_of_wait_for_transaction) do |response|
       expect(response.first.result['out_messages'].size).to eq(0)
