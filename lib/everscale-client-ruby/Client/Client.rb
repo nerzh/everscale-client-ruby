@@ -64,13 +64,13 @@ module TonClient
     # RESPONSE: ResultOfGetApiReference
     # api: Value - 
     def get_api_reference(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # RESPONSE: ResultOfVersion
     # version: String -     #     # Core Library version
     def version(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # RESPONSE: ClientConfig
@@ -81,21 +81,21 @@ module TonClient
     # proofs: ProofsConfig<Optional> - 
     # local_storage_path: String<Optional> -     #     # For file based storage is a folder name where SDK will store its data. For browser based is a browser async storage key prefix. Default (recommended) value is "~/.tonclient" for native environments and ".tonclient" for web-browser.
     def config(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # RESPONSE: ResultOfBuildInfo
     # build_number: Number -     #     # Build number assigned to this build by the CI.
     # dependencies: Array -     #     # Fingerprint of the most important dependencies.
     def build_info(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # INPUT: ParamsOfResolveAppRequest
     # app_request_id: Number -     #     # Request ID received from SDK
     # result: AppRequestResult -     #     # Result of request processing
     def resolve_app_request(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

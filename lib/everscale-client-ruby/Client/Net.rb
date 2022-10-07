@@ -2,13 +2,14 @@ module TonClient
 
   class Net
     include CommonInstanceHelpers
-    @@sm = Concurrent::Semaphore.new(1)
 
     attr_reader :context, :request_id, :requests
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
     def initialize(context: nil, request_id: nil, requests: nil)
-      @context = context; @request_id = request_id; @requests = requests
+      @context = context
+      @request_id = request_id
+      @requests = requests
     end
 
     # INPUT: ParamsOfQuery
@@ -17,7 +18,7 @@ module TonClient
     # RESPONSE: ResultOfQuery
     # result: Value -     #     # Result provided by DAppServer.
     def query(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfBatchQuery
@@ -25,7 +26,7 @@ module TonClient
     # RESPONSE: ResultOfBatchQuery
     # results: Array -     #     # Result values for batched queries.    #     # Returns an array of values. Each value corresponds to `queries` item.
     def batch_query(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfQueryCollection
@@ -37,7 +38,7 @@ module TonClient
     # RESPONSE: ResultOfQueryCollection
     # result: Array -     #     # Objects that match the provided criteria
     def query_collection(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfAggregateCollection
@@ -48,7 +49,7 @@ module TonClient
     # values: Value -     #     # Values for requested fields.    #     # Returns an array of strings. Each string refers to the corresponding `fields` item.
     # Numeric value is returned as a decimal string representations.
     def aggregate_collection(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfWaitForCollection
@@ -59,13 +60,13 @@ module TonClient
     # RESPONSE: ResultOfWaitForCollection
     # result: Value -     #     # First found object that matches the provided criteria
     def wait_for_collection(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ResultOfSubscribeCollection
     # handle: Number -     #     # Subscription handle.    #     # Must be closed with `unsubscribe`
     def unsubscribe(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfSubscribeCollection
@@ -75,7 +76,7 @@ module TonClient
     # RESPONSE: ResultOfSubscribeCollection
     # handle: Number -     #     # Subscription handle.    #     # Must be closed with `unsubscribe`
     def subscribe_collection(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfSubscribe
@@ -84,15 +85,15 @@ module TonClient
     # RESPONSE: ResultOfSubscribeCollection
     # handle: Number -     #     # Subscription handle.    #     # Must be closed with `unsubscribe`
     def subscribe(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     def suspend(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     def resume(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # INPUT: ParamsOfFindLastShardBlock
@@ -100,26 +101,26 @@ module TonClient
     # RESPONSE: ResultOfFindLastShardBlock
     # block_id: String -     #     # Account shard last block ID
     def find_last_shard_block(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # RESPONSE: EndpointsSet
     # endpoints: Array -     #     # List of endpoints provided by server
     def fetch_endpoints(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # INPUT: EndpointsSet
     # endpoints: Array -     #     # List of endpoints provided by server
     def set_endpoints(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # RESPONSE: ResultOfGetEndpoints
     # query: String -     #     # Current query endpoint
     # endpoints: Array -     #     # List of all endpoints used by client
     def get_endpoints(&block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
     end
 
     # INPUT: ParamsOfQueryCounterparties
@@ -130,7 +131,7 @@ module TonClient
     # RESPONSE: ResultOfQueryCollection
     # result: Array -     #     # Objects that match the provided criteria
     def query_counterparties(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfQueryTransactionTree
@@ -142,7 +143,7 @@ module TonClient
     # messages: Array -     #     # Messages.
     # transactions: Array -     #     # Transactions.
     def query_transaction_tree(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfCreateBlockIterator
@@ -162,7 +163,7 @@ module TonClient
     # RESPONSE: RegisteredIterator
     # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
     def create_block_iterator(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfResumeBlockIterator
@@ -170,7 +171,7 @@ module TonClient
     # RESPONSE: RegisteredIterator
     # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
     def resume_block_iterator(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfCreateTransactionIterator
@@ -196,7 +197,7 @@ module TonClient
     # RESPONSE: RegisteredIterator
     # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
     def create_transaction_iterator(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfResumeTransactionIterator
@@ -208,7 +209,7 @@ module TonClient
     # RESPONSE: RegisteredIterator
     # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
     def resume_transaction_iterator(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfIteratorNext
@@ -223,13 +224,13 @@ module TonClient
     # resume_state: Value<Optional> -     #     # Optional iterator state that can be used for resuming iteration.    #     # This field is returned only if the `return_resume_state` parameteris specified.
     # Note that `resume_state` corresponds to the iteration positionafter the returned items.
     def iterator_next(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: RegisteredIterator
     # handle: Number -     #     # Iterator handle.    #     # Must be removed using `remove_iterator`when it is no more needed for the application.
     def remove_iterator(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests,  method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

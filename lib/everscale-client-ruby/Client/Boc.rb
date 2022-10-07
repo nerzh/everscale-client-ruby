@@ -2,13 +2,14 @@ module TonClient
 
   class Boc
     include CommonInstanceHelpers
-    @@sm = Concurrent::Semaphore.new(1)
 
     attr_reader :context, :request_id, :requests
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
     def initialize(context: nil, request_id: nil, requests: nil)
-      @context = context; @request_id = request_id; @requests = requests
+      @context = context
+      @request_id = request_id
+      @requests = requests
     end
 
     # INPUT: ParamsOfParse
@@ -16,7 +17,7 @@ module TonClient
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
     def parse_message(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfParse
@@ -24,7 +25,7 @@ module TonClient
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
     def parse_transaction(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfParse
@@ -32,7 +33,7 @@ module TonClient
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
     def parse_account(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfParse
@@ -40,7 +41,7 @@ module TonClient
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
     def parse_block(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfParseShardstate
@@ -50,7 +51,7 @@ module TonClient
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
     def parse_shardstate(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfGetBlockchainConfig
@@ -58,7 +59,7 @@ module TonClient
     # RESPONSE: ResultOfGetBlockchainConfig
     # config_boc: String -     #     # Blockchain config BOC encoded as base64
     def get_blockchain_config(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfGetBocHash
@@ -66,7 +67,7 @@ module TonClient
     # RESPONSE: ResultOfGetBocHash
     # hash: String -     #     # BOC root hash encoded with hex
     def get_boc_hash(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfGetBocDepth
@@ -74,7 +75,7 @@ module TonClient
     # RESPONSE: ResultOfGetBocDepth
     # depth: Number -     #     # BOC root cell depth
     def get_boc_depth(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfGetCodeFromTvc
@@ -82,7 +83,7 @@ module TonClient
     # RESPONSE: ResultOfGetCodeFromTvc
     # code: String -     #     # Contract code encoded as base64
     def get_code_from_tvc(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfBocCacheGet
@@ -90,7 +91,7 @@ module TonClient
     # RESPONSE: ResultOfBocCacheGet
     # boc: String<Optional> -     #     # BOC encoded as base64.
     def cache_get(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfBocCacheSet
@@ -99,14 +100,14 @@ module TonClient
     # RESPONSE: ResultOfBocCacheSet
     # boc_ref: String -     #     # Reference to the cached BOC
     def cache_set(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfBocCacheUnpin
     # pin: String -     #     # Pinned name
     # boc_ref: String<Optional> -     #     # Reference to the cached BOC.    #     # If it is provided then only referenced BOC is unpinned
     def cache_unpin(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfEncodeBoc
@@ -115,7 +116,7 @@ module TonClient
     # RESPONSE: ResultOfEncodeBoc
     # boc: String -     #     # Encoded cell BOC or BOC cache key.
     def encode_boc(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfGetCodeSalt
@@ -124,7 +125,7 @@ module TonClient
     # RESPONSE: ResultOfGetCodeSalt
     # salt: String<Optional> -     #     # Contract code salt if present.    #     # BOC encoded as base64 or BOC handle
     def get_code_salt(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfSetCodeSalt
@@ -134,7 +135,7 @@ module TonClient
     # RESPONSE: ResultOfSetCodeSalt
     # code: String -     #     # Contract code with salt set.    #     # BOC encoded as base64 or BOC handle
     def set_code_salt(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecodeTvc
@@ -153,7 +154,7 @@ module TonClient
     # split_depth: Number<Optional> -     #     # Is present and non-zero only in instances of large smart contracts
     # compiler_version: String<Optional> -     #     # Compiler version, for example 'sol 0.49.0'
     def decode_tvc(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfEncodeTvc
@@ -167,7 +168,7 @@ module TonClient
     # RESPONSE: ResultOfEncodeTvc
     # tvc: String -     #     # Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
     def encode_tvc(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfEncodeExternalInMessage
@@ -180,7 +181,7 @@ module TonClient
     # message: String -     #     # Message BOC encoded with `base64`.
     # message_id: String -     #     # Message id.
     def encode_external_in_message(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfGetCompilerVersion
@@ -188,7 +189,7 @@ module TonClient
     # RESPONSE: ResultOfGetCompilerVersion
     # version: String<Optional> -     #     # Compiler version, for example 'sol 0.49.0'
     def get_compiler_version(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

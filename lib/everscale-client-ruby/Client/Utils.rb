@@ -26,7 +26,7 @@ module TonClient
     # RESPONSE: ResultOfGetAddressType
     # address_type: AccountAddressType -     #     # Account address type.
     def get_address_type(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfCalcStorageFee
@@ -35,7 +35,7 @@ module TonClient
     # RESPONSE: ResultOfCalcStorageFee
     # fee: String - 
     def calc_storage_fee(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfCompressZstd
@@ -44,7 +44,7 @@ module TonClient
     # RESPONSE: ResultOfCompressZstd
     # compressed: String -     #     # Compressed data.    #     # Must be encoded as base64.
     def compress_zstd(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfDecompressZstd
@@ -52,7 +52,7 @@ module TonClient
     # RESPONSE: ResultOfDecompressZstd
     # decompressed: String -     #     # Decompressed data.    #     # Must be encoded as base64.
     def decompress_zstd(payload, &block)
-      TonBinding.requestLibrary(context: context, sm: @@sm, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

@@ -260,7 +260,7 @@ cd everscale-client-ruby\n
     modules.each_with_index do |m, i|
       next if m.name.downcase == 'client'
       content << "#{TAB}#{TAB}def #{m.name}\n"
-      content << "#{TAB}#{TAB}#{TAB}_#{m.name} ||= #{m.name.capitalize}.new(context: context)\n"
+      content << "#{TAB}#{TAB}#{TAB}_#{m.name} ||= #{m.name.capitalize}.new(context: context, request_id: request_id, requests: requests)\n"
       content << "#{TAB}#{TAB}end\n\n"
     end
 
