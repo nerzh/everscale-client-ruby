@@ -1,4 +1,3 @@
-
 module TonClient
 
   def self.read_abi(path_to_file)
@@ -23,6 +22,44 @@ module TonClient
       queue.push 1 if response.finished == true
     end
     queue.pop
+  end
+
+  class RequestId
+    include MonitorMixin
+
+    def initialize
+      super
+      synchronize { @value = 1 }
+    end
+
+    def increment
+      synchronize { @value += 1}
+    end
+
+    def value
+      synchronize { @value }
+    end
+  end
+
+  class Requests
+    include MonitorMixin
+
+    def initialize
+      super
+      synchronize { @value = {} }
+    end
+
+    def []=(key, value)
+      synchronize { @value[key] = value }
+    end
+
+    def [](key)
+      synchronize { @value[key] }
+    end
+
+    def delete(key)
+      synchronize { @value.delete(key) }
+    end
   end
 end
 

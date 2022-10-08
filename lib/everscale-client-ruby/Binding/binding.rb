@@ -1,5 +1,3 @@
-require 'byebug'
-
 module TonClient
   module TonBinding
     class Response
@@ -11,12 +9,12 @@ module TonClient
 
       private
       def update(request_id, string_data, response_type, finished)
-        p "update response #{response_type}"
         if response_type == -1
           @finished = true
           @request_id = request_id
           @response_type = response_type
           @error = string_data || "Client deallocated"
+          p "ERROR:   #{@error}"
           return self
         end
 
@@ -111,18 +109,9 @@ module TonClient
     end
 
     def self.make_string(string)
-      # p 1
       result = TonBinding::TcStringDataT.new
-      bytes_count = string.unpack("C*").size
-      ptr1 = FFI::MemoryPointer.new(:char, bytes_count)
-      ptr1.put_bytes(0, string, 0, bytes_count)
-      # ptr1.autorelease = false
-      # p ptr1.autorelease?
-      result[:content] = ptr1
-      # result[:content] = FFI::MemoryPointer.from_string(string)
-      # result[:len] = string.bytesize
-      result[:len] = ptr1.size
-      # p 2
+      result[:content] = FFI::MemoryPointer.from_string(string)
+      result[:len] = string.bytesize
       result
     end
 
@@ -134,7 +123,7 @@ module TonClient
         string = tc_string_handle
       end
 
-      if string[:content].address > 1
+      if string[:len] > 0
         result = string[:content].read_string(string[:len])
         if is_ref
           tc_destroy_string(tc_string_handle)
@@ -165,58 +154,46 @@ module TonClient
       return response['error'] if response['error']
     end
 
-    @@queue = Monitor.new
     # block = { |response| }
-    def self.requestLibrary(context: nil, request_id: nil, requests: nil, sm: nil, method_name: '', payload: {}, &block)
-      @@queue.synchronize do
-      raise 'context not found' unless context
-      raise 'method_name is empty' if method_name.empty?
-      # raise "context: #{context}. request_id not is nil. Client dealloc." unless request_id
-      unless request_id
-        p "context: #{context}. request_id is nil. Client deallocated."
-        block.call(Response.new(request_id, "Client deallocated", -1, true)) if block
-        return
-      end
-      method_name_string = make_string(method_name)
-      payload_string = make_string(payload.to_json)
+    def self.requestLibrary(context: nil,
+                            request_id: nil,
+                            requests: nil,
+                            monitor: nil,
+                            method_name: '',
+                            payload: {},
+                            &block
+    )
+      monitor&.synchronize do
+        raise 'context not found' unless context
+        raise 'method_name is empty' if method_name.empty?
+        # raise "context: #{context}. request_id not is nil. Client dealloc." unless request_id
+        unless request_id
+          # p "context: #{context}. request_id is nil. Client deallocated."
+          block.call(Response.new(request_id, "Client deallocated", -1, true)) if block
+          return
+        end
+        method_name_string = make_string(method_name)
+        payload_string = make_string(payload.to_json)
 
-      request_id = request_id.increment
-      requests[request_id] = block
-      p "start #{request_id}"
-      tc_request(context, method_name_string, payload_string, request_id) do |request_id, string_data, response_type, finished|
-        @@queue.synchronize do
-        p "tc_request #{request_id}"
-        p "Thread.current #{Thread.current}"
-
-        begin
-          request = requests[request_id]
-          if request
-            request.call(Response.new(request_id, string_data, response_type, finished))
-            requests.delete(request_id) if finished
+        request_id = request_id.increment
+        requests[request_id] = block
+        # p "start #{request_id}"
+        tc_request(context, method_name_string, payload_string, request_id) do |request_id, string_data, response_type, finished|
+          # p "tc_request #{request_id}"
+          # p "Thread.current #{Thread.current}"
+          begin
+            monitor.synchronize do
+              request = requests[request_id]
+              if request
+                request.call(Response.new(request_id, string_data, response_type, finished))
+                requests.delete(request_id) if finished
+              end
+            end
+          rescue => ex
+            block.call(Response.new(request_id, ex.message, -1, true)) if block
           end
-        rescue => ex
-          block.call(Response.new(request_id, ex.message, -1, true)) if block
         end
-        end
-
-        # @@queue.enq(proc do |request_id, string_data, response_type, finished, block|
-        #   p "proc #{request_id}"
-        #   begin
-        #     request = requests[request_id]
-        #     if request
-        #       request.call(Response.new(request_id, string_data, response_type, finished))
-        #       requests.delete(request_id) if finished
-        #     end
-        #   rescue => ex
-        #     block.call(Response.new(request_id, ex.message, -1, true)) if block
-        #   end
-        # end)
-        # p "pop #{request_id}"
-        # @@queue.pop.call(request_id, string_data, response_type, finished, &block) if block
-        # p "afterpop #{request_id}"
       end
-      end
-      p "exit #{request_id}"
     rescue => ex
       block.call(Response.new(request_id, ex.message, -1, true)) if block
     end

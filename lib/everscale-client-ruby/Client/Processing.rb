@@ -3,13 +3,14 @@ module TonClient
   class Processing
     include CommonInstanceHelpers
 
-    attr_reader :context, :request_id, :requests
+    attr_reader :context, :request_id, :requests, :monitor
     MODULE = self.to_s.downcase.gsub(/^(.+::|)(\w+)$/, '\2').freeze
 
-    def initialize(context: nil, request_id: nil, requests: nil)
+    def initialize(context: nil, request_id: nil, requests: nil, monitor: nil)
       @context = context
       @request_id = request_id
       @requests = requests
+      @monitor = monitor
     end
 
     # INPUT: ParamsOfSendMessage
@@ -22,7 +23,7 @@ module TonClient
     # shard_block_id: String -     #     # The last generated shard block of the message destination account before the message was sent.    #     # This block id must be used as a parameter of the`wait_for_transaction`.
     # sending_endpoints: Array -     #     # The list of endpoints to which the message was sent.    #     # This list id must be used as a parameter of the`wait_for_transaction`.
     def send_message(payload, &block)
-      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfWaitForTransaction
@@ -40,7 +41,7 @@ module TonClient
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
     def wait_for_transaction(payload, &block)
-      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # INPUT: ParamsOfProcessMessage
@@ -52,7 +53,7 @@ module TonClient
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
     def process_message(payload, &block)
-      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
   end

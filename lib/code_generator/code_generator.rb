@@ -234,7 +234,7 @@ cd everscale-client-ruby\n
 
   private def generateClientModule(mod, modules)
     content = "module TonClient\n\n#{TAB}class #{mod.name.capitalize}\n#{TAB}#{TAB}include CommonInstanceHelpers\n\n"
-    content << "#{TAB}#{TAB}attr_reader :context, :context_config, :request_id, :requests\n"
+    content << "#{TAB}#{TAB}attr_reader :context, :context_config, :request_id, :requests, :monitor\n"
     content << "#{TAB}#{TAB}private_accessor "
     modules.each_with_index do |m, i|
       next if m.name.downcase == 'client'
@@ -245,6 +245,7 @@ cd everscale-client-ruby\n
     content << "#{TAB}#{TAB}#{TAB}@context_config = context_config\n"
     content << "#{TAB}#{TAB}#{TAB}@request_id = Concurrent::AtomicFixnum.new(1)\n"
     content << "#{TAB}#{TAB}#{TAB}@requests = Concurrent::Hash.new()\n"
+    content << "#{TAB}#{TAB}#{TAB}@monitor = Monitor.new()\n"
     content << "#{TAB}#{TAB}#{TAB}config = TonBinding.make_string(context_config.to_json)\n"
     content << "#{TAB}#{TAB}#{TAB}context_ptr = TonBinding.tc_create_context(config)\n"
     content << "#{TAB}#{TAB}#{TAB}@context = TonBinding.read_string_to_hash(context_ptr)['result']\n"
@@ -260,7 +261,7 @@ cd everscale-client-ruby\n
     modules.each_with_index do |m, i|
       next if m.name.downcase == 'client'
       content << "#{TAB}#{TAB}def #{m.name}\n"
-      content << "#{TAB}#{TAB}#{TAB}_#{m.name} ||= #{m.name.capitalize}.new(context: context, request_id: request_id, requests: requests)\n"
+      content << "#{TAB}#{TAB}#{TAB}_#{m.name} ||= #{m.name.capitalize}.new(context: context, request_id: request_id, requests: requests, monitor: monitor)\n"
       content << "#{TAB}#{TAB}end\n\n"
     end
 
@@ -276,12 +277,13 @@ cd everscale-client-ruby\n
 
   private def generateModule(mod)
     content = "module TonClient\n\n#{TAB}class #{mod.name.capitalize}\n#{TAB}#{TAB}include CommonInstanceHelpers\n\n"
-    content << "#{TAB}#{TAB}attr_reader :context, :request_id, :requests\n"
+    content << "#{TAB}#{TAB}attr_reader :context, :request_id, :requests, :monitor\n"
     content << "#{TAB}#{TAB}MODULE = self.to_s.downcase.gsub(/^(.+::|)(\\w+)$/, '\\2').freeze\n\n"
-    content << "#{TAB}#{TAB}def initialize(context: nil, request_id: nil, requests: nil)\n"
+    content << "#{TAB}#{TAB}def initialize(context: nil, request_id: nil, requests: nil, monitor: nil)\n"
     content << "#{TAB}#{TAB}#{TAB}@context = context\n"
     content << "#{TAB}#{TAB}#{TAB}@request_id = request_id\n"
     content << "#{TAB}#{TAB}#{TAB}@requests = requests\n"
+    content << "#{TAB}#{TAB}#{TAB}@monitor = monitor\n"
     content << "#{TAB}#{TAB}end\n\n"
 
     mod.functions.each do |func|
@@ -299,11 +301,12 @@ cd everscale-client-ruby\n
     content << "#{TAB}#{TAB}def #{function.name}"
     if function.arguments.empty?
       content << "(&block)\n"
-      content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)\n"
+      payload = "{}"
     else
       content << "(payload, &block)\n"
-      content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)\n"
+      payload = "payload"
     end
+    content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: #{payload}, &block)\n"
     content << "#{TAB}#{TAB}end\n\n"
 
     content

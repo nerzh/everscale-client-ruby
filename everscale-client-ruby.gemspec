@@ -20,9 +20,8 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.executables   = ["everscale-client-ruby"]
   
-  spec.add_dependency 'ffi', '1.15.0'
+  spec.add_dependency 'ffi', '~> 1.15'
   spec.add_dependency 'dotenv', '~> 2.7.6'
-  spec.add_dependency 'concurrent-ruby', '~> 1.1.10'
 
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "byebug"

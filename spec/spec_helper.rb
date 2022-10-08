@@ -42,74 +42,23 @@ end
 # @mutex = Mutex.new
 # @condition = ConditionVariable.new
 
-module Mtx
-  @@mutex = Mutex.new
-  @@condition = ConditionVariable.new
-
-  def self.mutex
-    @@mutex
-  end
-
-  def self.condition
-    @@condition
-  end
-end
-
-module Mon
-  @@mutex = Monitor.new
-  @@condition = @@mutex.new_cond
-
-  def self.mutex
-    @@mutex
-  end
-
-  def self.condition
-    @@condition
-  end
-end
-
 def callLibraryMethodSync(method, *args)
-  responses = Concurrent::Array.new
-  queue = Queue.new
-  p "callLibraryMethodSync CALL"
+  responses = []
+  mutex = Monitor.new
+  condition = mutex.new_cond
+
   method.call(*args) do |response|
-    responses << response
-    queue.push :update if response.finished == true
+    mutex.synchronize do
+      responses << response
+      condition.signal if response.finished == true
+    end
   end
-  p "callLibraryMethodSync pop #{Thread.current}"
-  queue.pop
-  p "callLibraryMethodSync AFTER pop"
+
+  mutex.synchronize do
+    condition.wait
+  end
+
   yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
-
-
-
-  # mutex = Mutex.new
-  # condition = ConditionVariable.new
-  # thread = Thread.new do
-  #   Mtx.mutex.synchronize do
-  #     Thread.current[:started] = true
-  #     method.call(*args) do |response|
-  #       responses << response
-  #       Mtx.condition.signal if response.finished == true
-  #     end
-  #   end
-  # end
-
-  # Mtx.mutex.synchronize do
-  #   p Thread.current
-  #   Mtx.condition.wait(Mtx.mutex) if !thread[:started]
-  #   yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
-  # end
-
-  # condition = Mon.mutex.new_cond
-  # method.call(*args) do |response|
-  #   responses << response
-  #   condition.signal if response.finished == true
-  # end
-
-  # Mon.mutex.synchronize do
-  #   condition.wait
-  # end
 end
 
 def read_abi(name)
@@ -127,9 +76,11 @@ end
 
 def generate_keys
   client = make_client
+  result = nil
   callLibraryMethodSync(client.crypto.method(:generate_random_sign_keys)) do |response|
-    return response.first.result
+    result = response.first.result
   end
+  result
 end
 
 def abiEncodeMessage(name_abi: '', name_tvc: nil, address: nil, public_key: nil, secret_key: nil, call_set_function_name: nil, call_set_header: nil, call_set_input: nil)
@@ -160,18 +111,18 @@ def abiEncodeMessage(name_abi: '', name_tvc: nil, address: nil, public_key: nil,
   end
 
   payload = {abi: abi, address: address, deploy_set: deploy_set, call_set: call_set, signer: signer, processing_try_index: nil}
+  result = nil
   callLibraryMethodSync(@client.abi.method(:encode_message), payload) do |response|
-    return response.first.result
+    result = response.first.result
   end
+  result
 end
 
 def get_grams_from_giver_sync(client: nil, account_address: nil, value: 10_000_000_000, &block)
   test_address = "0:9cb911799a34982a27cb577ce694843f60b9e09fcba4f7fd7e040730acd59baa"
   server_address = client.context_config[:network][:server_address]
   raise 'Please, set client network for Giver work !' unless server_address
-  if (env['use_giver'] || env["giver_abi_name"]) == 'GiverNodeSE'
-    get_grams_from_giver_sync_node_se(client, account_address || test_address, value, &block)
-  elsif (env['use_giver'] || env["giver_abi_name"]) == 'GiverNodeSE_v2'
+  if env['use_giver'] || env["giver_abi_name"]
     get_grams_from_giver_sync_node_se_v2(client, account_address || test_address, value, &block)
   elsif server_address[/net\.ton\.dev/]
     get_grams_from_giver_sync_net_dev(client, account_address || test_address, value, &block)
@@ -200,26 +151,6 @@ def get_grams_from_giver_sync(client: nil, account_address: nil, value: 10_000_0
     end
     return true if tokens_received
   end
-end
-
-def get_grams_from_giver_sync_node_se(client, account_address, value, &block)
-  p 'Giver SE start'
-  wallet_address = env["giver_address"] || "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94"
-  abi_name = env["giver_abi_name"]
-  abi = { type: 'Serialized', value: read_abi(abi_name) }
-  signer = {type: 'None'}
-  call_set = {function_name: 'sendGrams', header: nil, input: {dest: account_address, amount: env['giver_amount'].to_i || value}}
-  p call_set
-  params_of_encoded_message = {abi: abi, address: wallet_address, call_set: call_set, deploy_set: nil, signer: signer, processing_try_index: nil}
-  send_paylod = {message_encode_params: params_of_encoded_message, send_events: false}
-  response = nil
-  callLibraryMethodSync(client.processing.method(:process_message), send_paylod) do |resp|
-    response = resp
-  end
-  raise response.first.error if response.first&.error
-  raise response.last.error if response.last&.error
-  p 'Giver SE - finished'
-  block.call(response) if block
 end
 
 def get_grams_from_giver_sync_node_se_v2(client, account_address, value, &block)
