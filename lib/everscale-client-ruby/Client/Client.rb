@@ -1,4 +1,5 @@
 module TonClient
+
   class Client
     include CommonInstanceHelpers
 
@@ -8,8 +9,6 @@ module TonClient
 
     def initialize(context_config: {})
       @context_config = context_config
-      # @request_id = Concurrent::AtomicFixnum.new(1)
-      # @requests = Concurrent::Hash.new
       @request_id = RequestId.new
       @requests = Requests.new
       @monitor = Monitor.new
