@@ -39,15 +39,54 @@ end
 #   yield(responses) if block_given?
 # end
 
-def callLibraryMethodSync(method, *args)
-  responses = Concurrent::Array.new
-  queue = Queue.new
-  method.call(*args) do |response|
-    responses << response
-    queue.push 1 if response.finished == true
+# @mutex = Mutex.new
+# @condition = ConditionVariable.new
+
+module Mtx
+  @@mutex = Mutex.new
+  @@condition = ConditionVariable.new
+
+  def self.mutex
+    @@mutex
   end
-  queue.pop
-  yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+
+  def self.condition
+    @@condition
+  end
+end
+
+def callLibraryMethodSync(method, *args)
+  # responses = Concurrent::Array.new
+  # queue = Queue.new
+  # p "callLibraryMethodSync CALL"
+  # method.call(*args) do |response|
+  #   responses << response
+  #   queue.push :update if response.finished == true
+  # end
+  # p "callLibraryMethodSync pop #{Thread.current}"
+  # queue.pop
+  # p "callLibraryMethodSync AFTER pop"
+  # yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+
+
+
+  responses = Concurrent::Array.new
+  # mutex = Mutex.new
+  # condition = ConditionVariable.new
+  thread = Thread.new do
+    Mtx.mutex.synchronize do
+      Thread.current[:started] = true
+      method.call(*args) do |response|
+        responses << response
+        Mtx.condition.signal if response.finished == true
+      end
+    end
+  end
+
+  Mtx.mutex.synchronize do
+    Mtx.condition.wait(Mtx.mutex) if !thread[:started]
+    yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+  end
 end
 
 def read_abi(name)
