@@ -55,38 +55,61 @@ module Mtx
   end
 end
 
+module Mon
+  @@mutex = Monitor.new
+  @@condition = @@mutex.new_cond
+
+  def self.mutex
+    @@mutex
+  end
+
+  def self.condition
+    @@condition
+  end
+end
+
 def callLibraryMethodSync(method, *args)
-  # responses = Concurrent::Array.new
-  # queue = Queue.new
-  # p "callLibraryMethodSync CALL"
-  # method.call(*args) do |response|
-  #   responses << response
-  #   queue.push :update if response.finished == true
-  # end
-  # p "callLibraryMethodSync pop #{Thread.current}"
-  # queue.pop
-  # p "callLibraryMethodSync AFTER pop"
-  # yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
-
-
-
   responses = Concurrent::Array.new
+  queue = Queue.new
+  p "callLibraryMethodSync CALL"
+  method.call(*args) do |response|
+    responses << response
+    queue.push :update if response.finished == true
+  end
+  p "callLibraryMethodSync pop #{Thread.current}"
+  queue.pop
+  p "callLibraryMethodSync AFTER pop"
+  yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+
+
+
   # mutex = Mutex.new
   # condition = ConditionVariable.new
-  thread = Thread.new do
-    Mtx.mutex.synchronize do
-      Thread.current[:started] = true
-      method.call(*args) do |response|
-        responses << response
-        Mtx.condition.signal if response.finished == true
-      end
-    end
-  end
+  # thread = Thread.new do
+  #   Mtx.mutex.synchronize do
+  #     Thread.current[:started] = true
+  #     method.call(*args) do |response|
+  #       responses << response
+  #       Mtx.condition.signal if response.finished == true
+  #     end
+  #   end
+  # end
 
-  Mtx.mutex.synchronize do
-    Mtx.condition.wait(Mtx.mutex) if !thread[:started]
-    yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
-  end
+  # Mtx.mutex.synchronize do
+  #   p Thread.current
+  #   Mtx.condition.wait(Mtx.mutex) if !thread[:started]
+  #   yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+  # end
+
+  # condition = Mon.mutex.new_cond
+  # method.call(*args) do |response|
+  #   responses << response
+  #   condition.signal if response.finished == true
+  # end
+
+  # Mon.mutex.synchronize do
+  #   condition.wait
+  # end
 end
 
 def read_abi(name)

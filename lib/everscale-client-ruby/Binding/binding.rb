@@ -165,9 +165,10 @@ module TonClient
       return response['error'] if response['error']
     end
 
-    @@queue = Queue.new
+    @@queue = Monitor.new
     # block = { |response| }
     def self.requestLibrary(context: nil, request_id: nil, requests: nil, sm: nil, method_name: '', payload: {}, &block)
+      @@queue.synchronize do
       raise 'context not found' unless context
       raise 'method_name is empty' if method_name.empty?
       # raise "context: #{context}. request_id not is nil. Client dealloc." unless request_id
@@ -183,23 +184,37 @@ module TonClient
       requests[request_id] = block
       p "start #{request_id}"
       tc_request(context, method_name_string, payload_string, request_id) do |request_id, string_data, response_type, finished|
+        @@queue.synchronize do
         p "tc_request #{request_id}"
         p "Thread.current #{Thread.current}"
-        @@queue.enq(proc do |request_id, string_data, response_type, finished, block|
-          p "proc #{request_id}"
-          begin
-            request = requests[request_id]
-            if request
-              request.call(Response.new(request_id, string_data, response_type, finished))
-              requests.delete(request_id) if finished
-            end
-          rescue => ex
-            block.call(Response.new(request_id, ex.message, -1, true)) if block
+
+        begin
+          request = requests[request_id]
+          if request
+            request.call(Response.new(request_id, string_data, response_type, finished))
+            requests.delete(request_id) if finished
           end
-        end)
-        p "pop #{request_id}"
-        @@queue.pop.call(request_id, string_data, response_type, finished, &block) if block
-        p "afterpop #{request_id}"
+        rescue => ex
+          block.call(Response.new(request_id, ex.message, -1, true)) if block
+        end
+        end
+
+        # @@queue.enq(proc do |request_id, string_data, response_type, finished, block|
+        #   p "proc #{request_id}"
+        #   begin
+        #     request = requests[request_id]
+        #     if request
+        #       request.call(Response.new(request_id, string_data, response_type, finished))
+        #       requests.delete(request_id) if finished
+        #     end
+        #   rescue => ex
+        #     block.call(Response.new(request_id, ex.message, -1, true)) if block
+        #   end
+        # end)
+        # p "pop #{request_id}"
+        # @@queue.pop.call(request_id, string_data, response_type, finished, &block) if block
+        # p "afterpop #{request_id}"
+      end
       end
       p "exit #{request_id}"
     rescue => ex
