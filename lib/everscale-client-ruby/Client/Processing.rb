@@ -22,8 +22,14 @@ module TonClient
     # RESPONSE: ResultOfSendMessage
     # shard_block_id: String -     #     # The last generated shard block of the message destination account before the message was sent.    #     # This block id must be used as a parameter of the`wait_for_transaction`.
     # sending_endpoints: Array -     #     # The list of endpoints to which the message was sent.    #     # This list id must be used as a parameter of the`wait_for_transaction`.
+    # Async
     def send_message(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def send_message_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfWaitForTransaction
@@ -40,8 +46,14 @@ module TonClient
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
+    # Async
     def wait_for_transaction(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def wait_for_transaction_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfProcessMessage
@@ -52,8 +64,14 @@ module TonClient
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # fees: TransactionFees -     #     # Transaction fees
+    # Async
     def process_message(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def process_message_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
   end

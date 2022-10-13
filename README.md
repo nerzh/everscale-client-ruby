@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.37.2-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.38.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -172,12 +172,12 @@ end
 
 
 - #### NetworkConfig
-   **This field is deprecated, but left for backward-compatibility.** DApp Server public address.
+   **This field is deprecated, but left for backward-compatibility.** Evernode endpoint.
   - server_address: String<Optional>
 
-   List of DApp Server addresses.
+   List of Evernode endpoints.
    Any correct URL format can be specified, including IP addresses. This parameter is prevailing over `server_address`.
-   Check the full list of [supported network endpoints](../ton-os-api/networks.md).
+   Check the full list of [supported network endpoints](https://docs.everos.dev/ever-sdk/reference/ever-os-api/networks).
   - endpoints: Array<Optional>
 
    Deprecated.
@@ -242,9 +242,7 @@ end
    Must be specified in milliseconds. Default is 5000 (5 sec).
   - next_remp_status_timeout: Number<Optional>
 
-   Access key to GraphQL API.
-   You can specify here Basic Auth secret (Evercloud project secret) in hex stringor serialized JWT in base64 string.
-   Will be passed on as Authorization: Basic ... or Authorization: Bearer ... header.
+   Access key to GraphQL API (Project secret)
   - access_key: String<Optional>
 
 
@@ -2545,6 +2543,8 @@ end
   - case GraphqlWebsocketInitError = 613
 
   - case NetworkModuleResumed = 614
+
+  - case Unauthorized = 615
 
 
 - #### SortDirection

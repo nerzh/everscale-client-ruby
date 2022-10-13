@@ -17,32 +17,56 @@ module TonClient
     # boc: String -     #     # BOC encoded as base64
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
+    # Async
     def parse_message(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
+    # Sync
+    def parse_message_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
     # INPUT: ParamsOfParse
     # boc: String -     #     # BOC encoded as base64
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
+    # Async
     def parse_transaction(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
-    # INPUT: ParamsOfParse
-    # boc: String -     #     # BOC encoded as base64
-    # RESPONSE: ResultOfParse
-    # parsed: Value -     #     # JSON containing parsed BOC
-    def parse_account(payload, &block)
-      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    # Sync
+    def parse_transaction_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfParse
     # boc: String -     #     # BOC encoded as base64
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
+    # Async
+    def parse_account(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def parse_account_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
+    # INPUT: ParamsOfParse
+    # boc: String -     #     # BOC encoded as base64
+    # RESPONSE: ResultOfParse
+    # parsed: Value -     #     # JSON containing parsed BOC
+    # Async
     def parse_block(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def parse_block_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfParseShardstate
@@ -51,48 +75,84 @@ module TonClient
     # workchain_id: Number -     #     # Workchain shardstate belongs to
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC
+    # Async
     def parse_shardstate(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def parse_shardstate_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfGetBlockchainConfig
     # block_boc: String -     #     # Key block BOC or zerostate BOC encoded as base64
     # RESPONSE: ResultOfGetBlockchainConfig
     # config_boc: String -     #     # Blockchain config BOC encoded as base64
+    # Async
     def get_blockchain_config(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_blockchain_config_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfGetBocHash
     # boc: String -     #     # BOC encoded as base64 or BOC handle
     # RESPONSE: ResultOfGetBocHash
     # hash: String -     #     # BOC root hash encoded with hex
+    # Async
     def get_boc_hash(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_boc_hash_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfGetBocDepth
     # boc: String -     #     # BOC encoded as base64 or BOC handle
     # RESPONSE: ResultOfGetBocDepth
     # depth: Number -     #     # BOC root cell depth
+    # Async
     def get_boc_depth(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_boc_depth_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfGetCodeFromTvc
     # tvc: String -     #     # Contract TVC image or image BOC handle
     # RESPONSE: ResultOfGetCodeFromTvc
     # code: String -     #     # Contract code encoded as base64
+    # Async
     def get_code_from_tvc(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_code_from_tvc_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfBocCacheGet
     # boc_ref: String -     #     # Reference to the cached BOC
     # RESPONSE: ResultOfBocCacheGet
     # boc: String<Optional> -     #     # BOC encoded as base64.
+    # Async
     def cache_get(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def cache_get_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfBocCacheSet
@@ -100,15 +160,27 @@ module TonClient
     # cache_type: BocCacheType -     #     # Cache type
     # RESPONSE: ResultOfBocCacheSet
     # boc_ref: String -     #     # Reference to the cached BOC
+    # Async
     def cache_set(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def cache_set_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfBocCacheUnpin
     # pin: String -     #     # Pinned name
     # boc_ref: String<Optional> -     #     # Reference to the cached BOC.    #     # If it is provided then only referenced BOC is unpinned
+    # Async
     def cache_unpin(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def cache_unpin_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfEncodeBoc
@@ -116,8 +188,14 @@ module TonClient
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
     # RESPONSE: ResultOfEncodeBoc
     # boc: String -     #     # Encoded cell BOC or BOC cache key.
+    # Async
     def encode_boc(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def encode_boc_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfGetCodeSalt
@@ -125,8 +203,14 @@ module TonClient
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
     # RESPONSE: ResultOfGetCodeSalt
     # salt: String<Optional> -     #     # Contract code salt if present.    #     # BOC encoded as base64 or BOC handle
+    # Async
     def get_code_salt(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_code_salt_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfSetCodeSalt
@@ -135,8 +219,14 @@ module TonClient
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
     # RESPONSE: ResultOfSetCodeSalt
     # code: String -     #     # Contract code with salt set.    #     # BOC encoded as base64 or BOC handle
+    # Async
     def set_code_salt(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def set_code_salt_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfDecodeTvc
@@ -154,8 +244,14 @@ module TonClient
     # tock: Boolean<Optional> -     #     # `special.tock` field.    #     # Specifies the contract ability to handle tock transactions
     # split_depth: Number<Optional> -     #     # Is present and non-zero only in instances of large smart contracts
     # compiler_version: String<Optional> -     #     # Compiler version, for example 'sol 0.49.0'
+    # Async
     def decode_tvc(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def decode_tvc_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfEncodeTvc
@@ -168,8 +264,14 @@ module TonClient
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
     # RESPONSE: ResultOfEncodeTvc
     # tvc: String -     #     # Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+    # Async
     def encode_tvc(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def encode_tvc_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfEncodeExternalInMessage
@@ -181,16 +283,28 @@ module TonClient
     # RESPONSE: ResultOfEncodeExternalInMessage
     # message: String -     #     # Message BOC encoded with `base64`.
     # message_id: String -     #     # Message id.
+    # Async
     def encode_external_in_message(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def encode_external_in_message_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfGetCompilerVersion
     # code: String -     #     # Contract code BOC encoded as base64 or code BOC handle
     # RESPONSE: ResultOfGetCompilerVersion
     # version: String<Optional> -     #     # Compiler version, for example 'sol 0.49.0'
+    # Async
     def get_compiler_version(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_compiler_version_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
   end

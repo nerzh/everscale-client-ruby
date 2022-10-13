@@ -27,8 +27,14 @@ module TonClient
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # account: String -     #     # Updated account state BOC.    #     # Encoded as `base64`
     # fees: TransactionFees -     #     # Transaction fees
+    # Async
     def run_executor(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def run_executor_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfRunTvm
@@ -42,8 +48,14 @@ module TonClient
     # out_messages: Array -     #     # List of output messages' BOCs.    #     # Encoded as `base64`
     # decoded: DecodedOutput<Optional> -     #     # Optional decoded message bodies according to the optional `abi` parameter.
     # account: String -     #     # Updated account state BOC.    #     # Encoded as `base64`. Attention! Only `account_state.storage.state.data` part of the BOC is updated.
+    # Async
     def run_tvm(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def run_tvm_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
     # INPUT: ParamsOfRunGet
@@ -55,8 +67,14 @@ module TonClient
     # This may happen, for example, when elector contract contains too many participants
     # RESPONSE: ResultOfRunGet
     # output: Value -     #     # Values returned by get-method on stack
+    # Async
     def run_get(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def run_get_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
   end

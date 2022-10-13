@@ -248,7 +248,8 @@ cd everscale-client-ruby\n
     content << "#{TAB}#{TAB}#{TAB}@monitor = Monitor.new\n"
     content << "#{TAB}#{TAB}#{TAB}config = TonBinding.make_string(context_config.to_json)\n"
     content << "#{TAB}#{TAB}#{TAB}context_ptr = TonBinding.tc_create_context(config)\n"
-    content << "#{TAB}#{TAB}#{TAB}@context = TonBinding.read_string_to_hash(context_ptr)['result']\n"
+    content << "#{TAB}#{TAB}#{TAB}context_response = TonBinding.read_string_data_ref(context_ptr)\n"
+    content << "#{TAB}#{TAB}#{TAB}@context = TonBinding.read_string_to_hash(context_response)['result']\n"
     content << "#{TAB}#{TAB}#{TAB}ObjectSpace.define_finalizer(self, self.class.finalize(@context))\n"
     content << "#{TAB}#{TAB}end\n\n"
     content << "#{TAB}#{TAB}def self.finalize(ctx)\n"
@@ -298,6 +299,7 @@ cd everscale-client-ruby\n
 
   private def gen_function(function, types)
     content = getFunctionComment(function, types)
+    content << "#{TAB}#{TAB}# Async\n"
     content << "#{TAB}#{TAB}def #{function.name}"
     if function.arguments.empty?
       content << "(&block)\n"
@@ -307,6 +309,18 @@ cd everscale-client-ruby\n
       payload = "payload"
     end
     content << "#{TAB}#{TAB}#{TAB}TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: #{payload}, &block)\n"
+    content << "#{TAB}#{TAB}end\n\n"
+
+    content << "#{TAB}#{TAB}# Sync\n"
+    content << "#{TAB}#{TAB}def #{function.name}_sync"
+    if function.arguments.empty?
+      content << "()\n"
+      payload = "{}"
+    else
+      content << "(payload)\n"
+      payload = "payload"
+    end
+    content << "#{TAB}#{TAB}#{TAB}TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: #{payload})\n"
     content << "#{TAB}#{TAB}end\n\n"
 
     content

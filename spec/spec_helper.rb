@@ -1,6 +1,13 @@
 require 'everscale-client-ruby' # and any other gems you need
-
+require 'fiddle'
+require 'fiddle/import'
 include CommonInstanceHelpers
+
+# module A
+#   extend Fiddle::Importer
+#
+#   S = struct([])
+# end
 
 RSpec.configure do |config|
   config.full_backtrace = true
@@ -8,6 +15,8 @@ RSpec.configure do |config|
 end
 
 def project_root
+  # Fiddle::RUBY_FREE
+  # a = A::S.malloc()
   if defined?(Rails)
     return Rails.root.to_s
   end
@@ -25,7 +34,7 @@ end
 
 def make_client
   TonClient.configure { |config| config.ffi_lib(env['spec_ffi']) }
-  TonClient.create(config: {network: {server_address: env['server_address'] || "net.ton.dev"}})
+  TonClient.create(config: {network: {endpoints: [env['server_address'] || "net.ton.dev"]}})
 end
 
 # def requestLibrarySync(context: 1, method_name: '', payload: {})
@@ -120,7 +129,7 @@ end
 
 def get_grams_from_giver_sync(client: nil, account_address: nil, value: 10_000_000_000, &block)
   test_address = "0:9cb911799a34982a27cb577ce694843f60b9e09fcba4f7fd7e040730acd59baa"
-  server_address = client.context_config[:network][:server_address]
+  server_address = client.context_config[:network][:endpoints]
   raise 'Please, set client network for Giver work !' unless server_address
   if env['use_giver'] || env["giver_abi_name"]
     get_grams_from_giver_sync_node_se_v2(client, account_address || test_address, value, &block)
