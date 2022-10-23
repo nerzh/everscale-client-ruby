@@ -85,7 +85,7 @@ payload = {composite: '17ED48941A08F981'}
 
 # Sync
 response = client.crypto.factorize_sync(payload)
-p response
+p response['result']['factors']
 
 # Async
 client.crypto.factorize(payload) do |response|
