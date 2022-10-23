@@ -36,7 +36,7 @@ client = TonClient.create(config: {network: {endpoints: ["https://eri01.net.ever
 
 # All methods are asynchronous
 
-# example: call method for Crypto module
+## example 1: call method for Crypto module
 payload = {composite: '17ED48941A08F981'}
 
 # Sync
@@ -46,6 +46,23 @@ p response['result']['factors']
 # Async
 client.crypto.factorize(payload) do |response|
   p response.result['factors']
+end
+
+
+## example 2: parse message from boc base64 encoded
+payload = {boc: "te6ccgEBAQEAWAAAq2n+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE/zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzSsG8DgAAAAAjuOu9NAL7BxYpA"}
+
+# Sync
+response = client.boc.parse_message_sync(payload)
+p response['result']['parsed']['id']
+p response['result']['parsed']['src']
+p response['result']['parsed']['dst']
+
+# Async
+client.boc.parse_message_sync(payload) do |response|
+  p response.result['parsed']['id']
+  p response.result['parsed']['src']
+  p response.result['parsed']['dst']
 end
 
 # e.g. ...
