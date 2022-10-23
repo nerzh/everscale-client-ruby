@@ -38,6 +38,12 @@ client = TonClient.create(config: {network: {endpoints: ["https://eri01.net.ever
 
 # example: call method for Crypto module
 payload = {composite: '17ED48941A08F981'}
+
+# Sync
+response = client.crypto.factorize_sync(payload)
+p response
+
+# Async
 client.crypto.factorize(payload) do |response|
   p response.result['factors']
 end
