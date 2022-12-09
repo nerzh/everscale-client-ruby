@@ -128,6 +128,8 @@ module TonClient
     # abi: Value -     #     # contract ABI
     # message: String -     #     # Message BOC
     # allow_partial: Boolean<Optional> -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    # function_name: String<Optional> -     #     # Function name or function id if is known in advance
+    # data_layout: DataLayout<Optional> - 
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
     # name: String -     #     # Function or event name.
@@ -148,6 +150,8 @@ module TonClient
     # body: String -     #     # Message body BOC encoded in `base64`.
     # is_internal: Boolean -     #     # True if the body belongs to the internal message.
     # allow_partial: Boolean<Optional> -     #     # Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    # function_name: String<Optional> -     #     # Function name or function id if is known in advance
+    # data_layout: DataLayout<Optional> - 
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType -     #     # Type of the message body content.
     # name: String -     #     # Function or event name.

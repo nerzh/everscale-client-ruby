@@ -71,7 +71,7 @@ module TonClient
 
     # INPUT: ParamsOfParseShardstate
     # boc: String -     #     # BOC encoded as base64
-    # id: String -     #     # Shardstate identificator
+    # id: String -     #     # Shardstate identifier
     # workchain_id: Number -     #     # Workchain shardstate belongs to
     # RESPONSE: ResultOfParse
     # parsed: Value -     #     # JSON containing parsed BOC

@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.38.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.39.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -162,7 +162,7 @@ end
 - #### NetworkQueriesProtocol
    Each GraphQL query uses separate HTTP request.  - case HTTP = 
 
-   All GraphQL queries will be served using single web socket connection.  - case WS = 
+   All GraphQL queries will be served using single web socket connection. SDK is tested to reliably handle 5000 parallel network requests (sending and processing messages, quering and awaiting blockchain data)  - case WS = 
 
 
 - #### AppRequestResult
@@ -236,12 +236,12 @@ end
   - sending_endpoint_count: Number<Optional>
 
    Frequency of sync latency detection.
-   Library periodically checks the current endpoint for blockchain data syncronization latency.
+   Library periodically checks the current endpoint for blockchain data synchronization latency.
    If the latency (time-lag) is less then `NetworkConfig.max_latency`then library selects another endpoint.
    Must be specified in milliseconds. Default is 60000 (1 min).
   - latency_detection_interval: Number<Optional>
 
-   Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data synchronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
+   Maximum value for the endpoint's blockchain data synchronization latency (time-lag). Library periodically checks the current endpoint for blockchain data synchronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
    Must be specified in milliseconds. Default is 60000 (1 min).
   - max_latency: Number<Optional>
 
@@ -256,12 +256,12 @@ end
   - queries_protocol: NetworkQueriesProtocol<Optional>
 
    UNSTABLE.
-   First REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+   First REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.
    Must be specified in milliseconds. Default is 1000 (1 sec).
   - first_remp_status_timeout: Number<Optional>
 
    UNSTABLE.
-   Subsequent REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+   Subsequent REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.
    Must be specified in milliseconds. Default is 5000 (5 sec).
   - next_remp_status_timeout: Number<Optional>
 
@@ -1265,6 +1265,12 @@ end
   - case EncodingParams = EncodingParams
 
 
+- #### DataLayout
+   Decode message body as function input parameters.  - case Input = 
+
+   Decode message body as function output.  - case Output = 
+
+
 - #### Abi
   - type: Abi
 
@@ -1593,6 +1599,11 @@ end
    Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
   - allow_partial: Boolean<Optional>
 
+   Function name or function id if is known in advance
+  - function_name: String<Optional>
+
+  - data_layout: DataLayout<Optional>
+
 
 - #### DecodedMessageBody
    Type of the message body content.
@@ -1620,6 +1631,11 @@ end
 
    Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
   - allow_partial: Boolean<Optional>
+
+   Function name or function id if is known in advance
+  - function_name: String<Optional>
+
+  - data_layout: DataLayout<Optional>
 
 
 - #### ParamsOfEncodeAccount
@@ -1830,7 +1846,7 @@ end
    BOC encoded as base64
   - boc: String
 
-   Shardstate identificator
+   Shardstate identifier
   - id: String
 
    Workchain shardstate belongs to
@@ -2569,6 +2585,10 @@ end
 
   - case Unauthorized = 615
 
+  - case QueryTransactionTreeTimeout = 616
+
+  - case GraphqlConnectionError = 617
+
 
 - #### SortDirection
   - case ASC = 
@@ -2825,8 +2845,13 @@ end
 
    Timeout used to limit waiting time for the missing messages and transaction.
    If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
-        Default value is 60000 (1 min).
+        Default value is 60000 (1 min). If `timeout` is set to 0 then function will wait infinitelyuntil the whole transaction tree is executed
   - timeout: Number<Optional>
+
+   Maximum transaction count to wait.
+   If transaction tree contains more transaction then this parameter then only first `transaction_max_count` transaction are awaited and returned.
+        Default value is 50. If `transaction_max_count` is set to 0 then no limitation ontransaction count is used and all transaction are returned.
+  - transaction_max_count: Number<Optional>
 
 
 - #### ResultOfQueryTransactionTree
@@ -3906,6 +3931,8 @@ end
     # abi: Value - contract ABI
     # message: String - Message BOC
     # allow_partial: Boolean<Optional> - Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    # function_name: String<Optional> - Function name or function id if is known in advance
+    # data_layout: DataLayout<Optional> - 
 
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType - Type of the message body content.
@@ -3921,6 +3948,8 @@ end
     # body: String - Message body BOC encoded in `base64`.
     # is_internal: Boolean - True if the body belongs to the internal message.
     # allow_partial: Boolean<Optional> - Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    # function_name: String<Optional> - Function name or function id if is known in advance
+    # data_layout: DataLayout<Optional> - 
 
     # RESPONSE: DecodedMessageBody
     # body_type: MessageBodyType - Type of the message body content.
@@ -4074,7 +4103,7 @@ end
     def parse_shardstate(payload, &block)
     # INPUT: ParamsOfParseShardstate
     # boc: String - BOC encoded as base64
-    # id: String - Shardstate identificator
+    # id: String - Shardstate identifier
     # workchain_id: Number - Workchain shardstate belongs to
 
     # RESPONSE: ResultOfParse
@@ -4356,7 +4385,7 @@ end
 ```ruby
     # Emulates all the phases of contract execution locally    # Performs all the phases of contract execution on Transaction Executor -the same component that is used on Validator Nodes.
     # Can be used for contract debugging, to find out the reason why a message was not delivered successfully.
-    # Validators throw away the failed external inbound messages (if they failed bedore `ACCEPT`) in the real network.
+    # Validators throw away the failed external inbound messages (if they failed before `ACCEPT`) in the real network.
     # This is why these messages are impossible to debug in the real network.
     # With the help of run_executor you can do that. In fact, `process_message` functionperforms local check with `run_executor` if there was no transaction as a result of processingand returns the error, if there is one.
     # Another use case to use `run_executor` is to estimate fees for message execution.
@@ -4521,7 +4550,7 @@ end
 ```
 ```ruby
     # Creates a subscription    # The subscription is a persistent communication channel betweenclient and Everscale Network.
-    # ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network breakes down.
+    # ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network breaks down.
     # In this situation the library attempts to reconnect to the network.
     # This reconnection sequence can take significant time.
     # All of this time the client is disconnected from the network.
@@ -4597,7 +4626,7 @@ end
     # If the chain of transactions execution is in progress while the function is running,it will wait for the next transactions to appear until the full tree or more than 50 transactionsare received.
     # All the retrieved messages and transactions are includedinto `result.messages` and `result.transactions` respectively.
     # Function reads transactions layer by layer, by pages of 20 transactions.
-    # The retrieval prosess goes like this:
+    # The retrieval process goes like this:
     # Let's assume we have an infinite chain of transactions and each transaction generates 5 messages.
     # 1. Retrieve 1st message (input parameter) and corresponding transaction - put it into result.
     # It is the first level of the tree of transactions - its root.
@@ -4615,7 +4644,9 @@ end
     # in_msg: String - Input message id.
     # abi_registry: Array<Optional> - List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
     # timeout: Number<Optional> - Timeout used to limit waiting time for the missing messages and transaction. If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
- # Default value is 60000 (1 min).
+ # Default value is 60000 (1 min). If `timeout` is set to 0 then function will wait infinitelyuntil the whole transaction tree is executed
+    # transaction_max_count: Number<Optional> - Maximum transaction count to wait. If transaction tree contains more transaction then this parameter then only first `transaction_max_count` transaction are awaited and returned.
+ # Default value is 50. If `transaction_max_count` is set to 0 then no limitation ontransaction count is used and all transaction are returned.
 
     # RESPONSE: ResultOfQueryTransactionTree
     # messages: Array - Messages.
@@ -4651,7 +4682,7 @@ end
     # handle: Number - Iterator handle. Must be removed using `remove_iterator`when it is no more needed for the application.
 ```
 ```ruby
-    # Resumes block iterator.    # The iterator stays exactly at the same position where the `resume_state` was catched.
+    # Resumes block iterator.    # The iterator stays exactly at the same position where the `resume_state` was caught.
     # Application should call the `remove_iterator` when iterator is no longer required.
     def resume_block_iterator(payload, &block)
     # INPUT: ParamsOfResumeBlockIterator

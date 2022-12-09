@@ -1,4 +1,4 @@
 module TonClient
-  VERSION = "1.1.61"
+  VERSION = "1.1.62"
 end
 

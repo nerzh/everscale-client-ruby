@@ -229,7 +229,9 @@ module TonClient
     # in_msg: String -     #     # Input message id.
     # abi_registry: Array<Optional> -     #     # List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
     # timeout: Number<Optional> -     #     # Timeout used to limit waiting time for the missing messages and transaction.    #     # If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
-    # Default value is 60000 (1 min).
+    # Default value is 60000 (1 min). If `timeout` is set to 0 then function will wait infinitelyuntil the whole transaction tree is executed
+    # transaction_max_count: Number<Optional> -     #     # Maximum transaction count to wait.    #     # If transaction tree contains more transaction then this parameter then only first `transaction_max_count` transaction are awaited and returned.
+    # Default value is 50. If `transaction_max_count` is set to 0 then no limitation ontransaction count is used and all transaction are returned.
     # RESPONSE: ResultOfQueryTransactionTree
     # messages: Array -     #     # Messages.
     # transactions: Array -     #     # Transactions.
