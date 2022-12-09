@@ -58,8 +58,9 @@ gem install everscale-client-ruby
 Install TON-SDK
 ```bash
 everscale-client-ruby setup
-# result - path to dylib file for everscale-client-ruby configuration
 ```
+
+result - path to dylib file for everscale-client-ruby configuration
 
 ### Manual build FreeTON SDK
 0. Install Rust to your OS

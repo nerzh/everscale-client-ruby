@@ -1,13 +1,5 @@
 require 'everscale-client-ruby' # and any other gems you need
-require 'fiddle'
-require 'fiddle/import'
 include CommonInstanceHelpers
-
-# module A
-#   extend Fiddle::Importer
-#
-#   S = struct([])
-# end
 
 RSpec.configure do |config|
   config.full_backtrace = true
@@ -15,8 +7,6 @@ RSpec.configure do |config|
 end
 
 def project_root
-  # Fiddle::RUBY_FREE
-  # a = A::S.malloc()
   if defined?(Rails)
     return Rails.root.to_s
   end
@@ -37,37 +27,8 @@ def make_client
   TonClient.create(config: {network: {endpoints: [env['server_address'] || "net.ton.dev"]}})
 end
 
-# def requestLibrarySync(context: 1, method_name: '', payload: {})
-#   responses = []
-#   queue = Queue.new
-#   TonClient::TonBinding.requestLibrary(context: context, method_name: method_name, payload: payload) do |response|
-#     responses << response
-#     queue.push 1 if response.finished == true
-#   end
-#   queue.pop
-#   yield(responses) if block_given?
-# end
-
-# @mutex = Mutex.new
-# @condition = ConditionVariable.new
-
-def callLibraryMethodSync(method, *args)
-  responses = []
-  mutex = Monitor.new
-  condition = mutex.new_cond
-
-  method.call(*args) do |response|
-    mutex.synchronize do
-      responses << response
-      condition.signal if response.finished == true
-    end
-  end
-
-  mutex.synchronize do
-    condition.wait
-  end
-
-  yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+def callLibraryMethodSync(method, *args, &block)
+  TonClient.callLibraryMethodSync(method, *args, &block)
 end
 
 def read_abi(name)

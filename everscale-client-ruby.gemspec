@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'This is gem everscale-client-ruby'
   spec.description   = 'Gem Ton Client Ruby for all ruby projects'
-  spec.homepage      = 'https://github.com/bytehubio/everscale-client-ruby'
+  spec.homepage      = 'https://github.com/nerzh/everscale-client-ruby'
   spec.license       = 'MIT'
 
   spec.files         = Dir['lib/**/*']
