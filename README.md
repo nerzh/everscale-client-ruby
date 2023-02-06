@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.39.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.40.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -157,6 +157,8 @@ end
   - case InvalidHandle = 34
 
   - case LocalStorageError = 35
+
+  - case InvalidData = 36
 
 # Network protocol used to perform GraphQL queries.
 - #### NetworkQueriesProtocol
@@ -1790,6 +1792,22 @@ end
 - #### ResultOfCalcFunctionId
    Contract function ID
   - function_id: Number
+
+
+- #### ParamsOfGetSignatureData
+   Contract ABI used to decode.
+  - abi: Value
+
+   Message BOC encoded in `base64`.
+  - message: String
+
+
+- #### ResultOfGetSignatureData
+   Signature from the message in `hex`.
+  - signature: String
+
+   Hash to verify the signature in `base64`.
+  - hash: String
 
 
 - #### BocCacheType
@@ -4056,6 +4074,17 @@ end
 
     # RESPONSE: ResultOfCalcFunctionId
     # function_id: Number - Contract function ID
+```
+```ruby
+    # Extracts signature from message body and calculates hash to verify the signature
+    def get_signature_data(payload, &block)
+    # INPUT: ParamsOfGetSignatureData
+    # abi: Value - Contract ABI used to decode.
+    # message: String - Message BOC encoded in `base64`.
+
+    # RESPONSE: ResultOfGetSignatureData
+    # signature: String - Signature from the message in `hex`.
+    # hash: String - Hash to verify the signature in `base64`.
 ```
 </details>
 

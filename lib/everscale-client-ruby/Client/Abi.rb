@@ -302,6 +302,22 @@ module TonClient
       TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
+    # INPUT: ParamsOfGetSignatureData
+    # abi: Value -     #     # Contract ABI used to decode.
+    # message: String -     #     # Message BOC encoded in `base64`.
+    # RESPONSE: ResultOfGetSignatureData
+    # signature: String -     #     # Signature from the message in `hex`.
+    # hash: String -     #     # Hash to verify the signature in `base64`.
+    # Async
+    def get_signature_data(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_signature_data_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
   end
 end
 
