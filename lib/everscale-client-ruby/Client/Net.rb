@@ -368,6 +368,18 @@ module TonClient
       TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
+    # RESPONSE: ResultOfGetSignatureId
+    # signature_id: Number<Optional> -     #     # Signature ID for configured network if it should be used in messages signature
+    # Async
+    def get_signature_id(&block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: {}, &block)
+    end
+
+    # Sync
+    def get_signature_id_sync()
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: {})
+    end
+
   end
 end
 

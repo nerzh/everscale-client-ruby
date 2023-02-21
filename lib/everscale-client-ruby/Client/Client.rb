@@ -88,6 +88,7 @@ module TonClient
     end
 
     # RESPONSE: ClientConfig
+    # binding: BindingConfig<Optional> - 
     # network: NetworkConfig<Optional> - 
     # crypto: CryptoConfig<Optional> - 
     # abi: Value - 

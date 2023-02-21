@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.40.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.41.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -182,6 +182,8 @@ end
 
 
 - #### ClientConfig
+  - binding: BindingConfig<Optional>
+
   - network: NetworkConfig<Optional>
 
   - crypto: CryptoConfig<Optional>
@@ -267,13 +269,23 @@ end
    Must be specified in milliseconds. Default is 5000 (5 sec).
   - next_remp_status_timeout: Number<Optional>
 
+   Network signature ID which is used by VM in signature verifying instructions if capability `CapSignatureWithId` is enabled in blockchain configuration parameters.
+   This parameter should be set to `global_id` field from any blockchain block if network cannot be reachable at the moment of message encoding and the message is aimed to be sent intonetwork with `CapSignatureWithId` enabled. Otherwise signature ID is detected automaticallyinside message encoding functions
+  - signature_id: Number<Optional>
+
    Access key to GraphQL API (Project secret)
   - access_key: String<Optional>
 
 
+- #### BindingConfig
+  - library: String<Optional>
+
+  - version: String<Optional>
+
+
 - #### CryptoConfig
-   Mnemonic dictionary that will be used by default in crypto functions. If not specified, 1 dictionary will be used.
-  - mnemonic_dictionary: Number<Optional>
+   Mnemonic dictionary that will be used by default in crypto functions. If not specified, `English` dictionary will be used.
+  - mnemonic_dictionary: MnemonicDictionary<Optional>
 
    Mnemonic word count that will be used by default in crypto functions. If not specified the default value will be 12.
   - mnemonic_word_count: Number<Optional>
@@ -460,6 +472,26 @@ end
   - case NaclBox = NaclBox
 
   - case NaclSecretBox = NaclSecretBox
+
+
+- #### MnemonicDictionary
+   TON compatible dictionary  - case Ton = 0
+
+   English BIP-39 dictionary  - case English = 1
+
+   Chinese simplified BIP-39 dictionary  - case ChineseSimplified = 2
+
+   Chinese traditional BIP-39 dictionary  - case ChineseTraditional = 3
+
+   French BIP-39 dictionary  - case French = 4
+
+   Italian BIP-39 dictionary  - case Italian = 5
+
+   Japanese BIP-39 dictionary  - case Japanese = 6
+
+   Korean BIP-39 dictionary  - case Korean = 7
+
+   Spanish BIP-39 dictionary  - case Spanish = 8
 
 
 - #### ParamsOfAppPasswordProvider
@@ -1449,6 +1481,9 @@ end
    Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
   - address: String<Optional>
 
+   Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
+  - signature_id: Number<Optional>
+
 
 - #### ResultOfEncodeMessageBody
    Message body BOC encoded with `base64`.
@@ -1508,6 +1543,9 @@ end
         Retry grow factor is set in Client config:
         <.....add config parameter with default value here>Default value is 0.
   - processing_try_index: Number<Optional>
+
+   Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
+  - signature_id: Number<Optional>
 
 
 - #### ResultOfEncodeMessage
@@ -1801,13 +1839,16 @@ end
    Message BOC encoded in `base64`.
   - message: String
 
+   Signature ID to be used in unsigned data preparing when CapSignatureWithId capability is enabled
+  - signature_id: Number<Optional>
+
 
 - #### ResultOfGetSignatureData
    Signature from the message in `hex`.
   - signature: String
 
-   Hash to verify the signature in `base64`.
-  - hash: String
+   Data to verify the signature in `base64`.
+  - unsigned: String
 
 
 - #### BocCacheType
@@ -2186,11 +2227,13 @@ end
 - #### ProcessingEvent
   - type: ProcessingEvent
 
+  - message_id: String
+
+  - message_dst: String
+
   - error: ClientError
 
   - shard_block_id: String
-
-  - message_id: String
 
   - message: String
 
@@ -2419,6 +2462,9 @@ end
 
    Overrides standard TVM behaviour. If set to `true` then CHKSIG always will return `true`.
   - chksig_always_succeed: Boolean<Optional>
+
+   Signature ID to be used in signature verifying instructions when CapSignatureWithId capability is enabled
+  - signature_id: Number<Optional>
 
 
 - #### AccountForExecutor
@@ -2999,6 +3045,11 @@ end
   - resume_state: Value<Optional>
 
 
+- #### ResultOfGetSignatureId
+   Signature ID for configured network if it should be used in messages signature
+  - signature_id: Number<Optional>
+
+
 - #### DebotErrorCode
   - case DebotStartFailed = 801
 
@@ -3296,6 +3347,7 @@ end
     def config(&block)
 
     # RESPONSE: ClientConfig
+    # binding: BindingConfig<Optional> - 
     # network: NetworkConfig<Optional> - 
     # crypto: CryptoConfig<Optional> - 
     # abi: Value - 
@@ -3848,6 +3900,7 @@ end
  # Expiration timeouts will grow with every retry.
  # Default value is 0.
     # address: String<Optional> - Destination address of the message Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
+    # signature_id: Number<Optional> - Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
 
     # RESPONSE: ResultOfEncodeMessageBody
     # body: String - Message body BOC encoded with `base64`.
@@ -3896,6 +3949,7 @@ end
  # Expiration timeouts will grow with every retry.
  # Retry grow factor is set in Client config:
  # <.....add config parameter with default value here>Default value is 0.
+    # signature_id: Number<Optional> - Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
 
     # RESPONSE: ResultOfEncodeMessage
     # message: String - Message BOC encoded with `base64`.
@@ -4081,10 +4135,11 @@ end
     # INPUT: ParamsOfGetSignatureData
     # abi: Value - Contract ABI used to decode.
     # message: String - Message BOC encoded in `base64`.
+    # signature_id: Number<Optional> - Signature ID to be used in unsigned data preparing when CapSignatureWithId capability is enabled
 
     # RESPONSE: ResultOfGetSignatureData
     # signature: String - Signature from the message in `hex`.
-    # hash: String - Hash to verify the signature in `base64`.
+    # unsigned: String - Data to verify the signature in `base64`.
 ```
 </details>
 
@@ -4806,6 +4861,13 @@ end
     def remove_iterator(payload, &block)
     # INPUT: RegisteredIterator
     # handle: Number - Iterator handle. Must be removed using `remove_iterator`when it is no more needed for the application.
+```
+```ruby
+    # Returns signature ID for configured network if it should be used in messages signature
+    def get_signature_id(&block)
+
+    # RESPONSE: ResultOfGetSignatureId
+    # signature_id: Number<Optional> - Signature ID for configured network if it should be used in messages signature
 ```
 </details>
 

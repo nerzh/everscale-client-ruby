@@ -24,6 +24,7 @@ module TonClient
     # Expiration timeouts will grow with every retry.
     # Default value is 0.
     # address: String<Optional> -     #     # Destination address of the message    #     # Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
+    # signature_id: Number<Optional> -     #     # Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
     # RESPONSE: ResultOfEncodeMessageBody
     # body: String -     #     # Message body BOC encoded with `base64`.
     # data_to_sign: String<Optional> -     #     # Optional data to sign.    #     # Encoded with `base64`.
@@ -67,6 +68,7 @@ module TonClient
     # Expiration timeouts will grow with every retry.
     # Retry grow factor is set in Client config:
     # <.....add config parameter with default value here>Default value is 0.
+    # signature_id: Number<Optional> -     #     # Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
     # RESPONSE: ResultOfEncodeMessage
     # message: String -     #     # Message BOC encoded with `base64`.
     # data_to_sign: String<Optional> -     #     # Optional data to be signed encoded in `base64`.    #     # Returned in case of `Signer::External`. Can be used for externalmessage signing. Is this case you need to use this data to create signature andthen produce signed message using `abi.attach_signature`.
@@ -305,9 +307,10 @@ module TonClient
     # INPUT: ParamsOfGetSignatureData
     # abi: Value -     #     # Contract ABI used to decode.
     # message: String -     #     # Message BOC encoded in `base64`.
+    # signature_id: Number<Optional> -     #     # Signature ID to be used in unsigned data preparing when CapSignatureWithId capability is enabled
     # RESPONSE: ResultOfGetSignatureData
     # signature: String -     #     # Signature from the message in `hex`.
-    # hash: String -     #     # Hash to verify the signature in `base64`.
+    # unsigned: String -     #     # Data to verify the signature in `base64`.
     # Async
     def get_signature_data(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
