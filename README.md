@@ -65,7 +65,7 @@ p response['result']['parsed']['src']
 p response['result']['parsed']['dst']
 
 # Async
-client.boc.parse_message_sync(payload) do |response|
+client.boc.parse_message(payload) do |response|
   p response.result['parsed']['id']
   p response.result['parsed']['src']
   p response.result['parsed']['dst']
