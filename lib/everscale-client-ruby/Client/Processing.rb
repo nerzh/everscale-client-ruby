@@ -13,6 +13,76 @@ module TonClient
       @monitor = monitor
     end
 
+    # INPUT: ParamsOfMonitorMessages
+    # queue: String -     #     # Name of the monitoring queue.
+    # messages: Array -     #     # Messages to start monitoring for.
+    # Async
+    def monitor_messages(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def monitor_messages_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
+    # INPUT: ParamsOfGetMonitorInfo
+    # queue: String -     #     # Name of the monitoring queue.
+    # RESPONSE: MonitoringQueueInfo
+    # unresolved: Number -     #     # Count of the unresolved messages.
+    # resolved: Number -     #     # Count of resolved results.
+    # Async
+    def get_monitor_info(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def get_monitor_info_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
+    # INPUT: ParamsOfFetchNextMonitorResults
+    # queue: String -     #     # Name of the monitoring queue.
+    # wait_mode: MonitorFetchWaitMode<Optional> -     #     # Wait mode.    #     # Default is `NO_WAIT`.
+    # RESPONSE: ResultOfFetchNextMonitorResults
+    # results: Array -     #     # List of the resolved results.
+    # Async
+    def fetch_next_monitor_results(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def fetch_next_monitor_results_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
+    # INPUT: ParamsOfCancelMonitor
+    # queue: String -     #     # Name of the monitoring queue.
+    # Async
+    def cancel_monitor(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def cancel_monitor_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
+    # INPUT: ParamsOfSendMessages
+    # messages: Array -     #     # Messages that must be sent to the blockchain.
+    # monitor_queue: String<Optional> -     #     # Optional message monitor queue that starts monitoring for the processing results for sent messages.
+    # RESPONSE: ResultOfSendMessages
+    # messages: Array -     #     # Messages that was sent to the blockchain for execution.
+    # Async
+    def send_messages(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def send_messages_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
     # INPUT: ParamsOfSendMessage
     # message: String -     #     # Message BOC.
     # abi: Value<Optional> -     #     # Optional message ABI.    #     # If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.

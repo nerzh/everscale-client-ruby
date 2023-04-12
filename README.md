@@ -2,7 +2,7 @@
 # Ruby Client for Free TON SDK
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.41.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.42.1-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Install
 
@@ -261,7 +261,7 @@ end
 
    UNSTABLE.
    First REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.
-   Must be specified in milliseconds. Default is 1000 (1 sec).
+   Must be specified in milliseconds. Default is 1 (1 ms) in order to start fallback scenariotogether with REMP statuses processing while REMP is not properly tuned yet.
   - first_remp_status_timeout: Number<Optional>
 
    UNSTABLE.
@@ -2224,6 +2224,29 @@ end
   - case RempError = RempError
 
 
+- #### MonitorFetchWaitMode
+   If there are no resolved results yet, then monitor awaits for the next resolved result.  - case AtLeastOne = 
+
+   Monitor waits until all unresolved messages will be resolved. If there are no unresolved messages then monitor will wait.  - case All = 
+
+  - case NoWait = 
+
+
+- #### MonitoredMessage
+  - case Boc = Boc
+
+  - case HashAddress = HashAddress
+
+
+- #### MessageMonitoringStatus
+   Returned when the messages was processed and included into finalized block before `wait_until` block time.  - case Finalized = 
+
+   Returned when the message was not processed until `wait_until` block time.  - case Timeout = 
+
+   Reserved for future statuses.   Is never returned. Application should wait for one of the `Finalized` or `Timeout` statuses.
+   All other statuses are intermediate.  - case Reserved = 
+
+
 - #### ProcessingEvent
   - type: ProcessingEvent
 
@@ -2265,6 +2288,126 @@ end
 
    Decoded body of the function output message.
   - output: Value<Optional>
+
+
+- #### MessageMonitoringTransactionCompute
+   Compute phase exit code.
+  - exit_code: Number
+
+
+- #### MessageMonitoringTransaction
+   Hash of the transaction. Present if transaction was included into the blocks. When then transaction was emulated this field will be missing.
+  - hash: String<Optional>
+
+   Aborted field of the transaction.
+  - aborted: Boolean
+
+   Optional information about the compute phase of the transaction.
+  - compute: MessageMonitoringTransactionCompute<Optional>
+
+
+- #### MessageMonitoringParams
+   Monitored message identification. Can be provided as a message's BOC or (hash, address) pair. BOC is a preferable way because it helps to determine possible error reason (using TVM execution of the message).
+  - message: MonitoredMessage
+
+   Block time Must be specified as a UNIX timestamp in seconds
+  - wait_until: Number
+
+   User defined data associated with this message. Helps to identify this message when user received `MessageMonitoringResult`.
+  - user_data: Value
+
+
+- #### MessageMonitoringResult
+   Hash of the message.
+  - hash: String
+
+   Processing status.
+  - status: MessageMonitoringStatus
+
+   In case of `Finalized` the transaction is extracted from the block. In case of `Timeout` the transaction is emulated using the last known account state.
+  - transaction: MessageMonitoringTransaction<Optional>
+
+   In case of `Timeout` contains possible error reason.
+  - error: String<Optional>
+
+   User defined data related to this message. This is the same value as passed before with `MessageMonitoringParams` or `SendMessageParams`.
+  - user_data: Value<Optional>
+
+
+- #### MonitoredMessage
+  - type: MonitoredMessage
+
+  - boc: String
+
+   Hash of the message.
+  - hash: String
+
+   Destination address of the message.
+  - address: String
+
+
+- #### MessageSendingParams
+   BOC of the message, that must be sent to the blockchain.
+  - boc: String
+
+   Expiration time of the message. Must be specified as a UNIX timestamp in seconds.
+  - wait_until: Number
+
+   User defined data associated with this message. Helps to identify this message when user received `MessageMonitoringResult`.
+  - user_data: Value
+
+
+- #### ParamsOfMonitorMessages
+   Name of the monitoring queue.
+  - queue: String
+
+   Messages to start monitoring for.
+  - messages: Array
+
+
+- #### ParamsOfGetMonitorInfo
+   Name of the monitoring queue.
+  - queue: String
+
+
+- #### MonitoringQueueInfo
+   Count of the unresolved messages.
+  - unresolved: Number
+
+   Count of resolved results.
+  - resolved: Number
+
+
+- #### ParamsOfFetchNextMonitorResults
+   Name of the monitoring queue.
+  - queue: String
+
+   Wait mode.
+   Default is `NO_WAIT`.
+  - wait_mode: MonitorFetchWaitMode<Optional>
+
+
+- #### ResultOfFetchNextMonitorResults
+   List of the resolved results.
+  - results: Array
+
+
+- #### ParamsOfCancelMonitor
+   Name of the monitoring queue.
+  - queue: String
+
+
+- #### ParamsOfSendMessages
+   Messages that must be sent to the blockchain.
+  - messages: Array
+
+   Optional message monitor queue that starts monitoring for the processing results for sent messages.
+  - monitor_queue: String<Optional>
+
+
+- #### ResultOfSendMessages
+   Messages that was sent to the blockchain for execution.
+  - messages: Array
 
 
 - #### ParamsOfSendMessage
@@ -2652,6 +2795,8 @@ end
   - case QueryTransactionTreeTimeout = 616
 
   - case GraphqlConnectionError = 617
+
+  - case WrongWebscoketProtocolSequence = 618
 
 
 - #### SortDirection
@@ -4349,6 +4494,62 @@ end
 <details>
   <summary>PROCESSING</summary>
 
+```ruby
+    # Starts monitoring for the processing results of the specified messages.    # Message monitor performs background monitoring for a message processing resultsfor the specified set of messages.
+    # Message monitor can serve several isolated monitoring queues.
+    # Each monitor queue has a unique application defined identifier (or name) usedto separate several queue's.
+    # There are two important lists inside of the monitoring queue:
+    # - unresolved messages: contains messages requested by the application for monitoring  and not yet resolved;
+    # - resolved results: contains resolved processing results for monitored messages.
+    # Each monitoring queue tracks own unresolved and resolved lists.
+    # Application can add more messages to the monitoring queue at any time.
+    # Message monitor accumulates resolved results.
+    # Application should fetch this results with `fetchNextMonitorResults` function.
+    # When both unresolved and resolved lists becomes empty, monitor stops any background activityand frees all allocated internal memory.
+    # If monitoring queue with specified name already exists then messages will be addedto the unresolved list.
+    # If monitoring queue with specified name does not exist then monitoring queue will be createdwith specified unresolved messages.
+    def monitor_messages(payload, &block)
+    # INPUT: ParamsOfMonitorMessages
+    # queue: String - Name of the monitoring queue.
+    # messages: Array - Messages to start monitoring for.
+```
+```ruby
+    # Returns summary information about current state of the specified monitoring queue.
+    def get_monitor_info(payload, &block)
+    # INPUT: ParamsOfGetMonitorInfo
+    # queue: String - Name of the monitoring queue.
+
+    # RESPONSE: MonitoringQueueInfo
+    # unresolved: Number - Count of the unresolved messages.
+    # resolved: Number - Count of resolved results.
+```
+```ruby
+    # Fetches next resolved results from the specified monitoring queue.    # Results and waiting options are depends on the `wait` parameter.
+    # All returned results will be removed from the queue's resolved list.
+    def fetch_next_monitor_results(payload, &block)
+    # INPUT: ParamsOfFetchNextMonitorResults
+    # queue: String - Name of the monitoring queue.
+    # wait_mode: MonitorFetchWaitMode<Optional> - Wait mode. Default is `NO_WAIT`.
+
+    # RESPONSE: ResultOfFetchNextMonitorResults
+    # results: Array - List of the resolved results.
+```
+```ruby
+    # Cancels all background activity and releases all allocated system resources for the specified monitoring queue.
+    def cancel_monitor(payload, &block)
+    # INPUT: ParamsOfCancelMonitor
+    # queue: String - Name of the monitoring queue.
+```
+```ruby
+    # Sends specified messages to the blockchain.
+    def send_messages(payload, &block)
+    # INPUT: ParamsOfSendMessages
+    # messages: Array - Messages that must be sent to the blockchain.
+    # monitor_queue: String<Optional> - Optional message monitor queue that starts monitoring for the processing results for sent messages.
+
+    # RESPONSE: ResultOfSendMessages
+    # messages: Array - Messages that was sent to the blockchain for execution.
+```
 ```ruby
     # Sends message to the network    # Sends message to the network and returns the last generated shard block of the destination accountbefore the message was sent. It will be required later for message processing.
     def send_message(payload, &block)
