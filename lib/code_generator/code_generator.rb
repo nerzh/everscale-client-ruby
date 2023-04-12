@@ -45,6 +45,12 @@ class CodeGenerator
     content = %{
 # Ruby Client for Free TON SDK
 
+<p align="center">
+  <a href="https://github.com/venom-blockchain/developer-program">
+    <img src="https://raw.githubusercontent.com/venom-blockchain/developer-program/main/vf-dev-program.png" alt="Logo" width="366.8" height="146.4">
+  </a>
+</p>
+
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
 [![SPM](https://img.shields.io/badge/SDK%20VERSION-#{types.version}-green)](https://github.com/tonlabs/TON-SDK)
 
@@ -103,7 +109,7 @@ p response['result']['parsed']['src']
 p response['result']['parsed']['dst']
 
 # Async
-client.boc.parse_message_sync(payload) do |response|
+client.boc.parse_message(payload) do |response|
   p response.result['parsed']['id']
   p response.result['parsed']['src']
   p response.result['parsed']['dst']
