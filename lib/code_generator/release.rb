@@ -10,7 +10,7 @@ GEM_DIR = "#{script_file_path}/../.."
 `cd #{script_file_path} && curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json`
 api_json_path = "#{script_file_path}/../../api.json"
 json = ''
-if File.exists?(api_json_path)
+if File.exist?(api_json_path)
   json = File.read(api_json_path)
 else
   p "File #{api_json_path} is not exist"

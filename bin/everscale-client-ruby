@@ -9,7 +9,7 @@ if ARGV[0] == 'update' && ARGV[1] == nil
   `cd #{script_file_path}/.. && curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json`
   api_json_path = "#{script_file_path}/../api.json"
   json = ''
-  if File.exists?(api_json_path)
+  if File.exist?(api_json_path)
     json = File.read(api_json_path)
   else
     p "File #{api_json_path} is not exist"
@@ -23,7 +23,7 @@ if ARGV[0] == 'update' && ARGV[1] == nil
 elsif ARGV[0] == 'update'
   api_json_path = ARGV[1]
   json = ''
-  if File.exists?(api_json_path)
+  if File.exist?(api_json_path)
     json = File.read(api_json_path)
   else
     p "Current directory: #{Dir.pwd}. File #{api_json_path} is not exist"

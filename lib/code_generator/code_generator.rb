@@ -31,7 +31,7 @@ class CodeGenerator
       else
           newModuleContent = generateModule(mod)
       end
-      if File.exists?(moduleFilePath)
+      if File.exist?(moduleFilePath)
           File.delete(moduleFilePath)
       end
       File.open(moduleFilePath, 'w+') { |f| f.write(newModuleContent) }
@@ -213,7 +213,7 @@ cd everscale-client-ruby\n
 ```\n 
 }
     content = checkContent(content)    
-    if File.exists?(readmePath)
+    if File.exist?(readmePath)
         File.delete(readmePath)
     end
     File.open(readmePath, 'w+') { |f| f.write(content) }
