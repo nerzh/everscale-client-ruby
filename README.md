@@ -1,5 +1,5 @@
 
-# Ruby Client for Free TON SDK
+# Ruby Client for TVM SDK Toncoin, Everscale, Venom, Gosh
 
 <p align="center">
   <a href="https://github.com/venom-blockchain/developer-program">
@@ -8,7 +8,12 @@
 </p>
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.42.1-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.43.0-green)](https://github.com/tonlabs/TON-SDK)
+
+## Get api keys and TVM endpoints:
+
+You need to get an API-KEY here [https://dashboard.evercloud.dev](https://dashboard.evercloud.dev)
+
 
 ## Install
 
@@ -23,7 +28,7 @@ everscale-client-ruby setup
 # result - path to dylib file for everscale-client-ruby configuration
 ```
 
-### Manual build FreeTON SDK
+### Manual build TVM SDK
 0. Install Rust to your OS
 1. git clone https://github.com/tonlabs/ever-sdk
 2. cd ./ever-sdk
@@ -38,7 +43,7 @@ TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_c
 # For Linux
 # TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_client.so) }
 
-client = TonClient.create(config: {network: {endpoints: ["https://eri01.net.everos.dev", "https://rbx01.net.everos.dev"]}})
+client = TonClient.create(config: {network: {endpoints: ["https://eri01.net.everos.dev/YOUR-X-API-KEY", "https://rbx01.net.everos.dev/YOUR-X-API-KEY"]}})
 
 # All methods are asynchronous
 
@@ -210,7 +215,7 @@ end
 
    List of Evernode endpoints.
    Any correct URL format can be specified, including IP addresses. This parameter is prevailing over `server_address`.
-   Check the full list of [supported network endpoints](https://docs.everos.dev/ever-sdk/reference/ever-os-api/networks).
+   Check the full list of [supported network endpoints](https://docs.evercloud.dev/products/evercloud/networks-endpoints).
   - endpoints: Array<Optional>
 
    Deprecated.
@@ -236,9 +241,7 @@ end
    Must be specified in milliseconds. Default is 40000 (40 sec).
   - wait_for_timeout: Number<Optional>
 
-   Maximum time difference between server and client.
-   If client's device time is out of sync and difference is more than the threshold then error will occur. Also an error will occur if the specified threshold is more than`message_processing_timeout/2`.
-   Must be specified in milliseconds. Default is 15000 (15 sec).
+   **DEPRECATED**: This parameter was deprecated.
   - out_of_sync_threshold: Number<Optional>
 
    Maximum number of randomly chosen endpoints the library uses to broadcast a message.
@@ -304,10 +307,12 @@ end
    Workchain id that is used by default in DeploySet
   - workchain: Number<Optional>
 
-   Message lifetime for contracts which ABI includes "expire" header. The default value is 40 sec.
+   Message lifetime for contracts which ABI includes "expire" header.
+   Must be specified in milliseconds. Default is 40000 (40 sec).
   - message_expiration_timeout: Number<Optional>
 
-   Factor that increases the expiration timeout for each retry The default value is 1.5
+   Factor that increases the expiration timeout for each retry
+   Default is 1.5
   - message_expiration_timeout_grow_factor: Number<Optional>
 
 
@@ -1318,7 +1323,8 @@ end
 
 
 - #### FunctionHeader
-   Message expiration time in seconds. If not specified - calculated automatically from message_expiration_timeout(), try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
+   Message expiration timestamp (UNIX time) in seconds.
+   If not specified - calculated automatically from message_expiration_timeout(),try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
   - expire: Number<Optional>
 
    Message creation time in milliseconds.
@@ -1343,8 +1349,14 @@ end
 
 
 - #### DeploySet
-   Content of TVC file encoded in `base64`.
-  - tvc: String
+   Content of TVC file encoded in `base64`. For compatibility reason this field can contain an encoded  `StateInit`.
+  - tvc: String<Optional>
+
+   Contract code BOC encoded with base64.
+  - code: String<Optional>
+
+   State init BOC encoded with base64.
+  - state_init: String<Optional>
 
    Target workchain for destination address.
    Default is `0`.
@@ -1863,6 +1875,22 @@ end
   - case Unpinned = Unpinned
 
 
+- #### BuilderOp
+  - case Integer = Integer
+
+  - case BitString = BitString
+
+  - case Cell = Cell
+
+  - case CellBoc = CellBoc
+
+  - case Address = Address
+
+
+- #### Tvc
+  - case V1 = V1
+
+
 - #### BocErrorCode
   - case InvalidBoc = 201
 
@@ -1879,22 +1907,54 @@ end
   - case InvalidBocRef = 207
 
 
-- #### BuilderOp
-  - case Integer = Integer
-
-  - case BitString = BitString
-
-  - case Cell = Cell
-
-  - case CellBoc = CellBoc
-
-  - case Address = Address
-
-
 - #### BocCacheType
   - type: BocCacheType
 
   - pin: String
+
+# Cell builder operation.
+- #### BuilderOp
+  - type: BuilderOp
+
+   Bit size of the value.
+  - size: Number
+
+   Value: - `Number` containing integer number.
+   e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
+   - `0x` prefixed hexadecimal string.
+     e.g `0x123`, `0X123`, `-0x123`.
+  - value: Value
+
+   Nested cell builder.
+  - builder: Array
+
+   Nested cell BOC encoded with `base64` or BOC cache key.
+  - boc: String
+
+   Address in a common `workchain:account` or base64 format.
+  - address: String
+
+
+- #### Tvc
+  - type: Tvc
+
+  - value: TvcV1
+
+
+- #### TvcV1
+  - code: String<Optional>
+
+  - description: String<Optional>
+
+
+- #### ParamsOfDecodeTvc
+   Contract TVC BOC encoded as base64 or BOC handle
+  - tvc: String
+
+
+- #### ResultOfDecodeTvc
+   Decoded TVC
+  - tvc: Tvc
 
 
 - #### ParamsOfParse
@@ -1989,28 +2049,6 @@ end
    If it is provided then only referenced BOC is unpinned
   - boc_ref: String<Optional>
 
-# Cell builder operation.
-- #### BuilderOp
-  - type: BuilderOp
-
-   Bit size of the value.
-  - size: Number
-
-   Value: - `Number` containing integer number.
-   e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
-   - `0x` prefixed hexadecimal string.
-     e.g `0x123`, `0X123`, `-0x123`.
-  - value: Value
-
-   Nested cell builder.
-  - builder: Array
-
-   Nested cell BOC encoded with `base64` or BOC cache key.
-  - boc: String
-
-   Address in a common `workchain:account` or base64 format.
-  - address: String
-
 
 - #### ParamsOfEncodeBoc
    Cell builder operations.
@@ -2057,15 +2095,15 @@ end
   - code: String
 
 
-- #### ParamsOfDecodeTvc
-   Contract TVC image BOC encoded as base64 or BOC handle
-  - tvc: String
+- #### ParamsOfDecodeStateInit
+   Contract StateInit image BOC encoded as base64 or BOC handle
+  - state_init: String
 
    Cache type to put the result. The BOC itself returned if no cache type provided.
   - boc_cache: BocCacheType<Optional>
 
 
-- #### ResultOfDecodeTvc
+- #### ResultOfDecodeStateInit
    Contract code BOC encoded as base64 or BOC handle
   - code: String<Optional>
 
@@ -2102,7 +2140,7 @@ end
   - compiler_version: String<Optional>
 
 
-- #### ParamsOfEncodeTvc
+- #### ParamsOfEncodeStateInit
    Contract code BOC encoded as base64 or BOC handle
   - code: String<Optional>
 
@@ -2127,9 +2165,9 @@ end
   - boc_cache: BocCacheType<Optional>
 
 
-- #### ResultOfEncodeTvc
-   Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
-  - tvc: String
+- #### ResultOfEncodeStateInit
+   Contract StateInit image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+  - state_init: String
 
 
 - #### ParamsOfEncodeExternalInMessage
@@ -2343,13 +2381,7 @@ end
 - #### MonitoredMessage
   - type: MonitoredMessage
 
-  - boc: String
-
-   Hash of the message.
-  - hash: String
-
-   Destination address of the message.
-  - address: String
+  - value: Struct
 
 
 - #### MessageSendingParams
@@ -2586,6 +2618,8 @@ end
   - case InvalidMessageType = 413
 
   - case ContractExecutionError = 414
+
+  - case AccountIsSuspended = 415
 
 
 - #### AccountForExecutor
@@ -4298,6 +4332,15 @@ end
   <summary>BOC</summary>
 
 ```ruby
+    # Decodes tvc according to the tvc spec. Read more about tvc structure here https://github.com/tonlabs/ever-struct/blob/main/src/scheme/mod.rs#L30
+    def decode_tvc(payload, &block)
+    # INPUT: ParamsOfDecodeTvc
+    # tvc: String - Contract TVC BOC encoded as base64 or BOC handle
+
+    # RESPONSE: ResultOfDecodeTvc
+    # tvc: Tvc - Decoded TVC
+```
+```ruby
     # Parses message boc into a JSON    # JSON structure is compatible with GraphQL API message object
     def parse_message(payload, &block)
     # INPUT: ParamsOfParse
@@ -4438,13 +4481,13 @@ end
     # code: String - Contract code with salt set. BOC encoded as base64 or BOC handle
 ```
 ```ruby
-    # Decodes tvc into code, data, libraries and special options.
-    def decode_tvc(payload, &block)
-    # INPUT: ParamsOfDecodeTvc
-    # tvc: String - Contract TVC image BOC encoded as base64 or BOC handle
+    # Decodes contract's initial state into code, data, libraries and special options.
+    def decode_state_init(payload, &block)
+    # INPUT: ParamsOfDecodeStateInit
+    # state_init: String - Contract StateInit image BOC encoded as base64 or BOC handle
     # boc_cache: BocCacheType<Optional> - Cache type to put the result. The BOC itself returned if no cache type provided.
 
-    # RESPONSE: ResultOfDecodeTvc
+    # RESPONSE: ResultOfDecodeStateInit
     # code: String<Optional> - Contract code BOC encoded as base64 or BOC handle
     # code_hash: String<Optional> - Contract code hash
     # code_depth: Number<Optional> - Contract code depth
@@ -4458,9 +4501,9 @@ end
     # compiler_version: String<Optional> - Compiler version, for example 'sol 0.49.0'
 ```
 ```ruby
-    # Encodes tvc from code, data, libraries ans special options (see input params)
-    def encode_tvc(payload, &block)
-    # INPUT: ParamsOfEncodeTvc
+    # Encodes initial contract state from code, data, libraries ans special options (see input params)
+    def encode_state_init(payload, &block)
+    # INPUT: ParamsOfEncodeStateInit
     # code: String<Optional> - Contract code BOC encoded as base64 or BOC handle
     # data: String<Optional> - Contract data BOC encoded as base64 or BOC handle
     # library: String<Optional> - Contract library BOC encoded as base64 or BOC handle
@@ -4469,8 +4512,8 @@ end
     # split_depth: Number<Optional> - Is present and non-zero only in instances of large smart contracts
     # boc_cache: BocCacheType<Optional> - Cache type to put the result. The BOC itself returned if no cache type provided.
 
-    # RESPONSE: ResultOfEncodeTvc
-    # tvc: String - Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+    # RESPONSE: ResultOfEncodeStateInit
+    # state_init: String - Contract StateInit image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
 ```
 ```ruby
     # Encodes a message    # Allows to encode any external inbound message.

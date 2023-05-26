@@ -43,7 +43,7 @@ class CodeGenerator
   def generateReadme(types)
     readmePath = root_dir + "/README.md"
     content = %{
-# Ruby Client for Free TON SDK
+# Ruby Client for TVM SDK Toncoin, Everscale, Venom, Gosh
 
 <p align="center">
   <a href="https://github.com/venom-blockchain/developer-program">
@@ -53,6 +53,11 @@ class CodeGenerator
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
 [![SPM](https://img.shields.io/badge/SDK%20VERSION-#{types.version}-green)](https://github.com/tonlabs/TON-SDK)
+
+## Get api keys and TVM endpoints:
+
+You need to get an API-KEY here [https://dashboard.evercloud.dev](https://dashboard.evercloud.dev)
+
 
 ## Install
 
@@ -67,7 +72,7 @@ everscale-client-ruby setup
 # result - path to dylib file for everscale-client-ruby configuration
 ```
 
-### Manual build FreeTON SDK
+### Manual build TVM SDK
 0. Install Rust to your OS
 1. git clone https://github.com/tonlabs/ever-sdk
 2. cd ./ever-sdk
@@ -82,7 +87,7 @@ TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_c
 # For Linux
 # TonClient.configure { |config| config.ffi_lib(./ever-sdk/target/release/libton_client.so) }
 
-client = TonClient.create(config: {network: {endpoints: ["https://eri01.net.everos.dev", "https://rbx01.net.everos.dev"]}})
+client = TonClient.create(config: {network: {endpoints: ["https://eri01.net.everos.dev/YOUR-X-API-KEY", "https://rbx01.net.everos.dev/YOUR-X-API-KEY"]}})
 
 # All methods are asynchronous
 

@@ -13,6 +13,20 @@ module TonClient
       @monitor = monitor
     end
 
+    # INPUT: ParamsOfDecodeTvc
+    # tvc: String -     #     # Contract TVC BOC encoded as base64 or BOC handle
+    # RESPONSE: ResultOfDecodeTvc
+    # tvc: Tvc -     #     # Decoded TVC
+    # Async
+    def decode_tvc(payload, &block)
+      TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
+    end
+
+    # Sync
+    def decode_tvc_sync(payload)
+      TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
+    end
+
     # INPUT: ParamsOfParse
     # boc: String -     #     # BOC encoded as base64
     # RESPONSE: ResultOfParse
@@ -229,10 +243,10 @@ module TonClient
       TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
-    # INPUT: ParamsOfDecodeTvc
-    # tvc: String -     #     # Contract TVC image BOC encoded as base64 or BOC handle
+    # INPUT: ParamsOfDecodeStateInit
+    # state_init: String -     #     # Contract StateInit image BOC encoded as base64 or BOC handle
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
-    # RESPONSE: ResultOfDecodeTvc
+    # RESPONSE: ResultOfDecodeStateInit
     # code: String<Optional> -     #     # Contract code BOC encoded as base64 or BOC handle
     # code_hash: String<Optional> -     #     # Contract code hash
     # code_depth: Number<Optional> -     #     # Contract code depth
@@ -245,16 +259,16 @@ module TonClient
     # split_depth: Number<Optional> -     #     # Is present and non-zero only in instances of large smart contracts
     # compiler_version: String<Optional> -     #     # Compiler version, for example 'sol 0.49.0'
     # Async
-    def decode_tvc(payload, &block)
+    def decode_state_init(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # Sync
-    def decode_tvc_sync(payload)
+    def decode_state_init_sync(payload)
       TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
-    # INPUT: ParamsOfEncodeTvc
+    # INPUT: ParamsOfEncodeStateInit
     # code: String<Optional> -     #     # Contract code BOC encoded as base64 or BOC handle
     # data: String<Optional> -     #     # Contract data BOC encoded as base64 or BOC handle
     # library: String<Optional> -     #     # Contract library BOC encoded as base64 or BOC handle
@@ -262,15 +276,15 @@ module TonClient
     # tock: Boolean<Optional> -     #     # `special.tock` field.    #     # Specifies the contract ability to handle tock transactions
     # split_depth: Number<Optional> -     #     # Is present and non-zero only in instances of large smart contracts
     # boc_cache: BocCacheType<Optional> -     #     # Cache type to put the result. The BOC itself returned if no cache type provided.
-    # RESPONSE: ResultOfEncodeTvc
-    # tvc: String -     #     # Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+    # RESPONSE: ResultOfEncodeStateInit
+    # state_init: String -     #     # Contract StateInit image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
     # Async
-    def encode_tvc(payload, &block)
+    def encode_state_init(payload, &block)
       TonBinding.requestLibrary(context: context, request_id: request_id, requests: requests, monitor: monitor, method_name: full_method_name(MODULE, __method__.to_s), payload: payload, &block)
     end
 
     # Sync
-    def encode_tvc_sync(payload)
+    def encode_state_init_sync(payload)
       TonBinding.send_request_sync(context: context, method_name: full_method_name(MODULE, __method__.to_s).sub(/_sync$/, ''), payload: payload)
     end
 
