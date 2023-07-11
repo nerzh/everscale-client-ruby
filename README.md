@@ -8,7 +8,7 @@
 </p>
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.43.0-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.43.3-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Get api keys and TVM endpoints:
 
@@ -2381,7 +2381,13 @@ end
 - #### MonitoredMessage
   - type: MonitoredMessage
 
-  - value: Struct
+  - boc: String
+
+   Hash of the message.
+  - hash: String
+
+   Destination address of the message.
+  - address: String
 
 
 - #### MessageSendingParams
