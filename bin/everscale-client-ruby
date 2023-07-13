@@ -40,6 +40,7 @@ elsif ARGV[0] == 'setup'
   unless Dir.exist?("#{GEM_DIR}/TON-SDK")
     system("cd #{GEM_DIR} && git clone https://github.com/tonlabs/TON-SDK ./TON-SDK")
   end
+  system("cd #{GEM_DIR}/TON-SDK && git reset --hard HEAD")
   system("cd #{GEM_DIR}/TON-SDK && git pull --ff-only")
   system("cd #{GEM_DIR}/TON-SDK && cargo update")
   system("cd #{GEM_DIR}/TON-SDK && cargo build --release")
