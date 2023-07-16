@@ -17,12 +17,17 @@ module TonClient
       context_response = TonBinding.read_string_data_ref(context_ptr)
       @context = TonBinding.read_string_to_hash(context_response)['result']
       ObjectSpace.define_finalizer(self, self.class.finalize(@context))
+      # p "MAKE REQUESTS #{@requests.object_id}"
+      # p "INIT CONTEXT #{@context}"
     end
 
     def self.finalize(ctx)
       Proc.new do
         if (ctx != nil) && (ctx > 0)
           TonBinding.tc_destroy_context(ctx)
+          # p "++++++++++++++++"
+          # p "DESTROY CONTEXT #{ctx}"
+          # p "----------------"
         end
       end
     end

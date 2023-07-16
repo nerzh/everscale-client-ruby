@@ -3,6 +3,7 @@ require 'spec_helper'
 
 describe TonClient::Processing do
   before(:all) do
+    p 'Processing'
     @client = make_client
   end
 
@@ -10,7 +11,7 @@ describe TonClient::Processing do
     abi_name = "Events"
     abi = { type: 'Serialized', value: read_abi(abi_name) }
     tvc = read_tvc(abi_name)
-    keys = generate_keys
+    keys = generate_keys(@client)
     encoded_message = abiEncodeMessage(
       name_abi: abi_name, 
       name_tvc: abi_name, 
@@ -42,7 +43,7 @@ describe TonClient::Processing do
     abi_name = "Events"
     abi = { type: 'Serialized', value: read_abi(abi_name) }
     tvc = read_tvc(abi_name)
-    keys = generate_keys
+    keys = generate_keys(@client)
     result = abiEncodeMessage(
       name_abi: abi_name, 
       name_tvc: abi_name, 

@@ -60,7 +60,7 @@ describe TonClient::Tvm do
     abi_name = "Subscription"
     abi = { type: 'Serialized', value: read_abi(abi_name) }
     tvc = read_tvc(abi_name)
-    keys = generate_keys
+    keys = generate_keys(@client)
     wallet_address = "0:2222222222222222222222222222222222222222222222222222222222222222"
     signer = {type: 'Keys', public_key: nil, keys: keys, handle: nil}
     call_set = {function_name: "constructor", header: nil, input: {wallet: wallet_address}}
@@ -217,7 +217,7 @@ describe TonClient::Tvm do
 
   it 'run_account_uinit' do
     abi_name = 'Hello'
-    keys = generate_keys
+    keys = generate_keys(@client)
     message = abiEncodeMessage(
       name_abi: abi_name, 
       name_tvc: abi_name, 

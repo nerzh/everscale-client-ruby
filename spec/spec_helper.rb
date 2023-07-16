@@ -1,4 +1,5 @@
 require 'everscale-client-ruby' # and any other gems you need
+require 'byebug'
 require 'fiddle'
 require 'fiddle/import'
 include CommonInstanceHelpers
@@ -37,6 +38,7 @@ def make_client
   TonClient.create(config: {network: {endpoints: [env['server_address'] || "net.ton.dev"]}})
 end
 
+# QUEUE
 # def requestLibrarySync(context: 1, method_name: '', payload: {})
 #   responses = []
 #   queue = Queue.new
@@ -48,10 +50,21 @@ end
 #   yield(responses) if block_given?
 # end
 
-# @mutex = Mutex.new
-# @condition = ConditionVariable.new
+# class A
+#   @@a = 0
+#   def self.a
+#     @@a
+#   end
 
+#   def self.a=(val)
+#     @@a = val
+#   end
+# end
+
+# MUTEX
 def callLibraryMethodSync(method, *args)
+  # number = A.a += 1
+  # p "actor init #{number}"
   responses = []
   mutex = Monitor.new
   condition = mutex.new_cond
@@ -59,15 +72,56 @@ def callLibraryMethodSync(method, *args)
   method.call(*args) do |response|
     mutex.synchronize do
       responses << response
-      condition.signal if response.finished == true
+      if response.finished == true
+        condition.signal
+        # p "actor execute block #{number}"
+      end
     end
   end
 
   mutex.synchronize do
     condition.wait
   end
+  # p "actor taked response #{number}"
 
   yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+end
+
+# RActor
+# def callLibraryMethodSync(method_p, *args)
+#   p "actor init #{A.a + 1}"
+#   wait_actor = Ractor.new("#{A.a + 1}", name: "#{A.a += 1}") do |name|
+#     data = {condition: true}
+#     result = []
+#     while data[:condition]
+#       data = Ractor.receive
+#       result << data[:result] if data[:result]
+#     end
+#     p "actor end yield #{name}"
+#     Ractor.yield result
+#   end
+
+#   method_p.call(*args) do |response|
+#     wait_actor.send({condition: true, result: response})
+#     # p response if wait_actor.name == '35'
+#     if response.finished == true
+#       p "actor execute block #{wait_actor.name}"
+#       wait_actor.send({condition: false}, move: true)
+#     end
+#   end
+
+#   responses = wait_actor.take
+#   p "actor taked response #{wait_actor.name}"
+
+#   yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+# end
+
+def generate_keys(client)
+  result = nil
+  callLibraryMethodSync(client.crypto.method(:generate_random_sign_keys)) do |response|
+    result = response.first.result
+  end
+  result
 end
 
 def read_abi(name)
@@ -81,15 +135,6 @@ def read_tvc(name)
   encoded = Base64.encode64(data)
   # Spit it out into one continous string
   encoded.gsub(/\n/, '')
-end
-
-def generate_keys
-  client = make_client
-  result = nil
-  callLibraryMethodSync(client.crypto.method(:generate_random_sign_keys)) do |response|
-    result = response.first.result
-  end
-  result
 end
 
 def abiEncodeMessage(name_abi: '', name_tvc: nil, address: nil, public_key: nil, secret_key: nil, call_set_function_name: nil, call_set_header: nil, call_set_input: nil)

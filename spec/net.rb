@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'byebug'
 
 
 describe TonClient::Net do
@@ -41,6 +42,11 @@ describe TonClient::Net do
     end
     queue.pop
     expect(result['handle'].class).to be(Integer)
+    # unsubscribe
+    @client.net.unsubscribe({handle: result['handle']}) do |response|
+      queue.push 1
+    end
+    queue.pop
   end
 end
 

@@ -15,13 +15,23 @@ module TonClient
 
   def self.callLibraryMethodSync(method, *args)
     responses = []
-    queue = Queue.new
+    mutex = Monitor.new
+    condition = mutex.new_cond
+
     method.call(*args) do |response|
-      responses << response
-      yield(responses) if block_given?
-      queue.push 1 if response.finished == true
+      mutex.synchronize do
+        responses << response
+        if response.finished == true
+          condition.signal
+        end
+      end
     end
-    queue.pop
+
+    mutex.synchronize do
+      condition.wait
+    end
+
+    yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
   end
 
   class RequestId

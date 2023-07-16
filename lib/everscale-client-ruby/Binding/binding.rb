@@ -183,12 +183,12 @@ module TonClient
 
         request_id = request_id.increment
         requests[request_id] = block
-        # p "start #{request_id}"
+        # p "start id #{request_id} - requests #{requests.object_id}"
         tc_request(context, method_name_string, payload_string, request_id) do |request_id, string_data, response_type, finished|
-          # p "tc_request #{request_id}"
-          # p "Thread.current #{Thread.current}"
+          # p "rust inside id #{request_id} - #{method_name}"
           begin
-            monitor.synchronize do
+            monitor&.synchronize do
+              # p "request_id #{request_id}, monitor #{monitor.object_id} - requests #{requests.object_id}"
               request = requests[request_id]
               if request
                 request.call(Response.new(request_id, string_data, response_type, finished))
