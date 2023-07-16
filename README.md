@@ -8,7 +8,7 @@
 </p>
 
 [![GEM](https://img.shields.io/badge/ruby-gem-orange)](https://rubygems.org/gems/everscale-client-ruby)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.43.3-green)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.44.0-green)](https://github.com/tonlabs/TON-SDK)
 
 ## Get api keys and TVM endpoints:
 
@@ -24,8 +24,7 @@ gem install everscale-client-ruby
 
 Install TON-SDK
 
-result - will print path to dylib file for everscale-client-ruby configuration
-
+##### result - path to dylib file for everscale-client-ruby configuration
 ```bash
 everscale-client-ruby setup
 ```

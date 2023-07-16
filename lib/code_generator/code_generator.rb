@@ -67,9 +67,10 @@ gem install everscale-client-ruby
 ```
 
 Install TON-SDK
+
+##### result - path to dylib file for everscale-client-ruby configuration
 ```bash
 everscale-client-ruby setup
-# result - path to dylib file for everscale-client-ruby configuration
 ```
 
 ### Manual build TVM SDK
