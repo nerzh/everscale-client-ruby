@@ -84,7 +84,7 @@ def callLibraryMethodSync(method, *args)
   end
   # p "actor taked response #{number}"
 
-  yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+  yield(responses.map{ |resp| resp if (resp.result || resp.error) }.compact) if block_given?
 end
 
 # RActor

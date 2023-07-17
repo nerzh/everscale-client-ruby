@@ -31,7 +31,7 @@ module TonClient
       condition.wait
     end
 
-    yield(responses.map{ |resp| resp if resp.result }.compact) if block_given?
+    yield(responses.map{ |resp| resp if (resp.result || resp.error) }.compact) if block_given?
   end
 
   class RequestId
