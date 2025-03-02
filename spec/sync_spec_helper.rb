@@ -40,8 +40,7 @@ def read_tvc(name)
   encoded.gsub(/\n/, '')
 end
 
-def generate_keys
-  client = make_client
+def generate_keys(client)
   response = client.crypto.generate_random_sign_keys_sync
   response['result']
 end
@@ -96,13 +95,13 @@ def get_grams_from_giver_sync(client: nil, account_address: nil, value: 10_000_0
   tokens_received = false
   fuse_counter = 0
   while !tokens_received
-    p 'CYCLE'
-    p account_address
+    # p 'CYCLE'
+    # p account_address
     params_of_wait_for_collection = {collection: "accounts", filter: {"id": {"eq": account_address} }, result: "id balance(format: DEC)", timeout: nil}
     response = client.net.wait_for_collection_sync(params_of_wait_for_collection)
-    p 'CYCLE 2'
+    # p 'CYCLE 2'
     result = response['result']
-    p result
+    # p result
     if result
       balance = result['result']['balance'] || 0
       if balance.to_i > 0
@@ -130,7 +129,6 @@ def get_grams_from_giver_sync_node_se_v2(client, account_address, value, &block)
   params_of_encoded_message = {abi: abi, address: wallet_address, call_set: call_set, deploy_set: nil, signer: signer, processing_try_index: nil}
   send_paylod = {message_encode_params: params_of_encoded_message, send_events: false}
   response = client.processing.process_message_sync(send_paylod)
-  byebug
   expect(nil).to eq(response['error'])
   p 'Giver SE v2 - finished'
   block.call(response) if block

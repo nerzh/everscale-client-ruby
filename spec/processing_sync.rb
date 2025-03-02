@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'sync_spec_helper'
 
 
 describe TonClient::Processing do
@@ -7,7 +7,7 @@ describe TonClient::Processing do
     @client = make_client
   end
 
-  it 'wait_for_transaction' do
+  it 'wait_for_transaction_sync' do
     abi_name = "Events"
     abi = { type: 'Serialized', value: read_abi(abi_name) }
     tvc = read_tvc(abi_name)
@@ -28,18 +28,16 @@ describe TonClient::Processing do
 
     params_of_send_message = {message: encoded_message['message'], abi: abi, send_events: true}
     result_of_send_message = nil
-    callLibraryMethodSync(@client.processing.method(:send_message), params_of_send_message) do |response|
-      result_of_send_message = response.first.result
-    end
+    response = @client.processing.send_message_sync(params_of_send_message)
+    result_of_send_message = response['result']
     
     params_of_wait_for_transaction = {abi: abi, message: encoded_message['message'], shard_block_id: result_of_send_message['shard_block_id'], send_events: true}
-    callLibraryMethodSync(@client.processing.method(:wait_for_transaction), params_of_wait_for_transaction) do |response|
-      expect(response.first.result['out_messages'].size).to eq(0)
-      expect(response.first.result['decoded']).to eq({"out_messages" => [], "output" => nil})
-    end    
+    response = @client.processing.wait_for_transaction_sync(params_of_wait_for_transaction)
+    expect(response['result']['out_messages'].size).to eq(0)
+    expect(response['result']['decoded']).to eq({"out_messages" => [], "output" => nil})
   end
 
-  it 'process_mesage' do
+  it 'process_mesage_sync' do
     abi_name = "Events"
     abi = { type: 'Serialized', value: read_abi(abi_name) }
     tvc = read_tvc(abi_name)
@@ -68,11 +66,10 @@ describe TonClient::Processing do
     }
     payload_process_message = {message_encode_params: payload_encode_message, send_events: true}
     result_of_process_message = nil
-    callLibraryMethodSync(@client.processing.method(:process_message), payload_process_message) do |response|
-      expect(response.first.result['fees']['total_account_fees'].to_f).to be > 0
-      expect(response.first.result['out_messages'].size).to eq(0)
-      expect(response.first.result['decoded']).to eq({"out_messages" => [], "output" => nil})
-    end
+    response = @client.processing.process_message_sync(payload_process_message)
+    expect(response['result']['fees']['total_account_fees'].to_f).to be > 0
+    expect(response['result']['out_messages'].size).to eq(0)
+    expect(response['result']['decoded']).to eq({"out_messages" => [], "output" => nil})
   end
 end
 

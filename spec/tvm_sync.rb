@@ -149,8 +149,6 @@ describe TonClient::Tvm do
       }
       result = nil
       response = @client.tvm.run_tvm_sync(params_of_run_tvm)
-
-      # byebug
       result = response['result']
       result = result['account']
       result
